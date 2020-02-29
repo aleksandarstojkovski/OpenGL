@@ -21,52 +21,125 @@
 
 
 void draw() {
-    glClearColor(1.0, 0.0, 0.0, 0.0);  	//definisce con quale colore cancellare la scena
-    //con openGL 2.0 il nero e' lo stato di default iniziale
-    glClear(GL_COLOR_BUFFER_BIT);		//cancella la scena
-    glLoadIdentity();					//Matrice di trasformazione: identita'
-    glColor3f(1.0, 1.0, 1.0);			//Definisce il colore degli oggetti da disegnare
-    //glColor3i(INT_MAX , 0, 0);
-    glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);	 //definisce l'area visualizzabile
 
-    GLfloat vertices[3][3]={{1.0,2.0,3.0},{3.0,2.0,1.0},{3.0,1.0,2.0}};
+    // definisce con quale colore cancellare la scena (con openGL 2.0 il nero e' default)
+    glClearColor(0.5, 0.5, 0.5, 0.0); // grigio
+    // cancella la scena con colore definito sopra
+    glClear(GL_COLOR_BUFFER_BIT);
 
-    glBegin(GL_TRIANGLES);				//definisce il poligono e i 3 vertici
-    glVertex3fv(vertices[0]);
-    glVertex3fv(vertices[3]);
-    glVertex3fv(vertices[2]);
+    // vertici dei quattro triangoli
+    GLfloat vertici_triangoli[][4]={
+            {-1,0,1},
+            {1,0,1},
+            {0,3,0},
+
+            {1,0,1},
+            {1,0,-1},
+            {0,3,0},
+
+            {1,0,-1},
+            {-1,0,-1},
+            {0,3,0},
+
+            {-1,0,-1},
+            {-1,0,1},
+            {0,3,0},
+    };
+
+    // triangoli che creano la piramide
+
+    // GL_FRONT perche' vediamo solo il "front" delle facciate
+    // GL_FILL per fare in modo che il triangolo sia riempito di colore
+    glPolygonMode(GL_FRONT ,GL_FILL);
+    glBegin(GL_TRIANGLES);
+
+        // vertici in senso antiorario
+
+        glColor3f(1, 0, 0);
+        glVertex3fv(vertici_triangoli[0]);
+        glVertex3fv(vertici_triangoli[1]);
+        glVertex3fv(vertici_triangoli[2]);
+
+        glColor3f(0, 1, 0);
+        glVertex3fv(vertici_triangoli[3]);
+        glVertex3fv(vertici_triangoli[4]);
+        glVertex3fv(vertici_triangoli[5]);
+
+        glColor3f(0, 0, 1);
+        glVertex3fv(vertici_triangoli[6]);
+        glVertex3fv(vertici_triangoli[7]);
+        glVertex3fv(vertici_triangoli[8]);
+
+        glColor3f(0, 1, 1);
+        glVertex3fv(vertici_triangoli[9]);
+        glVertex3fv(vertici_triangoli[10]);
+        glVertex3fv(vertici_triangoli[11]);
+
     glEnd();
 
 
-    glFlush();							//esegue i comandi
+    // bordi neri dei triangoli
+
+    // GL_FRONT perche' vediamo solo il "front" delle facciate
+    // GL_LINE per fare in modo che il triangolo non sia riempito di colore
+
+    glPolygonMode(GL_FRONT,GL_LINE);
+    glLineWidth(3.0);
+
+    glBegin(GL_TRIANGLES);
+
+        glColor3f(0, 0, 0);
+
+        glVertex3fv(vertici_triangoli[0]);
+        glVertex3fv(vertici_triangoli[1]);
+        glVertex3fv(vertici_triangoli[2]);
+
+        glVertex3fv(vertici_triangoli[3]);
+        glVertex3fv(vertici_triangoli[4]);
+        glVertex3fv(vertici_triangoli[5]);
+
+        glVertex3fv(vertici_triangoli[6]);
+        glVertex3fv(vertici_triangoli[7]);
+        glVertex3fv(vertici_triangoli[8]);
+
+        glVertex3fv(vertici_triangoli[9]);
+        glVertex3fv(vertici_triangoli[10]);
+        glVertex3fv(vertici_triangoli[11]);
+
+    glEnd();
+
+    // esegue i comandi
+    glFlush();
 }
 
 
-
-void reshape(int w, int h) {
-    printf("reshape: w=%d, h=%d\n",w,h);
-    glViewport(0, 0, (GLint) w, (GLint) h);
+void init(){
+    // abilita il fatto di poter eliminare le facce che non si vedono
+    // senza glEnable(GL_CULL_FACE) non si puo' utilizzare glPolygonMode(GL_FRONT,GL_LINE)
+    glEnable(GL_CULL_FACE);
+    // quando si setta zoom, ertho ecc bisogna mettere GL_PROJECTION
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    if (w <= h)
-        glOrtho (0, 0, -1.5*(GLfloat)h/(GLfloat)w,
-                 1.5*(GLfloat)h/(GLfloat)w, -10.0, 10.0);
-    else
-        glOrtho (-1.5*(GLfloat)w/(GLfloat)h,
-                 1.5*(GLfloat)w/(GLfloat)h, 0, 0, -10.0, 10.0);
+    // definisce l'area visualizzabile
+    glOrtho(-5, 5, -5, 4, -5, 5);
+    // modalita' standard di trasformazione, non va piu cambiata
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    // cambia la prospettiva
+    // gluPerspective(100,1,1,10);
+    gluLookAt(1.5, 1, 3, 0, 0, 0, 0, 1, 0);
 }
-
-
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);				// Inizializza libreria glut per la gestione delle finestre
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA); // Singolo buffer con modello colore RGBA
-    glutInitWindowSize(1000,700);
-    glutCreateWindow("Bandiera Scozzese");  // Crea finestra (dimensioni e posizione di default) e definisce titolo
-    glutReshapeFunc(reshape);
-    glutDisplayFunc(draw);			// Rendering function
+    // grandezza finestra
+    glutInitWindowSize(800,600);
+    // titolo finestra
+    glutCreateWindow("Piramide");
+    //glutReshapeFunc(reshape);
+    // funzione che disegna
+    glutDisplayFunc(draw);
+    init();
     glutMainLoop();					// loop infinito
 }
 
