@@ -27,6 +27,16 @@ typedef struct {
     float z;
 } point;
 
+void draw_triangle(point points[3]){
+    glPolygonMode(GL_FRONT ,GL_FILL);
+    glBegin(GL_TRIANGLES);
+    glColor3f(1, 1, 0);
+        glVertex3f(points[0].x,points[0].y,points[0].z);
+        glVertex3f(points[1].x,points[1].y,points[1].z);
+        glVertex3f(points[2].x,points[2].y,points[2].z);
+    glEnd();
+}
+
 void draw_rectangle(point points[4]){
 
     int i;
@@ -166,8 +176,6 @@ void draw() {
     // cancella la scena con colore definito sopra
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    draw_axis();
-
     point rect_front_right[4]={{0.5,0,0},{4,0,0},{4,2,0},{0.5,2,0}};
     point rect_front_left[4]={{-4,0,0},{-0.5,0,0},{-0.5,2,0},{-4,2,0}};
     point rect_front_center[4]={{-4,2,0},{4,2,0},{4,4,0},{-4,4,0}};
@@ -175,7 +183,22 @@ void draw() {
     point rect_right[4]={{4,0,0},{4,0,-8},{4,4,-8},{4,4,0}};
     point rect_left[4]={{-4,4,0},{-4,4,-8},{-4,0,-8},{-4,0,0}};
     point rect_bottom[4]={{-4,0,0},{-4,0,-8},{4,0,-8},{4,0,0}};
+    point front_rect[3]={{-4,4,0},{4,4,0},{0,7,0}};
+    point back_rect[3]={{-4,4,-8.1},{0,7,-8.1},{4,4,-8.1}};
+    point roof_left[4]={{-4,4,0},{0,7,0},{0,7,-8},{-4,4,-8}};
+    point roof_right[4]={{4,4,0},{4,4,-8},{0,7,-8},{0,7,0}};
 
+    point comignolo1[4]={{2,4,-4},{3,4,-4},{3,7,-4},{2,7,-4}};
+
+    // DISEGNO
+
+    // disgna assi
+    draw_axis();
+
+    // Trasla la casa
+    glTranslatef(0.0,1.0,4.0);
+
+    // dissegna la casa
     draw_pol(rect_front_right,-0.1);
     draw_pol(rect_front_left,-0.1);
     draw_pol(rect_front_center,-0.1);
@@ -183,6 +206,13 @@ void draw() {
     draw_pol(rect_right,-0.1);
     draw_pol(rect_left,-0.1);
     draw_pol(rect_bottom,-0.1);
+    draw_triangle(front_rect);
+    draw_triangle(back_rect);
+    draw_pol(roof_left,-0.1);
+    draw_pol(roof_right,-0.1);
+    draw_pol(comignolo1,-1);
+
+    glTranslatef(0.0,-1.0,-4.0);
 
     // esegue i comandi
     glutSwapBuffers();
