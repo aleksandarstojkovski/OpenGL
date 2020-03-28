@@ -280,13 +280,15 @@ void draw() {
 
     // DISEGNO
 
-    // disgna assi
     draw_axis();
 
     // Trasla la casa
     glPushMatrix();
 
         glTranslatef(X_POS,Y_POS,Z_POS);
+
+        glRotatef(SPIN, 0.0, 1.0, 0.0);
+
         draw_pol(rect_front_right,-0.1,front_color,back_color);
         draw_pol(rect_front_left,-0.1,front_color,back_color);
         draw_pol(rect_front_center,-0.1,front_color,back_color);
@@ -299,6 +301,7 @@ void draw() {
         draw_pol(roof_left,-0.1,front_color,back_color);
         draw_pol(roof_right,-0.1,front_color,back_color);
         draw_pol(comignolo,-1,back_color,back_color);
+
 
         glPushMatrix();
             glTranslatef(0.5,0,0);
@@ -359,9 +362,7 @@ void keyboardS(int key, int x, int y) {
 
 void spinDisplay(int id)
 {
-    SPIN = 1.0;
-    if (SPIN > 1)
-        SPIN = 0;
+    SPIN = 1;
     glutPostRedisplay();
     if (IS_SPINNING) glutTimerFunc(SPIN_SPEED, spinDisplay, id);
 }
