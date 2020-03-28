@@ -286,36 +286,28 @@ void draw() {
     // Trasla la casa
     glPushMatrix();
 
-    glTranslatef(X_POS,Y_POS,Z_POS);
-    // dissegna la casa
-    draw_pol(rect_front_right,-0.1,front_color,back_color);
-    draw_pol(rect_front_left,-0.1,front_color,back_color);
-    draw_pol(rect_front_center,-0.1,front_color,back_color);
-    draw_pol(rect_back,-0.1,front_color,back_color);
-    draw_pol(rect_right,-0.1,front_color,back_color);
-    draw_pol(rect_left,-0.1,front_color,back_color);
-    draw_pol(rect_bottom,-0.1,front_color,back_color);
-    draw_triangle(front_rect,front_color);
-    draw_triangle(back_rect,front_color);
-    draw_pol(roof_left,-0.1,front_color,back_color);
-    draw_pol(roof_right,-0.1,front_color,back_color);
-    draw_pol(comignolo,-1,back_color,back_color);
+        glTranslatef(X_POS,Y_POS,Z_POS);
+        draw_pol(rect_front_right,-0.1,front_color,back_color);
+        draw_pol(rect_front_left,-0.1,front_color,back_color);
+        draw_pol(rect_front_center,-0.1,front_color,back_color);
+        draw_pol(rect_back,-0.1,front_color,back_color);
+        draw_pol(rect_right,-0.1,front_color,back_color);
+        draw_pol(rect_left,-0.1,front_color,back_color);
+        draw_pol(rect_bottom,-0.1,front_color,back_color);
+        draw_triangle(front_rect,front_color);
+        draw_triangle(back_rect,front_color);
+        draw_pol(roof_left,-0.1,front_color,back_color);
+        draw_pol(roof_right,-0.1,front_color,back_color);
+        draw_pol(comignolo,-1,back_color,back_color);
 
-    glPushMatrix();
-    glTranslatef(0.5,0,0);
-    glRotatef(DOOR_ANGLE,0,1,0);
-    glTranslatef(0.5,0,0);
-
-    draw_pol(porta,-0.1,marron_color,marron_color);
-
-    glPopMatrix();
-    //glTranslatef(-0.5,0,0);
-    //glRotatef(-135,0,1,0);
-    //glTranslatef(-0.5,0,0);
+        glPushMatrix();
+            glTranslatef(0.5,0,0);
+            glRotatef(DOOR_ANGLE,0,1,0);
+            glTranslatef(0.5,0,0);
+            draw_pol(porta,-0.1,marron_color,marron_color);
+        glPopMatrix();
 
     glPopMatrix();
-
-    //glTranslatef(-X_POS,-Y_POS,-Z_POS);
 
     if (IS_SPINNING) {
         glRotatef(SPIN, 0.0, 1.0, 0.0);
