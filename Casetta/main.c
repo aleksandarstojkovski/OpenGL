@@ -33,7 +33,7 @@ typedef struct {
 } color;
 
 int i;
-int SHOW_TRIANGLES=1;
+int SHOW_TRIANGLES=0;
 int SPIN_SPEED=100;
 int SPIN = 0;
 int IS_SPINNING = 0;
@@ -113,7 +113,7 @@ void mainMenuCB(int value) {
 void createMenu() {
     int menu = glutCreateMenu(mainMenuCB);
     glutAddMenuEntry("Show/Hide Axes", 1);
-    glutAddMenuEntry("Show/Hide Triangles", 2);
+    //glutAddMenuEntry("Show/Hide Triangles", 2);
     glutAddMenuEntry("Open/Close Door", 9);
     glutAddMenuEntry("Translate +X", 3);
     glutAddMenuEntry("Translate -X", 4);
@@ -300,8 +300,8 @@ void draw() {
     point back_triangle[3]={{-4, 4, -8}, {0, 6.4, -8}, {4, 4, -8}};
     point roof_left[4]={{-4.8,3.8,0.5},{0,6.8,0.5},{0,6.8,-8.5},{-4.8,3.8,-8.5}};
     point roof_right[4]={{4.8,3.8,0.5},{4.8,3.8,-8.5},{0,6.8,-8.5},{0,6.8,0.5}};
-    point comignolo_pz1[4]={{2, 4, -4}, {3, 4, -4}, {3, 7, -4}, {2, 7, -4}};
-    point comignolo_pz2[4]={{1.8, 7, -3.8}, {3.2, 7, -3.8}, {3.2, 7.5, -3.8}, {1.8, 7.5, -3.8}};
+    point comignolo_pz1[4]={{-3, 4, -4}, {-2, 4, -4}, {-2, 7, -4}, {-3, 7, -4}};
+    point comignolo_pz2[4]={{-3.2, 7, -3.8}, {-1.8, 7, -3.8}, {-1.8, 7.5, -3.8}, {-3.2, 7.5, -3.8}};
     point porta[4]={{0.5,0,0.1},{0.5,2,0.1},{-0.5,2,0.1},{-0.5,0,0.1}};
 
     color front_color ={1,1,1};
