@@ -18,6 +18,8 @@
 #include <GL/freeglut.h>
 #endif
 
+#include <math.h>
+
 typedef struct {
     float x;
     float y;
@@ -44,6 +46,26 @@ int MAX_Y_POS=3;
 int Z_POS=4;
 int MAX_Z_POS=10;
 int DOOR_ANGLE=180;
+
+void normal_calc(point a, point b, point c, point * normal){
+
+    point ab = { b.x-a.x,b.y-a.y,b.z-a.z};
+    point ac = { c.x-a.x,c.y-a.y,c.z-a.z};
+    point cross = {ab.y*ac.z-ab.z*ac.y,
+                   ab.z*ac.x-ab.x*ac.z,
+                   ab.x*ac.y-ab.y*ac.x};
+
+    float modulo = sqrt(pow(cross.x,2)+pow(cross.y,2)+pow(cross.z,2));
+
+    cross.x = cross.x/modulo;
+    cross.y = cross.y/modulo;
+    cross.z = cross.z/modulo;
+
+    normal->x = cross.x;
+    normal->y = cross.y;
+    normal->z = cross.z;
+
+}
 
 void mainMenuCB(int value) {
     switch (value) {
@@ -189,10 +211,16 @@ void draw_pol(point points[4], float depth, color front_color, color back_color)
     point top_face[4];
     point bottom_face[4];
 
+    point normal = {0,0,0};
+
+    normal_calc(points[0],points[1],points[2],&normal);
+
     // calcolo rettangolo spostano nell'asse Z
     for (i=0;i<4;i++){
         translated_in_z[i]=points[i];
-        translated_in_z[i].z=translated_in_z[i].z + depth;
+        translated_in_z[i].x=translated_in_z[i].x + depth*normal.x;
+        translated_in_z[i].y=translated_in_z[i].y + depth*normal.y;
+        translated_in_z[i].z=translated_in_z[i].z + depth*normal.z;
     }
 
     right_face[0]=points[1];
@@ -256,7 +284,7 @@ void animazioneRotateCasa() {
 void draw() {
 
     // definisce con quale colore cancellare la scena (con openGL 2.0 il nero e' default)
-    glClearColor(1, 1, 1, 0.0); // grigio
+    glClearColor(0.5, 0.5, 0.5, 0.0); // grigio
     // cancella la scena con colore definito sopra
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -267,16 +295,18 @@ void draw() {
     point rect_right[4]={{4,0,0},{4,0,-8},{4,4,-8},{4,4,0}};
     point rect_left[4]={{-4,4,0},{-4,4,-8},{-4,0,-8},{-4,0,0}};
     point rect_bottom[4]={{-4,0,0},{-4,0,-8},{4,0,-8},{4,0,0}};
-    point front_rect[3]={{-4,4,0},{4,4,0},{0,7,0}};
-    point back_rect[3]={{-4,4,-8.1},{0,7,-8.1},{4,4,-8.1}};
-    point roof_left[4]={{-4,4,0},{0,7,0},{0,7,-8},{-4,4,-8}};
-    point roof_right[4]={{4,4,0},{4,4,-8},{0,7,-8},{0,7,0}};
+    //point rect_bottom[4]={{4,0,0},{4,0,-8},{-4,0,-8},{-4,0,0}};
+    point front_triangle[3]={{-4, 4, 0}, {4, 4, 0}, {0, 6.4, 0}};
+    point back_triangle[3]={{-4, 4, -8}, {0, 6.4, -8}, {4, 4, -8}};
+    point roof_left[4]={{-4.8,3.8,0.5},{0,6.8,0.5},{0,6.8,-8.5},{-4.8,3.8,-8.5}};
+    point roof_right[4]={{4.8,3.8,0.5},{4.8,3.8,-8.5},{0,6.8,-8.5},{0,6.8,0.5}};
     point comignolo[4]={{2,4,-4},{3,4,-4},{3,7,-4},{2,7,-4}};
     point porta[4]={{0.5,0,0.1},{0.5,2,0.1},{-0.5,2,0.1},{-0.5,0,0.1}};
 
-    color front_color ={0.7,0.7,0.7};
+    color front_color ={1,1,1};
     color back_color = {0.4,0.4,0.4};
     color marron_color = {0.5,0.25,0.25};
+    color red = {1,0,0};
 
     // DISEGNO
 
@@ -289,17 +319,17 @@ void draw() {
 
         glRotatef(SPIN, 0.0, 1.0, 0.0);
 
-        draw_pol(rect_front_right,-0.1,front_color,back_color);
-        draw_pol(rect_front_left,-0.1,front_color,back_color);
-        draw_pol(rect_front_center,-0.1,front_color,back_color);
-        draw_pol(rect_back,-0.1,front_color,back_color);
-        draw_pol(rect_right,-0.1,front_color,back_color);
-        draw_pol(rect_left,-0.1,front_color,back_color);
-        draw_pol(rect_bottom,-0.1,front_color,back_color);
-        draw_triangle(front_rect,front_color);
-        draw_triangle(back_rect,front_color);
-        draw_pol(roof_left,-0.1,front_color,back_color);
-        draw_pol(roof_right,-0.1,front_color,back_color);
+        draw_pol(rect_front_right,-0.3,front_color,back_color);
+        draw_pol(rect_front_left,-0.3,front_color,back_color);
+        draw_pol(rect_front_center,-0.3,front_color,back_color);
+        draw_pol(rect_back,-0.3,front_color,back_color);
+        draw_pol(rect_right,-0.3,front_color,back_color);
+        draw_pol(rect_left,-0.3,front_color,back_color);
+        draw_pol(rect_bottom,0.0,front_color,back_color);
+        draw_triangle(front_triangle, front_color);
+        draw_triangle(back_triangle, front_color);
+        draw_pol(roof_left,-0.3,red,red);
+        draw_pol(roof_right,-0.3,red,red);
         draw_pol(comignolo,-1,back_color,back_color);
 
 
