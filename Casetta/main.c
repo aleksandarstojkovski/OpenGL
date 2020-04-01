@@ -300,7 +300,8 @@ void draw() {
     point back_triangle[3]={{-4, 4, -8}, {0, 6.4, -8}, {4, 4, -8}};
     point roof_left[4]={{-4.8,3.8,0.5},{0,6.8,0.5},{0,6.8,-8.5},{-4.8,3.8,-8.5}};
     point roof_right[4]={{4.8,3.8,0.5},{4.8,3.8,-8.5},{0,6.8,-8.5},{0,6.8,0.5}};
-    point comignolo[4]={{2,4,-4},{3,4,-4},{3,7,-4},{2,7,-4}};
+    point comignolo_pz1[4]={{2, 4, -4}, {3, 4, -4}, {3, 7, -4}, {2, 7, -4}};
+    point comignolo_pz2[4]={{1.8, 7, -3.8}, {3.2, 7, -3.8}, {3.2, 7.5, -3.8}, {1.8, 7.5, -3.8}};
     point porta[4]={{0.5,0,0.1},{0.5,2,0.1},{-0.5,2,0.1},{-0.5,0,0.1}};
 
     color front_color ={1,1,1};
@@ -330,7 +331,8 @@ void draw() {
         draw_triangle(back_triangle, front_color);
         draw_pol(roof_left,-0.3,red,red);
         draw_pol(roof_right,-0.3,red,red);
-        draw_pol(comignolo,-1,back_color,back_color);
+        draw_pol(comignolo_pz1, -1, front_color, front_color);
+        draw_pol(comignolo_pz2, -1.4, front_color, front_color);
 
 
         glPushMatrix();
