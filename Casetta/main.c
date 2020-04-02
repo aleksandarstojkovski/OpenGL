@@ -3,22 +3,16 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
-
-// Headers richiesti da OSX
-#ifdef __APPLE__
-//#include <OpenGL/gl3.h>
-#include <GL/glew.h>
-#include <GLUT/glut.h>
-#include <iostream>
-
-// headers richiesti da Windows e linux
-#else
-#include <windows.h>
-#include <GL/glew.h>
-#include <GL/freeglut.h>
-#endif
-
 #include <math.h>
+
+#ifdef __APPLE__
+    // MacOS
+    #include <GLUT/glut.h>
+#else
+    // Windows and linux
+    #include <GL\glew.h>
+    #include <GL\freeglut.h>
+#endif
 
 typedef struct {
     float x;
@@ -39,15 +33,20 @@ int SPIN = 0;
 int IS_SPINNING = 0;
 int MAIN_WINDOW;
 int SHOW_AXIS=1;
-int X_POS=0;
-int MAX_X_POS=6;
-int Y_POS=0;
-int MAX_Y_POS=3;
-int Z_POS=4;
-int MAX_Z_POS=10;
+float X_POS=0;
+float MAX_X_POS=6;
+float Y_POS=0;
+float MAX_Y_POS=3;
+float Z_POS=4;
+float MAX_Z_POS=10;
 int DOOR_ANGLE=180;
+color BACKGROUND_COLOR={0.7f,0.7f,0.7f};
+color ROOF_COLOR={1,0,0};
+color DOOR_COLOR={0.5f,0.25f,0.25f};
+color WALL_COLOR_INTERIOR={0.5f,0.5f,0.5f};
+color WALL_COLOR_EXTERIOR={1,1,1};
 
-void normal_calc(point a, point b, point c, point * normal){
+void normal_calculator(point a, point b, point c, point * destination_normal){
 
     point ab = { b.x-a.x,b.y-a.y,b.z-a.z};
     point ac = { c.x-a.x,c.y-a.y,c.z-a.z};
@@ -55,15 +54,15 @@ void normal_calc(point a, point b, point c, point * normal){
                    ab.z*ac.x-ab.x*ac.z,
                    ab.x*ac.y-ab.y*ac.x};
 
-    float modulo = sqrt(pow(cross.x,2)+pow(cross.y,2)+pow(cross.z,2));
+    float modulo = (float)sqrt(pow(cross.x,2)+pow(cross.y,2)+pow(cross.z,2));
 
     cross.x = cross.x/modulo;
     cross.y = cross.y/modulo;
     cross.z = cross.z/modulo;
 
-    normal->x = cross.x;
-    normal->y = cross.y;
-    normal->z = cross.z;
+    destination_normal->x = cross.x;
+    destination_normal->y = cross.y;
+    destination_normal->z = cross.z;
 
 }
 
@@ -73,33 +72,6 @@ void mainMenuCB(int value) {
             SHOW_AXIS = !SHOW_AXIS;
             break;
         case 2:
-            SHOW_TRIANGLES = !SHOW_TRIANGLES;
-            break;
-        case 3:
-            if (abs(X_POS) >= MAX_X_POS) return;
-            X_POS++;
-            break;
-        case 4:
-            if (abs(X_POS) >= MAX_X_POS) return;
-            X_POS--;
-            break;
-        case 5:
-            if (abs(Y_POS) >= MAX_Y_POS) return;
-            Y_POS++;
-            break;
-        case 6:
-            if (abs(Y_POS) >= MAX_Y_POS) return;
-            Y_POS--;
-            break;
-        case 7:
-            if (abs(Z_POS) >= MAX_Z_POS) return;
-            Z_POS++;
-            break;
-        case 8:
-            if (abs(Z_POS) >= MAX_Z_POS) return;
-            Z_POS--;
-            break;
-        case 9:
             if (DOOR_ANGLE == 180){
                 DOOR_ANGLE=125;
             } else {
@@ -107,20 +79,100 @@ void mainMenuCB(int value) {
             }
             break;
     }
+
+    glutPostRedisplay();
+}
+
+void transMenuCB(int value){
+    switch (value) {
+        case 1:
+            if (fabsf(X_POS) >= MAX_X_POS) return;
+            X_POS++;
+            break;
+        case 2:
+            if (fabsf(X_POS) >= MAX_X_POS) return;
+            X_POS--;
+            break;
+        case 3:
+            if (fabsf(Y_POS) >= MAX_Y_POS) return;
+            Y_POS++;
+            break;
+        case 4:
+            if (fabsf(Y_POS) >= MAX_Y_POS) return;
+            Y_POS--;
+            break;
+        case 5:
+            if (fabsf(Z_POS) >= MAX_Z_POS) return;
+            Z_POS++;
+            break;
+        case 6:
+            if (fabsf(Z_POS) >= MAX_Z_POS) return;
+            Z_POS--;
+            break;
+    }
+    glutPostRedisplay();
+}
+
+void colorMenuCB(int value) {
+    switch (value) {
+        case 1:
+            ROOF_COLOR.r=1;
+            ROOF_COLOR.g=0;
+            ROOF_COLOR.b=0;
+            break;
+        case 2:
+            ROOF_COLOR.r=0;
+            ROOF_COLOR.g=0;
+            ROOF_COLOR.b=1;
+            break;
+        case 3:
+            ROOF_COLOR.r=1;
+            ROOF_COLOR.g=1;
+            ROOF_COLOR.b=1;
+            break;
+        case 4:
+            WALL_COLOR_EXTERIOR.r=1;
+            WALL_COLOR_EXTERIOR.g=0;
+            WALL_COLOR_EXTERIOR.b=0;
+            break;
+        case 5:
+            WALL_COLOR_EXTERIOR.r=0;
+            WALL_COLOR_EXTERIOR.g=0;
+            WALL_COLOR_EXTERIOR.b=1;
+            break;
+        case 6:
+            WALL_COLOR_EXTERIOR.r=1;
+            WALL_COLOR_EXTERIOR.g=1;
+            WALL_COLOR_EXTERIOR.b=1;
+            break;
+    }
     glutPostRedisplay();
 }
 
 void createMenu() {
-    int menu = glutCreateMenu(mainMenuCB);
-    glutAddMenuEntry("Show/Hide Axes", 1);
-    //glutAddMenuEntry("Show/Hide Triangles", 2);
-    glutAddMenuEntry("Open/Close Door", 9);
-    glutAddMenuEntry("Translate +X", 3);
-    glutAddMenuEntry("Translate -X", 4);
-    glutAddMenuEntry("Translate +Y", 5);
-    glutAddMenuEntry("Translate -Y", 6);
-    glutAddMenuEntry("Translate +Z", 7);
-    glutAddMenuEntry("Translate -Z", 8);
+    int translationMenu = glutCreateMenu(transMenuCB);
+    glutAddMenuEntry("Translate +X",1);
+    glutAddMenuEntry("Translate -X",2);
+    glutAddMenuEntry("Translate +Y",3);
+    glutAddMenuEntry("Translate -Y",4);
+    glutAddMenuEntry("Translate +Z",5);
+    glutAddMenuEntry("Translate -Z",6);
+
+    int colorMenu = glutCreateMenu(colorMenuCB);
+    glutAddMenuEntry("Roof Red",1);
+    glutAddMenuEntry("Roof Blue",2);
+    glutAddMenuEntry("Roof White",3);
+    glutAddMenuEntry("Wall Red",4);
+    glutAddMenuEntry("Wall Blue",5);
+    glutAddMenuEntry("Wall White",6);
+
+    int mainMenu = glutCreateMenu(mainMenuCB);
+    glutAddMenuEntry("Show/Hide Axis", 1);
+    glutAddMenuEntry("Open/Close Door", 2);
+    glutAddSubMenu("Translation", translationMenu);
+    glutAddSubMenu("Color", colorMenu);
+
+    // attach the menu to the right button
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
@@ -203,7 +255,7 @@ void draw_rectangle_back(point points[4], color color){
 
 }
 
-void draw_pol(point points[4], float depth, color front_color, color back_color){
+void draw_pol(point points[4], float depth, color external_color, color internal_color){
 
     point translated_in_z[4];
     point right_face[4];
@@ -213,7 +265,7 @@ void draw_pol(point points[4], float depth, color front_color, color back_color)
 
     point normal = {0,0,0};
 
-    normal_calc(points[0],points[1],points[2],&normal);
+    normal_calculator(points[0], points[1], points[2], &normal);
 
     // calcolo rettangolo spostano nell'asse Z
     for (i=0;i<4;i++){
@@ -243,12 +295,12 @@ void draw_pol(point points[4], float depth, color front_color, color back_color)
     bottom_face[2]=translated_in_z[1];
     bottom_face[3]=points[1];
 
-    draw_rectangle(points, front_color);
-    draw_rectangle_back(translated_in_z, back_color);
-    draw_rectangle(right_face, front_color);
-    draw_rectangle(left_face, front_color);
-    draw_rectangle(top_face, front_color);
-    draw_rectangle(bottom_face, front_color);
+    draw_rectangle(points, external_color);
+    draw_rectangle_back(translated_in_z, internal_color);
+    draw_rectangle(right_face, external_color);
+    draw_rectangle(left_face, external_color);
+    draw_rectangle(top_face, external_color);
+    draw_rectangle(bottom_face, external_color);
 }
 
 void draw_axis() {
@@ -277,70 +329,61 @@ void draw_axis() {
     glDisable(GL_LINE_STIPPLE);
 
 }
-void animazioneRotateCasa() {
-    glRotatef(SPIN, 0.0, 1.0, 0.0);
-}
 
 void draw() {
 
-    // definisce con quale colore cancellare la scena (con openGL 2.0 il nero e' default)
-    glClearColor(0.5, 0.5, 0.5, 0.0); // grigio
-    // cancella la scena con colore definito sopra
+    // Background color
+    glClearColor(BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, 0.0);
+    // Delete scene and apply defined color
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    point rect_front_right[4]={{0.5,0,0},{4,0,0},{4,2,0},{0.5,2,0}};
-    point rect_front_left[4]={{-4,0,0},{-0.5,0,0},{-0.5,2,0},{-4,2,0}};
+    point rect_front_right[4]={{0.5f,0,0},{4,0,0},{4,2,0},{0.5f,2,0}};
+    point rect_front_left[4]={{-4,0,0},{-0.5f,0,0},{-0.5f,2,0},{-4,2,0}};
     point rect_front_center[4]={{-4,2,0},{4,2,0},{4,4,0},{-4,4,0}};
     point rect_back[4]={{-4,4,-8},{4,4,-8},{4,0,-8},{-4,0,-8}};
     point rect_right[4]={{4,0,0},{4,0,-8},{4,4,-8},{4,4,0}};
     point rect_left[4]={{-4,4,0},{-4,4,-8},{-4,0,-8},{-4,0,0}};
     point rect_bottom[4]={{-4,0,0},{-4,0,-8},{4,0,-8},{4,0,0}};
-    //point rect_bottom[4]={{4,0,0},{4,0,-8},{-4,0,-8},{-4,0,0}};
-    point front_triangle[3]={{-4, 4, 0}, {4, 4, 0}, {0, 6.4, 0}};
-    point back_triangle[3]={{-4, 4, -8}, {0, 6.4, -8}, {4, 4, -8}};
-    point roof_left[4]={{-4.8,3.8,0.5},{0,6.8,0.5},{0,6.8,-8.5},{-4.8,3.8,-8.5}};
-    point roof_right[4]={{4.8,3.8,0.5},{4.8,3.8,-8.5},{0,6.8,-8.5},{0,6.8,0.5}};
+    point front_triangle[3]={{-4, 4, 0}, {4, 4, 0}, {0, 6.4f, 0}};
+    point back_triangle[3]={{-4, 4, -8}, {0, 6.4f, -8}, {4, 4, -8}};
+    point roof_left[4]={{-4.8f,3.8f,0.5f},{0,6.8f,0.5f},{0,6.8f,-8.5f},{-4.8f,3.8f,-8.5f}};
+    point roof_right[4]={{4.8f,3.8f,0.5f},{4.8f,3.8f,-8.5f},{0,6.8f,-8.5f},{0,6.8f,0.5f}};
     point comignolo_pz1[4]={{-3, 4, -4}, {-2, 4, -4}, {-2, 7, -4}, {-3, 7, -4}};
-    point comignolo_pz2[4]={{-3.2, 7, -3.8}, {-1.8, 7, -3.8}, {-1.8, 7.5, -3.8}, {-3.2, 7.5, -3.8}};
-    point porta[4]={{0.5,0,0.1},{0.5,2,0.1},{-0.5,2,0.1},{-0.5,0,0.1}};
+    point comignolo_pz2[4]={{-3.2f, 7, -3.8f}, {-1.8f, 7, -3.8f}, {-1.8f, 7.5f, -3.8f}, {-3.2f, 7.5f, -3.8f}};
+    point porta[4]={{0.5f,0,0.1f},{0.5f,2,0.1f},{-0.5f,2,0.1f},{-0.5f,0,0.1f}};
 
-    color front_color ={1,1,1};
-    color back_color = {0.4,0.4,0.4};
-    color marron_color = {0.5,0.25,0.25};
-    color red = {1,0,0};
-
-    // DISEGNO
+    // DRAW
 
     draw_axis();
 
     // Trasla la casa
     glPushMatrix();
 
-        glTranslatef(X_POS,Y_POS,Z_POS);
+    glTranslatef(X_POS,Y_POS,Z_POS);
 
-        glRotatef(SPIN, 0.0, 1.0, 0.0);
+    glRotatef(SPIN, 0.0, 1.0, 0.0);
 
-        draw_pol(rect_front_right,-0.3,front_color,back_color);
-        draw_pol(rect_front_left,-0.3,front_color,back_color);
-        draw_pol(rect_front_center,-0.3,front_color,back_color);
-        draw_pol(rect_back,-0.3,front_color,back_color);
-        draw_pol(rect_right,-0.3,front_color,back_color);
-        draw_pol(rect_left,-0.3,front_color,back_color);
-        draw_pol(rect_bottom,0.0,front_color,back_color);
-        draw_triangle(front_triangle, front_color);
-        draw_triangle(back_triangle, front_color);
-        draw_pol(roof_left,-0.3,red,red);
-        draw_pol(roof_right,-0.3,red,red);
-        draw_pol(comignolo_pz1, -1, front_color, front_color);
-        draw_pol(comignolo_pz2, -1.4, front_color, front_color);
+    draw_pol(rect_front_right,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
+    draw_pol(rect_front_left,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
+    draw_pol(rect_front_center,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
+    draw_pol(rect_back,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
+    draw_pol(rect_right,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
+    draw_pol(rect_left,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
+    draw_pol(rect_bottom,0.0f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
+    draw_triangle(front_triangle, WALL_COLOR_EXTERIOR);
+    draw_triangle(back_triangle, WALL_COLOR_EXTERIOR);
+    draw_pol(roof_left,-0.3f,ROOF_COLOR,ROOF_COLOR);
+    draw_pol(roof_right,-0.3f,ROOF_COLOR,ROOF_COLOR);
+    draw_pol(comignolo_pz1, -1, WALL_COLOR_EXTERIOR, WALL_COLOR_EXTERIOR);
+    draw_pol(comignolo_pz2, -1.4f, WALL_COLOR_EXTERIOR, WALL_COLOR_EXTERIOR);
 
 
-        glPushMatrix();
-            glTranslatef(0.5,0,0);
-            glRotatef(DOOR_ANGLE,0,1,0);
-            glTranslatef(0.5,0,0);
-            draw_pol(porta,-0.1,marron_color,marron_color);
-        glPopMatrix();
+    glPushMatrix();
+    glTranslatef(0.5,0,0);
+    glRotatef(DOOR_ANGLE,0,1,0);
+    glTranslatef(0.5,0,0);
+    draw_pol(porta,-0.1f,DOOR_COLOR,DOOR_COLOR);
+    glPopMatrix();
 
     glPopMatrix();
 
@@ -358,9 +401,9 @@ void init(){
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
     // quando si setta zoom, ertho ecc bisogna mettere GL_PROJECTION
-    glMatrixMode(GL_PROJECTION);
+    //glMatrixMode(GL_PROJECTION);
     // definisce l'area visualizzabile
-    glOrtho(-12, 12, -12, 12, -12, 12);
+    //glOrtho(-12, 12, -12, 12, -12, 12);
     // modalita' standard di trasformazione, non va piu cambiata
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -422,16 +465,31 @@ void keyboard(int key, int x, int y) {
     }
 }
 
+void reshapeCB(int w, int h) {
+    glViewport(0, 0, (GLint) w, (GLint) h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    if (w <= h)
+        glOrtho (-12, 12, -12*(GLfloat)h/(GLfloat)w,12*(GLfloat)h/(GLfloat)w, -12.0, 12.0);
+    else
+        glOrtho (-12*(GLfloat)w/(GLfloat)h,12*(GLfloat)w/(GLfloat)h, -12, 12, -12.0, 12.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
 
 int main(int argc, char** argv) {
-    glutInit(&argc, argv);				// Inizializza libreria glut per la gestione delle finestre
+    // Init glut library and window management
+    glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     // grandezza finestra
-    glutInitWindowSize(800,600);
-    // titolo finestra
-    MAIN_WINDOW = glutCreateWindow("Casa by Aleksandar Stojkovski");
-    // funzione che disegna
+    glutInitWindowSize(1000,750);
+    // Title function
+    MAIN_WINDOW = glutCreateWindow("House by Aleksandar Stojkovski");
+    // init
     init();
+    // Reshape
+    glutReshapeFunc(reshapeCB);
+    // Draw function
     glutDisplayFunc(draw);
     glutSpecialFunc(keyboardS);
     glutKeyboardFunc(keyboard);
