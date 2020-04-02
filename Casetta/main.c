@@ -29,7 +29,6 @@ typedef struct {
 int i;
 int SHOW_TRIANGLES=0;
 int SPIN_SPEED=100;
-int SPIN = 0;
 int IS_SPINNING = 0;
 int MAIN_WINDOW;
 int SHOW_AXIS=1;
@@ -40,11 +39,14 @@ float MAX_Y_POS=3;
 float Z_POS=4;
 float MAX_Z_POS=10;
 int DOOR_ANGLE=180;
+int DOOR_OPEN=0;
+int DOOR_MOVING=0;
 Color BACKGROUND_COLOR={0.7f, 0.7f, 0.7f};
 Color ROOF_COLOR={1, 0, 0};
 Color DOOR_COLOR={0.5f, 0.25f, 0.25f};
 Color WALL_COLOR_INTERIOR={0.5f, 0.5f, 0.5f};
 Color WALL_COLOR_EXTERIOR={1, 1, 1};
+
 
 void normal_calculator(Point a, Point b, Point c, Point * destination_normal){
 
@@ -66,24 +68,6 @@ void normal_calculator(Point a, Point b, Point c, Point * destination_normal){
 
 }
 
-void mainMenuCB(int value) {
-    switch (value) {
-        case 1:
-            SHOW_AXIS = !SHOW_AXIS;
-            break;
-        case 2:
-            if (DOOR_ANGLE == 180){
-                DOOR_ANGLE=125;
-            } else {
-                DOOR_ANGLE = 180;
-            }
-            break;
-        default:
-            break;
-    }
-
-    glutPostRedisplay();
-}
 
 void transMenuCB(int value){
     switch (value) {
@@ -152,6 +136,22 @@ void colorMenuCB(int value) {
         default:
             break;
     }
+    glutPostRedisplay();
+}
+
+void mainMenuCB(int value) {
+    switch (value) {
+        case 1:
+            SHOW_AXIS = !SHOW_AXIS;
+            break;
+        case 2:
+            DOOR_MOVING=1;
+            DOOR_OPEN = !DOOR_OPEN;
+            break;
+        default:
+            break;
+    }
+
     glutPostRedisplay();
 }
 
@@ -347,7 +347,7 @@ void draw() {
     Point rect_back[4]={{-4, 4, -8}, {4, 4, -8}, {4, 0, -8}, {-4, 0, -8}};
     Point rect_right[4]={{4, 0, 0}, {4, 0, -8}, {4, 4, -8}, {4, 4, 0}};
     Point rect_left[4]={{-4, 4, 0}, {-4, 4, -8}, {-4, 0, -8}, {-4, 0, 0}};
-    Point rect_bottom[4]={{-4, 0, 0}, {-4, 0, -8}, {4, 0, -8}, {4, 0, 0}};
+    Point rect_bottom[4]={{-4, -0.1f, 0}, {-4, -0.1f, -8}, {4, -0.1f, -8}, {4, -0.1f, 0}};
     Point front_triangle[3]={{-4, 4, 0}, {4, 4, 0}, {0, 6.4f, 0}};
     Point back_triangle[3]={{-4, 4, -8}, {0, 6.4f, -8}, {4, 4, -8}};
     Point roof_left[4]={{-4.8f, 3.8f, 0.5f}, {0, 6.8f, 0.5f}, {0, 6.8f, -8.5f}, {-4.8f, 3.8f, -8.5f}};
@@ -365,7 +365,7 @@ void draw() {
 
     glTranslatef(X_POS,Y_POS,Z_POS);
 
-    glRotatef(SPIN, 0.0, 1.0, 0.0);
+    glRotatef(1, 0.0, 1.0, 0.0);
 
     draw_pol(rect_front_right,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
     draw_pol(rect_front_left,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
@@ -373,7 +373,7 @@ void draw() {
     draw_pol(rect_back,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
     draw_pol(rect_right,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
     draw_pol(rect_left,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
-    draw_pol(rect_bottom,0.0f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
+    draw_pol(rect_bottom,-0.1f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
     draw_triangle(front_triangle, WALL_COLOR_EXTERIOR);
     draw_triangle(back_triangle, WALL_COLOR_EXTERIOR);
     draw_pol(roof_left,-0.3f,ROOF_COLOR,ROOF_COLOR);
@@ -390,10 +390,6 @@ void draw() {
     glPopMatrix();
 
     glPopMatrix();
-
-    if (IS_SPINNING) {
-        glRotatef(SPIN, 0.0, 1.0, 0.0);
-    }
 
     // esegue i comandi
     glutSwapBuffers();
@@ -443,9 +439,27 @@ void keyboardS(int key, int x, int y) {
 
 void spinDisplay(int id)
 {
-    SPIN = 1;
+    if (DOOR_MOVING) {
+        if (DOOR_OPEN == 1) {
+            if (DOOR_ANGLE > 125) {
+                DOOR_ANGLE -= 5;
+            } else {
+                DOOR_MOVING = 0;
+            }
+        }
+        if (DOOR_OPEN == 0) {
+            if (DOOR_ANGLE < 180) {
+                DOOR_ANGLE += 5;
+            } else {
+                DOOR_MOVING = 0;
+            }
+        }
+    }
+    if (IS_SPINNING) {
+        glRotatef(1, 0.0, 1.0, 0.0);
+    }
     glutPostRedisplay();
-    if (IS_SPINNING) glutTimerFunc(SPIN_SPEED, spinDisplay, id);
+    glutTimerFunc(SPIN_SPEED, spinDisplay,1);
 }
 
 
@@ -456,13 +470,11 @@ void keyboard(unsigned char key, int x, int y) {
         case 114:
             if (!IS_SPINNING) {
                 IS_SPINNING = 1;
-                glutTimerFunc(SPIN_SPEED, spinDisplay, 1);
             }
             break;
             //s
         case 115:
             IS_SPINNING = 0;
-            SPIN=0;
             break;
             // esc
         case 27:
@@ -500,6 +512,7 @@ int main(int argc, char** argv) {
     glutDisplayFunc(draw);
     glutSpecialFunc(keyboardS);
     glutKeyboardFunc(keyboard);
+    // fa partire il timer
     glutTimerFunc(SPIN_SPEED, spinDisplay, 1);
     glutMainLoop();					// loop infinito
 }
