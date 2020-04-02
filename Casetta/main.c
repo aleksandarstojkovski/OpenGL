@@ -18,13 +18,13 @@ typedef struct {
     float x;
     float y;
     float z;
-} point;
+} Point;
 
 typedef struct {
     float r;
     float g;
     float b;
-} color;
+} Color;
 
 int i;
 int SHOW_TRIANGLES=0;
@@ -40,17 +40,17 @@ float MAX_Y_POS=3;
 float Z_POS=4;
 float MAX_Z_POS=10;
 int DOOR_ANGLE=180;
-color BACKGROUND_COLOR={0.7f,0.7f,0.7f};
-color ROOF_COLOR={1,0,0};
-color DOOR_COLOR={0.5f,0.25f,0.25f};
-color WALL_COLOR_INTERIOR={0.5f,0.5f,0.5f};
-color WALL_COLOR_EXTERIOR={1,1,1};
+Color BACKGROUND_COLOR={0.7f, 0.7f, 0.7f};
+Color ROOF_COLOR={1, 0, 0};
+Color DOOR_COLOR={0.5f, 0.25f, 0.25f};
+Color WALL_COLOR_INTERIOR={0.5f, 0.5f, 0.5f};
+Color WALL_COLOR_EXTERIOR={1, 1, 1};
 
-void normal_calculator(point a, point b, point c, point * destination_normal){
+void normal_calculator(Point a, Point b, Point c, Point * destination_normal){
 
-    point ab = { b.x-a.x,b.y-a.y,b.z-a.z};
-    point ac = { c.x-a.x,c.y-a.y,c.z-a.z};
-    point cross = {ab.y*ac.z-ab.z*ac.y,
+    Point ab = {b.x - a.x, b.y - a.y, b.z - a.z};
+    Point ac = {c.x - a.x, c.y - a.y, c.z - a.z};
+    Point cross = {ab.y * ac.z - ab.z * ac.y,
                    ab.z*ac.x-ab.x*ac.z,
                    ab.x*ac.y-ab.y*ac.x};
 
@@ -183,7 +183,7 @@ void createMenu() {
 }
 
 
-void draw_triangle(point points[3], color color){
+void draw_triangle(Point points[3], Color color){
     glPolygonMode(GL_FRONT ,GL_FILL);
     glBegin(GL_TRIANGLES);
     glColor3f(color.r,color.g,color.b);
@@ -193,7 +193,7 @@ void draw_triangle(point points[3], color color){
     glEnd();
 }
 
-void draw_rectangle(point points[4], color color){
+void draw_rectangle(Point points[4], Color color){
 
     // triangoli che creano la piramide
 
@@ -226,7 +226,7 @@ void draw_rectangle(point points[4], color color){
 
 }
 
-void draw_rectangle_back(point points[4], color color){
+void draw_rectangle_back(Point points[4], Color color){
 
     // triangoli che creano la piramide
 
@@ -259,15 +259,15 @@ void draw_rectangle_back(point points[4], color color){
 
 }
 
-void draw_pol(point points[4], float depth, color external_color, color internal_color){
+void draw_pol(Point points[4], float depth, Color external_color, Color internal_color){
 
-    point translated_in_z[4];
-    point right_face[4];
-    point left_face[4];
-    point top_face[4];
-    point bottom_face[4];
+    Point translated_in_z[4];
+    Point right_face[4];
+    Point left_face[4];
+    Point top_face[4];
+    Point bottom_face[4];
 
-    point normal = {0,0,0};
+    Point normal = {0, 0, 0};
 
     normal_calculator(points[0], points[1], points[2], &normal);
 
@@ -336,25 +336,25 @@ void draw_axis() {
 
 void draw() {
 
-    // Background color
+    // Background Color
     glClearColor(BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, 0.0);
-    // Delete scene and apply defined color
+    // Delete scene and apply defined Color
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // NOLINT(hicpp-signed-bitwise)
 
-    point rect_front_right[4]={{0.5f,0,0},{4,0,0},{4,2,0},{0.5f,2,0}};
-    point rect_front_left[4]={{-4,0,0},{-0.5f,0,0},{-0.5f,2,0},{-4,2,0}};
-    point rect_front_center[4]={{-4,2,0},{4,2,0},{4,4,0},{-4,4,0}};
-    point rect_back[4]={{-4,4,-8},{4,4,-8},{4,0,-8},{-4,0,-8}};
-    point rect_right[4]={{4,0,0},{4,0,-8},{4,4,-8},{4,4,0}};
-    point rect_left[4]={{-4,4,0},{-4,4,-8},{-4,0,-8},{-4,0,0}};
-    point rect_bottom[4]={{-4,0,0},{-4,0,-8},{4,0,-8},{4,0,0}};
-    point front_triangle[3]={{-4, 4, 0}, {4, 4, 0}, {0, 6.4f, 0}};
-    point back_triangle[3]={{-4, 4, -8}, {0, 6.4f, -8}, {4, 4, -8}};
-    point roof_left[4]={{-4.8f,3.8f,0.5f},{0,6.8f,0.5f},{0,6.8f,-8.5f},{-4.8f,3.8f,-8.5f}};
-    point roof_right[4]={{4.8f,3.8f,0.5f},{4.8f,3.8f,-8.5f},{0,6.8f,-8.5f},{0,6.8f,0.5f}};
-    point comignolo_pz1[4]={{-3, 4, -4}, {-2, 4, -4}, {-2, 7, -4}, {-3, 7, -4}};
-    point comignolo_pz2[4]={{-3.2f, 7, -3.8f}, {-1.8f, 7, -3.8f}, {-1.8f, 7.5f, -3.8f}, {-3.2f, 7.5f, -3.8f}};
-    point porta[4]={{0.5f,0,0.1f},{0.5f,2,0.1f},{-0.5f,2,0.1f},{-0.5f,0,0.1f}};
+    Point rect_front_right[4]={{0.5f, 0, 0}, {4, 0, 0}, {4, 2, 0}, {0.5f, 2, 0}};
+    Point rect_front_left[4]={{-4, 0, 0}, {-0.5f, 0, 0}, {-0.5f, 2, 0}, {-4, 2, 0}};
+    Point rect_front_center[4]={{-4, 2, 0}, {4, 2, 0}, {4, 4, 0}, {-4, 4, 0}};
+    Point rect_back[4]={{-4, 4, -8}, {4, 4, -8}, {4, 0, -8}, {-4, 0, -8}};
+    Point rect_right[4]={{4, 0, 0}, {4, 0, -8}, {4, 4, -8}, {4, 4, 0}};
+    Point rect_left[4]={{-4, 4, 0}, {-4, 4, -8}, {-4, 0, -8}, {-4, 0, 0}};
+    Point rect_bottom[4]={{-4, 0, 0}, {-4, 0, -8}, {4, 0, -8}, {4, 0, 0}};
+    Point front_triangle[3]={{-4, 4, 0}, {4, 4, 0}, {0, 6.4f, 0}};
+    Point back_triangle[3]={{-4, 4, -8}, {0, 6.4f, -8}, {4, 4, -8}};
+    Point roof_left[4]={{-4.8f, 3.8f, 0.5f}, {0, 6.8f, 0.5f}, {0, 6.8f, -8.5f}, {-4.8f, 3.8f, -8.5f}};
+    Point roof_right[4]={{4.8f, 3.8f, 0.5f}, {4.8f, 3.8f, -8.5f}, {0, 6.8f, -8.5f}, {0, 6.8f, 0.5f}};
+    Point comignolo_pz1[4]={{-3, 4, -4}, {-2, 4, -4}, {-2, 7, -4}, {-3, 7, -4}};
+    Point comignolo_pz2[4]={{-3.2f, 7, -3.8f}, {-1.8f, 7, -3.8f}, {-1.8f, 7.5f, -3.8f}, {-3.2f, 7.5f, -3.8f}};
+    Point porta[4]={{0.5f, 0, 0.1f}, {0.5f, 2, 0.1f}, {-0.5f, 2, 0.1f}, {-0.5f, 0, 0.1f}};
 
     // DRAW
 
