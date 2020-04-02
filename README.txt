@@ -14,7 +14,7 @@
 \____/  \_/  \___/\____/\_| \_/\___/  \___/\____/\_| \_/\___/     
                                                                 
 
-Piattaforma: Windows 10 (64bit)
+Patform: Windows 10 (64bit)
 IDE: JetBrains CLion
   
                                                                   
