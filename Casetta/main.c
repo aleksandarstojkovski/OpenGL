@@ -78,6 +78,8 @@ void mainMenuCB(int value) {
                 DOOR_ANGLE = 180;
             }
             break;
+        default:
+            break;
     }
 
     glutPostRedisplay();
@@ -108,6 +110,8 @@ void transMenuCB(int value){
         case 6:
             if (fabsf(Z_POS) >= MAX_Z_POS) return;
             Z_POS--;
+            break;
+        default:
             break;
     }
     glutPostRedisplay();
@@ -144,6 +148,8 @@ void colorMenuCB(int value) {
             WALL_COLOR_EXTERIOR.r=1;
             WALL_COLOR_EXTERIOR.g=1;
             WALL_COLOR_EXTERIOR.b=1;
+            break;
+        default:
             break;
     }
     glutPostRedisplay();
@@ -221,8 +227,6 @@ void draw_rectangle(point points[4], color color){
 }
 
 void draw_rectangle_back(point points[4], color color){
-
-    int i;
 
     // triangoli che creano la piramide
 
@@ -335,7 +339,7 @@ void draw() {
     // Background color
     glClearColor(BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, 0.0);
     // Delete scene and apply defined color
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // NOLINT(hicpp-signed-bitwise)
 
     point rect_front_right[4]={{0.5f,0,0},{4,0,0},{4,2,0},{0.5f,2,0}};
     point rect_front_left[4]={{-4,0,0},{-0.5f,0,0},{-0.5f,2,0},{-4,2,0}};
@@ -431,6 +435,8 @@ void keyboardS(int key, int x, int y) {
             glRotatef(1.0,-1.0,0.0,0.0);
             glutPostRedisplay();
             break;
+        default:
+            break;
     }
 
 }
@@ -444,7 +450,7 @@ void spinDisplay(int id)
 
 
 // Ruota con r e ferma con s
-void keyboard(int key, int x, int y) {
+void keyboard(unsigned char key, int x, int y) {
     switch (key) {
         //r
         case 114:
@@ -462,6 +468,8 @@ void keyboard(int key, int x, int y) {
         case 27:
             glutDestroyWindow(MAIN_WINDOW);
             exit(0);
+        default:
+            break;
     }
 }
 
@@ -480,7 +488,7 @@ void reshapeCB(int w, int h) {
 int main(int argc, char** argv) {
     // Init glut library and window management
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); // NOLINT(hicpp-signed-bitwise)
     // grandezza finestra
     glutInitWindowSize(1000,750);
     // Title function
