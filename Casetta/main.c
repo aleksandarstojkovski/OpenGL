@@ -12,6 +12,8 @@
     // Windows and linux
     #include <GL\glew.h>
     #include <GL\freeglut.h>
+#include <time.h>
+
 #endif
 
 typedef struct {
@@ -49,7 +51,21 @@ Color ROOF_COLOR={1, 0, 0};
 Color DOOR_COLOR={0.5f, 0.25f, 0.25f};
 Color WALL_COLOR_INTERIOR={0.5f, 0.5f, 0.5f};
 Color WALL_COLOR_EXTERIOR={1, 1, 1};
+Color FLAG_COLOR={0, 0, 1};
+Color COMIGNOLO_UPPER_COLOR={0.5, 0.25, 0.25};
+Color COMIGNOLO_LOWER_COLOR={0.25, 0.25, 0.20};
+int TIME_PASSED=0;
 
+void printTime(){
+    char buff[100];
+    time_t now = time(0);
+    strftime(buff, 100, "%Y-%m-%d %H:%M:%S.000", localtime(&now));
+    printf("%s\n", buff);
+}
+
+int getRandoms(int lower, int upper){
+        return (rand() %(upper - lower + 1)) + lower;
+}
 
 void normal_calculator(Point a, Point b, Point c, Point * destination_normal){
 
@@ -153,7 +169,7 @@ void mainMenuCB(int value) {
             break;
         case 3:
             TODO:
-            WIND_TARGET_RANDOM_ANGLE=0;
+            WIND_TARGET_RANDOM_ANGLE=getRandoms(0,360);
             WIND_ON=1;
             break;
         default:
@@ -363,6 +379,8 @@ void draw() {
     Point comignolo_pz1[4]={{-3, 4, -4}, {-2, 4, -4}, {-2, 7, -4}, {-3, 7, -4}};
     Point comignolo_pz2[4]={{-3.2f, 7, -3.8f}, {-1.8f, 7, -3.8f}, {-1.8f, 7.5f, -3.8f}, {-3.2f, 7.5f, -3.8f}};
     Point porta[4]={{0.5f, 0, 0.1f}, {0.5f, 2, 0.1f}, {-0.5f, 2, 0.1f}, {-0.5f, 0, 0.1f}};
+    Point flag_triangle_front[3]={{0, -1, 0}, {1.5f, -0.5f, 0}, {0, 0, 0}};
+    Point flag_triangle_back[3]={flag_triangle_front[0],flag_triangle_front[2],flag_triangle_front[1]};
 
     // DRAW
 
@@ -371,57 +389,51 @@ void draw() {
     // Trasla la casa
     glPushMatrix();
 
-    glTranslatef(X_POS,Y_POS,Z_POS);
+        glTranslatef(X_POS,Y_POS,Z_POS);
 
-    draw_pol(rect_front_right,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
-    draw_pol(rect_front_left,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
-    draw_pol(rect_front_center,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
-    draw_pol(rect_back,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
-    draw_pol(rect_right,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
-    draw_pol(rect_left,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
-    draw_pol(rect_bottom,-0.1f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
-    draw_triangle(front_triangle, WALL_COLOR_EXTERIOR);
-    draw_triangle(back_triangle, WALL_COLOR_EXTERIOR);
-    draw_pol(roof_left,-0.3f,ROOF_COLOR,ROOF_COLOR);
-    draw_pol(roof_right,-0.3f,ROOF_COLOR,ROOF_COLOR);
-    draw_pol(comignolo_pz1, -1, WALL_COLOR_EXTERIOR, WALL_COLOR_EXTERIOR);
-    draw_pol(comignolo_pz2, -1.4f, WALL_COLOR_EXTERIOR, WALL_COLOR_EXTERIOR);
+        draw_pol(rect_front_right,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
+        draw_pol(rect_front_left,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
+        draw_pol(rect_front_center,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
+        draw_pol(rect_back,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
+        draw_pol(rect_right,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
+        draw_pol(rect_left,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
+        draw_pol(rect_bottom,-0.1f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
+        draw_triangle(front_triangle, WALL_COLOR_EXTERIOR);
+        draw_triangle(back_triangle, WALL_COLOR_EXTERIOR);
+        draw_pol(roof_left,-0.3f,ROOF_COLOR,ROOF_COLOR);
+        draw_pol(roof_right,-0.3f,ROOF_COLOR,ROOF_COLOR);
+        draw_pol(comignolo_pz1, -1, COMIGNOLO_LOWER_COLOR, COMIGNOLO_LOWER_COLOR);
+        draw_pol(comignolo_pz2, -1.4f, COMIGNOLO_UPPER_COLOR, COMIGNOLO_UPPER_COLOR);
 
-    glPushMatrix();
+        glPushMatrix();
 
-    glTranslatef(X_POS+2.5f,Y_POS+7,Z_POS-8.5);
+            glTranslatef(X_POS+2.5f,Y_POS+7,Z_POS-8.5);
+            glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+            GLUquadricObj * obj = gluNewQuadric();
+            glColor3f(0, 0, 0);
+            gluCylinder(obj, 0.08f, 0.08f, 4, 30, 30);
+            glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
 
-    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-    GLUquadricObj * obj = gluNewQuadric();
-    glColor3f(0, 0, 0);
-    gluCylinder(obj, 0.08f, 0.08f, 4, 30, 30);
-    glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+            glRotatef(WIND_ANGLE, 0.0f, 1.0f, 0.0f);
+            draw_triangle(flag_triangle_front,FLAG_COLOR);
+            draw_triangle(flag_triangle_back,FLAG_COLOR);
 
-    Point flag_triangle_front[3]={{0, -1, 0}, {1.5, -0.5f, 0}, {0, 0, 0}};
-    Point flag_triangle_back[3]={flag_triangle_front[0],flag_triangle_front[2],flag_triangle_front[1]};
-    Color c = {0,0,0};
-    glRotatef(WIND_ANGLE, 0.0f, 1.0f, 0.0f);
-    draw_triangle(flag_triangle_front,c);
-    draw_triangle(flag_triangle_back,c);
+        glPopMatrix();
 
 
-    glPopMatrix();
+        glPushMatrix();
 
-    glPushMatrix();
-    glTranslatef(X_POS+2.5f,Y_POS+7,Z_POS-8.5);
-    glPopMatrix();
+            glTranslatef(0.5,0,0);
+            glRotatef(DOOR_ANGLE,0,1,0);
+            glTranslatef(0.5,0,0);
+            draw_pol(porta,-0.1f,DOOR_COLOR,DOOR_COLOR);
 
-    glPushMatrix();
-    glTranslatef(0.5,0,0);
-    glRotatef(DOOR_ANGLE,0,1,0);
-    glTranslatef(0.5,0,0);
-    draw_pol(porta,-0.1f,DOOR_COLOR,DOOR_COLOR);
-    glPopMatrix();
+        glPopMatrix();
 
     glPopMatrix();
 
-    // esegue i comandi
     glutSwapBuffers();
+
 }
 
 void init(){
@@ -440,6 +452,7 @@ void init(){
     // gluPerspective(100,1,1,10);
     gluLookAt(0, 0, 3, 0, 0, 0, 0, 1, 0);
     createMenu();
+    srand(time(0));
 }
 
 void keyboardS(int key, int x, int y) {
@@ -466,8 +479,13 @@ void keyboardS(int key, int x, int y) {
 
 }
 
-void spinDisplay(int id)
-{
+void spinDisplay(int id){
+
+    if (TIME_PASSED <100)
+        TIME_PASSED++;
+    else
+        TIME_PASSED=0;
+
     if (DOOR_MOVING) {
         if (DOOR_OPEN == 1) {
             if (DOOR_ANGLE > 125) {
@@ -484,18 +502,28 @@ void spinDisplay(int id)
             }
         }
     }
+
     if (IS_SPINNING) {
         glRotatef(1, 0.0, 1.0, 0.0);
     }
+
     if (WIND_ON) {
-        if (WIND_ANGLE < 360) {
-            WIND_ANGLE += 5;
-        } else {
-            WIND_ANGLE = 0;
+        if (WIND_ANGLE < WIND_TARGET_RANDOM_ANGLE)
+            WIND_ANGLE += 1;
+        if (WIND_ANGLE > WIND_TARGET_RANDOM_ANGLE)
+            WIND_ANGLE -= 1;
+    }
+
+    if (TIME_PASSED == 100) {
+        printTime();
+        if (WIND_ON){
+            printf("5 seconds passed -> new wind angle: %d\n",WIND_TARGET_RANDOM_ANGLE);
+            WIND_TARGET_RANDOM_ANGLE=getRandoms(0,360);
         }
     }
+
     glutPostRedisplay();
-    glutTimerFunc(SPIN_SPEED, spinDisplay,1);
+    glutTimerFunc(SPIN_SPEED, spinDisplay, 1);
 }
 
 
