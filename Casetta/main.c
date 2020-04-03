@@ -365,8 +365,6 @@ void draw() {
 
     glTranslatef(X_POS,Y_POS,Z_POS);
 
-    glRotatef(1, 0.0, 1.0, 0.0);
-
     draw_pol(rect_front_right,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
     draw_pol(rect_front_left,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
     draw_pol(rect_front_center,-0.3f,WALL_COLOR_EXTERIOR,WALL_COLOR_INTERIOR);
