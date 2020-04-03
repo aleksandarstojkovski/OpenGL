@@ -405,21 +405,6 @@ void draw() {
         draw_pol(comignolo_pz1, -1, COMIGNOLO_LOWER_COLOR, COMIGNOLO_LOWER_COLOR);
         draw_pol(comignolo_pz2, -1.4f, COMIGNOLO_UPPER_COLOR, COMIGNOLO_UPPER_COLOR);
 
-        glPushMatrix();
-
-            glTranslatef(X_POS+2.5f,Y_POS+7,Z_POS-8.5);
-            glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-            GLUquadricObj * obj = gluNewQuadric();
-            glColor3f(0, 0, 0);
-            gluCylinder(obj, 0.08f, 0.08f, 4, 30, 30);
-            glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
-
-            glRotatef(WIND_ANGLE, 0.0f, 1.0f, 0.0f);
-            draw_triangle(flag_triangle_front,FLAG_COLOR);
-            draw_triangle(flag_triangle_back,FLAG_COLOR);
-
-        glPopMatrix();
-
 
         glPushMatrix();
 
@@ -432,6 +417,20 @@ void draw() {
 
     glPopMatrix();
 
+    glPushMatrix();
+
+    glTranslatef(X_POS+3,Y_POS+7,Z_POS-4);
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    GLUquadricObj * obj = gluNewQuadric();
+    glColor3f(0, 0, 0);
+    gluCylinder(obj, 0.08f, 0.08f, 3, 30, 30);
+    glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+
+    glRotatef(WIND_ANGLE, 0.0f, 1.0f, 0.0f);
+    draw_triangle(flag_triangle_front,FLAG_COLOR);
+    draw_triangle(flag_triangle_back,FLAG_COLOR);
+
+    glPopMatrix();
     glutSwapBuffers();
 
 }
