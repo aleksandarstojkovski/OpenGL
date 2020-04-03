@@ -28,19 +28,22 @@ typedef struct {
 
 int i;
 int SHOW_TRIANGLES=0;
-int SPIN_SPEED=100;
+int SPIN_SPEED=50;
 int IS_SPINNING = 0;
 int MAIN_WINDOW;
 int SHOW_AXIS=1;
 float X_POS=0;
 float MAX_X_POS=6;
-float Y_POS=0;
+float Y_POS=0.1f;
 float MAX_Y_POS=3;
 float Z_POS=4;
 float MAX_Z_POS=10;
 int DOOR_ANGLE=180;
 int DOOR_OPEN=0;
 int DOOR_MOVING=0;
+int WIND_ON=0;
+int WIND_ANGLE=0;
+int WIND_TARGET_RANDOM_ANGLE=0;
 Color BACKGROUND_COLOR={0.7f, 0.7f, 0.7f};
 Color ROOF_COLOR={1, 0, 0};
 Color DOOR_COLOR={0.5f, 0.25f, 0.25f};
@@ -148,6 +151,11 @@ void mainMenuCB(int value) {
             DOOR_MOVING=1;
             DOOR_OPEN = !DOOR_OPEN;
             break;
+        case 3:
+            TODO:
+            WIND_TARGET_RANDOM_ANGLE=0;
+            WIND_ON=1;
+            break;
         default:
             break;
     }
@@ -175,6 +183,7 @@ void createMenu() {
     int mainMenu = glutCreateMenu(mainMenuCB);
     glutAddMenuEntry("Show/Hide Axis", 1);
     glutAddMenuEntry("Open/Close Door", 2);
+    glutAddMenuEntry("Wind On/Off", 3);
     glutAddSubMenu("Translation", translationMenu);
     glutAddSubMenu("Color", colorMenu);
 
@@ -379,6 +388,29 @@ void draw() {
     draw_pol(comignolo_pz1, -1, WALL_COLOR_EXTERIOR, WALL_COLOR_EXTERIOR);
     draw_pol(comignolo_pz2, -1.4f, WALL_COLOR_EXTERIOR, WALL_COLOR_EXTERIOR);
 
+    glPushMatrix();
+
+    glTranslatef(X_POS+2.5f,Y_POS+7,Z_POS-8.5);
+
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    GLUquadricObj * obj = gluNewQuadric();
+    glColor3f(0, 0, 0);
+    gluCylinder(obj, 0.08f, 0.08f, 4, 30, 30);
+    glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+
+    Point flag_triangle_front[3]={{0, -1, 0}, {1.5, -0.5f, 0}, {0, 0, 0}};
+    Point flag_triangle_back[3]={flag_triangle_front[0],flag_triangle_front[2],flag_triangle_front[1]};
+    Color c = {0,0,0};
+    glRotatef(WIND_ANGLE, 0.0f, 1.0f, 0.0f);
+    draw_triangle(flag_triangle_front,c);
+    draw_triangle(flag_triangle_back,c);
+
+
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(X_POS+2.5f,Y_POS+7,Z_POS-8.5);
+    glPopMatrix();
 
     glPushMatrix();
     glTranslatef(0.5,0,0);
@@ -455,6 +487,13 @@ void spinDisplay(int id)
     }
     if (IS_SPINNING) {
         glRotatef(1, 0.0, 1.0, 0.0);
+    }
+    if (WIND_ON) {
+        if (WIND_ANGLE < 360) {
+            WIND_ANGLE += 5;
+        } else {
+            WIND_ANGLE = 0;
+        }
     }
     glutPostRedisplay();
     glutTimerFunc(SPIN_SPEED, spinDisplay,1);
