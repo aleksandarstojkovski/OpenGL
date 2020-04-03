@@ -159,7 +159,6 @@ void mainMenuCB(int value) {
         default:
             break;
     }
-
     glutPostRedisplay();
 }
 
