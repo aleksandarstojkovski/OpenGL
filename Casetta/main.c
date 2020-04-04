@@ -178,7 +178,6 @@ void mainMenuCB(int value) {
             DOOR_OPEN = !DOOR_OPEN;
             break;
         case 3:
-            TODO:
             WIND_TARGET_RANDOM_ANGLE=getRandoms(0,360);
             WIND_ON=!WIND_ON;
             break;
