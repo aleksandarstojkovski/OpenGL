@@ -208,9 +208,10 @@ void createMenu() {
     glutAddMenuEntry("Wall Red",4);
     glutAddMenuEntry("Wall Blue",5);
     glutAddMenuEntry("Wall White",6);
-    glutAddMenuEntry("Chimmey Red",7);
-    glutAddMenuEntry("Chimmey Blue",8);
-    glutAddMenuEntry("Chimmey White",9);
+    // TODO
+    //glutAddMenuEntry("Chimmey Red",7);
+    //glutAddMenuEntry("Chimmey Blue",8);
+    //glutAddMenuEntry("Chimmey White",9);
 
     // main menu
     int mainMenu = glutCreateMenu(mainMenuCB);
@@ -463,10 +464,11 @@ void draw() {
         gluCylinder(gluNewQuadric(), 0.08f, 0.08f, 2, 30, 30);
         // rotate back in order to draw the triangle
         glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
-        // apply wind toration
+        // apply wind rotation
         glRotatef(WIND_ANGLE, 0.0f, 1.0f, 0.0f);
-        // draw upper part of flag - front
+        // flag must be independent from the rotation of the house
         glRotatef(-HOUSE_ANGLE, 0.0, 1.0, 0.0);
+        // draw upper part of flag - front
         draw_triangle(flag_triangle_front,FLAG_COLOR);
         // draw upper part of flag - back
         draw_triangle(flag_triangle_back,FLAG_COLOR);
