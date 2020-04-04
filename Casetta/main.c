@@ -28,9 +28,8 @@ typedef struct {
     float b;
 } Color;
 
-int i;
 int SHOW_TRIANGLES=0;
-int SPIN_SPEED=50;
+int TIMER_SPEED_IN_MS=50;
 int IS_SPINNING = 0;
 int MAIN_WINDOW;
 int SHOW_AXIS=1;
@@ -38,12 +37,13 @@ float X_POS=0;
 float MAX_X_POS=6;
 float Y_POS=0.1f;
 float MAX_Y_POS=3;
-float Z_POS=4;
-float MAX_Z_POS=10;
+float Z_POS=0;
+float MAX_Z_POS=3;
 int DOOR_ANGLE=180;
+int HOUSE_ANGLE=0;
 int DOOR_OPEN=0;
 int DOOR_MOVING=0;
-int WIND_ON=0;
+int WIND_ON=1;
 int WIND_ANGLE=0;
 int WIND_TARGET_RANDOM_ANGLE=0;
 int TIME_PASSED=0;
@@ -55,8 +55,8 @@ Color DOOR_COLOR={0.5f, 0.25f, 0.25f};
 Color WALL_COLOR_INTERIOR={0.5f, 0.5f, 0.5f};
 Color WALL_COLOR_EXTERIOR={1, 1, 1};
 Color FLAG_COLOR={0, 0, 1};
-Color COMIGNOLO_UPPER_COLOR={0.5f, 0.25f, 0.25f};
-Color COMIGNOLO_LOWER_COLOR={0.25f, 0.25f, 0.20f};
+Color CHIMMEY_UPPER_COLOR={0.5f, 0.25f, 0.25f};
+Color CHIMMEY_LOWER_COLOR={0.25f, 0.25f, 0.20f};
 
 /* prints the time */
 void printTime(){
@@ -121,6 +121,7 @@ void transMenuCB(int value){
             Z_POS--;
             break;
         default:
+            printf("not implemented!\n");
             break;
     }
     glutPostRedisplay();
@@ -160,6 +161,7 @@ void colorMenuCB(int value) {
             WALL_COLOR_EXTERIOR.b=1;
             break;
         default:
+            printf("not implemented!\n");
             break;
     }
     glutPostRedisplay();
@@ -206,12 +208,15 @@ void createMenu() {
     glutAddMenuEntry("Wall Red",4);
     glutAddMenuEntry("Wall Blue",5);
     glutAddMenuEntry("Wall White",6);
+    glutAddMenuEntry("Chimmey Red",7);
+    glutAddMenuEntry("Chimmey Blue",8);
+    glutAddMenuEntry("Chimmey White",9);
 
     // main menu
     int mainMenu = glutCreateMenu(mainMenuCB);
     glutAddMenuEntry("Show/Hide Axis", 1);
     glutAddMenuEntry("Open/Close Door", 2);
-    glutAddMenuEntry("Wind On/Off", 3);
+    glutAddMenuEntry("Static Wind/Changing Wind", 3);
     glutAddSubMenu("Translation", translationMenu);
     glutAddSubMenu("Color", colorMenu);
 
@@ -233,6 +238,7 @@ void draw_triangle(Point points[3], Color color){
 
 void draw_rectangle(Point points[4], Color color){
 
+
     // GL_FRONT because we only see the front of the triangle
     // GL_FILL to fill the color of the rectangle
     glPolygonMode(GL_FRONT ,GL_FILL);
@@ -240,6 +246,7 @@ void draw_rectangle(Point points[4], Color color){
     // draw triangles
     glBegin(GL_TRIANGLES);
     glColor3f(color.r,color.g,color.b);
+    int i;
     for (i=0;i<3;i++){
         glVertex3f(points[i].x,points[i].y,points[i].z);
     }
@@ -273,6 +280,7 @@ void draw_rectangle_back(Point points[4], Color color){
     // draw triangles
     glBegin(GL_TRIANGLES);
         glColor3f(color.r,color.g,color.b);
+        int i;
         for (i=2;i>=0;i--){
             glVertex3f(points[i].x,points[i].y,points[i].z);
         }
@@ -312,6 +320,7 @@ void draw_parallelepiped(Point *points, float depth, Color external_color, Color
     normal_calculator(points[0], points[1], points[2], &normal);
 
     // calculate points translated trough normal
+    int i;
     for (i=0;i<4;i++){
         translated_trough_normal[i]=points[i];
         translated_trough_normal[i].x= translated_trough_normal[i].x + depth * normal.x;
@@ -408,6 +417,7 @@ void draw() {
 
     // START DRAWING
 
+
     draw_axis();
 
     // Trasla la casa
@@ -415,6 +425,9 @@ void draw() {
 
         // translate to X_POS Y_POS Z_POS
         glTranslatef(X_POS,Y_POS,Z_POS);
+
+        //if (IS_SPINNING)
+        glRotatef(HOUSE_ANGLE, 0.0, 1.0, 0.0);
 
         // draw house
         draw_parallelepiped(rect_front_right, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
@@ -428,8 +441,8 @@ void draw() {
         draw_triangle(back_triangle, WALL_COLOR_EXTERIOR);
         draw_parallelepiped(roof_left, -0.3f, ROOF_COLOR, ROOF_COLOR);
         draw_parallelepiped(roof_right, -0.3f, ROOF_COLOR, ROOF_COLOR);
-        draw_parallelepiped(comignolo_pz1, -1, COMIGNOLO_LOWER_COLOR, COMIGNOLO_LOWER_COLOR);
-        draw_parallelepiped(comignolo_pz2, -1.4f, COMIGNOLO_UPPER_COLOR, COMIGNOLO_UPPER_COLOR);
+        draw_parallelepiped(comignolo_pz1, -1, CHIMMEY_LOWER_COLOR, CHIMMEY_LOWER_COLOR);
+        draw_parallelepiped(comignolo_pz2, -1.4f, CHIMMEY_UPPER_COLOR, CHIMMEY_UPPER_COLOR);
 
         // open/close door based on DOOR_ANGLE
         glPushMatrix();
@@ -439,24 +452,26 @@ void draw() {
             draw_parallelepiped(porta, -0.1f, DOOR_COLOR, DOOR_COLOR);
         glPopMatrix();
 
-    glPopMatrix();
 
     // flag
     glPushMatrix();
-        glTranslatef(X_POS+3,Y_POS+7,Z_POS-4);
+        glTranslatef(0,8.5f,0);
         // rotate cilynder
         glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
         glColor3f(0, 0, 0);
         // draw lower part of flag (cylinder)
-        gluCylinder(gluNewQuadric(), 0.08f, 0.08f, 3, 30, 30);
+        gluCylinder(gluNewQuadric(), 0.08f, 0.08f, 2, 30, 30);
         // rotate back in order to draw the triangle
         glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
         // apply wind toration
         glRotatef(WIND_ANGLE, 0.0f, 1.0f, 0.0f);
         // draw upper part of flag - front
+        glRotatef(-HOUSE_ANGLE, 0.0, 1.0, 0.0);
         draw_triangle(flag_triangle_front,FLAG_COLOR);
         // draw upper part of flag - back
         draw_triangle(flag_triangle_back,FLAG_COLOR);
+    glPopMatrix();
+
     glPopMatrix();
 
     // display everything
@@ -532,7 +547,11 @@ void timer_function(int id){
     }
 
     if (IS_SPINNING) {
-        glRotatef(1, 0.0, 1.0, 0.0);
+        if (HOUSE_ANGLE < 360) {
+            HOUSE_ANGLE++;
+        } else {
+            HOUSE_ANGLE = 0;
+        }
     }
 
     if (WIND_ON) {
@@ -551,7 +570,7 @@ void timer_function(int id){
     }
 
     glutPostRedisplay();
-    glutTimerFunc(SPIN_SPEED, timer_function, 1);
+    glutTimerFunc(TIMER_SPEED_IN_MS, timer_function, 1);
 }
 
 void keyboard(unsigned char key, int x, int y) {
@@ -606,7 +625,7 @@ int main(int argc, char** argv) {
     // catch keyboard keys
     glutKeyboardFunc(keyboard);
     // start timer
-    glutTimerFunc(SPIN_SPEED, timer_function, 1);
+    glutTimerFunc(TIMER_SPEED_IN_MS, timer_function, 1);
     // start main infinite loop
     glutMainLoop();
 }
