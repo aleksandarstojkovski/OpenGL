@@ -13,8 +13,18 @@
 /\__/ / | | \ \_/ /\__/ / |\  \ \_/ /\ \_/ /\__/ / |\  \_| |_     
 \____/  \_/  \___/\____/\_| \_/\___/  \___/\____/\_| \_/\___/     
                                                                 
-
++-------------------------------------+
+| INFO
++-------------------------------------+
 Patform: Windows 10 (64bit)
 IDE: JetBrains CLion
+
++-------------------------------------+
+| Commands
++-------------------------------------+
+r               ->       rotate the house on its axis
+s               ->       stop the rotation
+arrows          ->       move the point of view
+right click     ->       general menu
   
                                                                   
