@@ -37,7 +37,7 @@
  *	Mountain View, CA  94043
  *	United State of America
  *
- * OpenGL(R) is a registered trademark of Silicon Graphics, Inc.
+ * Graphics(R) is a registered trademark of Silicon Graphics, Inc.
  */
 
 /*

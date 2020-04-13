@@ -16,7 +16,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-/* File for "Backface Culling" lesson of the OpenGL tutorial on
+/* File for "Backface Culling" lesson of the Graphics tutorial on
  * www.videotutorialsrock.com
  */
 
@@ -27,7 +27,7 @@
 #include <stdlib.h>
 
 #ifdef __APPLE__
-#include <OpenGL/OpenGL.h>
+#include <Graphics/Graphics.h>
 #include <GLUT/glut.h>
 
 
@@ -41,7 +41,7 @@ using namespace std;
 
 const float BOX_SIZE = 7.0f; //The length of each side of the cube
 float _angle = 0;            //The rotation of the box
-GLuint _textureId;           //The OpenGL id of the texture
+GLuint _textureId;           //The Graphics id of the texture
 
 void handleKeypress(unsigned char key, int x, int y) {
 	switch (key) {

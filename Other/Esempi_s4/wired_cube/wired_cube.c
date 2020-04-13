@@ -40,7 +40,7 @@ int main (int argc, char **argv) {
 
     glutInitWindowSize (500, 500);
     glutInitWindowPosition (100, 100);
-    glutCreateWindow ("A basic OpenGL Window");
+    glutCreateWindow ("A basic Graphics Window");
     glutDisplayFunc (display);
     glutIdleFunc (display);
     glutReshapeFunc (reshape);

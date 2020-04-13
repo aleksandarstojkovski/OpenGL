@@ -75,7 +75,7 @@ void keyboard(unsigned char key, int x, int y)
    else {
       /* Bitmap characters are an MxN matrix of points.  One must
        * position the matrix in the proper spot before drawing.  To do 
-       * this, use the "move" command which in OpenGL is glRasterPos.
+       * this, use the "move" command which in Graphics is glRasterPos.
        */
       glRasterPos2i (x, 400-y);
       glutBitmapCharacter (GLUT_BITMAP_9_BY_15, key);

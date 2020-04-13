@@ -16,39 +16,59 @@
 
 #endif
 
+/* defines a point */
 typedef struct {
     float x;
     float y;
     float z;
 } Point;
 
+/* defines an RGB color */
 typedef struct {
     float r;
     float g;
     float b;
 } Color;
 
+// show lines of primitive triangles used to draw
 int SHOW_TRIANGLES=0;
+// timer speed in ms
 int TIMER_SPEED_IN_MS=50;
 int IS_SPINNING = 0;
+// contains main window address
 int MAIN_WINDOW;
+// show axis true/false
 int SHOW_AXIS=1;
+// X position of the house
 float X_POS=0;
+// max X position of the house
 float MAX_X_POS=6;
+// Y position of the house
 float Y_POS=0.1f;
+// max Y position of the house
 float MAX_Y_POS=3;
+// Z position of the house
 float Z_POS=0;
+// max Z position of the house
 float MAX_Z_POS=3;
+// angle of the door
 int DOOR_ANGLE=180;
+// house rotation angle
 int HOUSE_ANGLE=0;
+// door open true/false
 int DOOR_OPEN=0;
+// is the door opening or closing
 int DOOR_MOVING=0;
+// wind on true/false
 int WIND_ON=1;
+// wind current angle
 int WIND_ANGLE=0;
+// wind target angle to reach
 int WIND_TARGET_RANDOM_ANGLE=0;
+// wind needs to change every 5s, track the time passed
 int TIME_PASSED=0;
 
-/* all the used and changable colors */
+/* all the changeable colors */
 Color BACKGROUND_COLOR={0.7f, 0.7f, 0.7f};
 Color ROOF_COLOR={1, 0, 0};
 Color DOOR_COLOR={0.5f, 0.25f, 0.25f};
@@ -92,7 +112,7 @@ void normal_calculator(Point a, Point b, Point c, Point * destination_normal){
 
 }
 
-
+/* translation menu callback */
 void transMenuCB(int value){
     // translation menu callback
     switch (value) {
@@ -127,6 +147,7 @@ void transMenuCB(int value){
     glutPostRedisplay();
 }
 
+/* color menu callback */
 void colorMenuCB(int value) {
     // color menu callback
     switch (value) {
@@ -167,6 +188,7 @@ void colorMenuCB(int value) {
     glutPostRedisplay();
 }
 
+/* main menu callback */
 void mainMenuCB(int value) {
     // main menu callback
     switch (value) {
@@ -188,6 +210,7 @@ void mainMenuCB(int value) {
     glutPostRedisplay();
 }
 
+/* create menu function */
 void createMenu() {
 
     // translation menu
@@ -225,7 +248,7 @@ void createMenu() {
 
 }
 
-
+/* draws a triangle given three points and a color */
 void draw_triangle(Point points[3], Color color){
     glPolygonMode(GL_FRONT ,GL_FILL);
     glBegin(GL_TRIANGLES);
@@ -236,8 +259,8 @@ void draw_triangle(Point points[3], Color color){
     glEnd();
 }
 
+/* draws a rectangle by drawing two triangles given four points and a color */
 void draw_rectangle(Point points[4], Color color){
-
 
     // GL_FRONT because we only see the front of the triangle
     // GL_FILL to fill the color of the rectangle
@@ -271,6 +294,7 @@ void draw_rectangle(Point points[4], Color color){
 
 }
 
+/* draws a rectangle by drawing two triangles given four points and a color */
 void draw_rectangle_back(Point points[4], Color color){
 
     // GL_FRONT because we only see the front of the triangle
@@ -305,7 +329,8 @@ void draw_rectangle_back(Point points[4], Color color){
 
 }
 
-void draw_parallelepiped(Point *points, float depth, Color external_color, Color internal_color){
+/* draws a parallelepiped given four points and internal/external colours */
+void draw_parallelepiped(Point points[4], float depth, Color external_color, Color internal_color){
 
     // points translated trough normal
     Point translated_trough_normal[4];
@@ -362,6 +387,7 @@ void draw_parallelepiped(Point *points, float depth, Color external_color, Color
 
 }
 
+/* function that drwas the three axis */
 void draw_axis() {
 
     if (SHOW_AXIS != 1 )
@@ -389,6 +415,7 @@ void draw_axis() {
 
 }
 
+/* main draw function */
 void draw() {
 
     // background Color
@@ -479,6 +506,7 @@ void draw() {
     glutSwapBuffers();
 }
 
+/* init function */
 void init(){
     // abilita il fatto di poter eliminare le facce che non si vedono
     // senza glEnable(GL_CULL_FACE) non si puo' utilizzare glPolygonMode(GL_FRONT,GL_LINE)
@@ -499,7 +527,8 @@ void init(){
     srand(time(0));
 }
 
-void keyboardS(int key, int x, int y) {
+/* keyboardCB arrow callback */
+void keyboard_arrows_cb(int key, int x, int y) {
     switch (key) {
         case GLUT_KEY_LEFT:
             glRotatef(1.0,0.0,1.0,0.0);
@@ -523,6 +552,7 @@ void keyboardS(int key, int x, int y) {
 
 }
 
+/* timer function, it runs every TIMER_SPEED_IN_MS ms*/
 void timer_function(int id){
 
     if (TIME_PASSED <100)
@@ -574,7 +604,8 @@ void timer_function(int id){
     glutTimerFunc(TIMER_SPEED_IN_MS, timer_function, 1);
 }
 
-void keyboard(unsigned char key, int x, int y) {
+/* keyboard callback, traps keyboard keys */
+void keyboardCB(unsigned char key, int x, int y) {
     switch (key) {
         case 114:
             // r key
@@ -595,6 +626,7 @@ void keyboard(unsigned char key, int x, int y) {
     }
 }
 
+/* reshape callback, triggered when window gets resized */
 void reshapeCB(int w, int h) {
     glViewport(0, 0, (GLint) w, (GLint) h);
     glMatrixMode(GL_PROJECTION);
@@ -606,6 +638,7 @@ void reshapeCB(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
 }
 
+/* main function */
 int main(int argc, char** argv) {
     // init glut library and window management
     glutInit(&argc, argv);
@@ -621,10 +654,10 @@ int main(int argc, char** argv) {
     glutReshapeFunc(reshapeCB);
     // draw function
     glutDisplayFunc(draw);
-    // catch keyboard arrows
-    glutSpecialFunc(keyboardS);
-    // catch keyboard keys
-    glutKeyboardFunc(keyboard);
+    // catch keyboardCB arrows
+    glutSpecialFunc(keyboard_arrows_cb);
+    // catch keyboardCB keys
+    glutKeyboardFunc(keyboardCB);
     // start timer
     glutTimerFunc(TIMER_SPEED_IN_MS, timer_function, 1);
     // start main infinite loop

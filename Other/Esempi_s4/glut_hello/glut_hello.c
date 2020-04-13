@@ -21,7 +21,7 @@ void display(void)
     glEnd();
 
 /*  don't wait!  
- *  start processing buffered OpenGL routines 
+ *  start processing buffered Graphics routines
  */
     glFlush ();
 }

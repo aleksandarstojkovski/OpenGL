@@ -35,7 +35,7 @@
  * United States.  Contractor/manufacturer is Silicon Graphics,
  * Inc., 2011 N.  Shoreline Blvd., Mountain View, CA 94039-7311.
  *
- * OpenGL(TM) is a trademark of Silicon Graphics, Inc.
+ * Graphics(TM) is a trademark of Silicon Graphics, Inc.
  */
 
 /* sb2db.c - This program demonstrates switching between single buffered
@@ -124,7 +124,7 @@ display(void)
   }
 }
 
-/* Used by both windows, this routine setups the OpenGL context's
+/* Used by both windows, this routine setups the Graphics context's
    projection matrix correctly.  Note that we call this routine for
    both contexts to keep them in sync after reshapes. */
 void
@@ -146,7 +146,7 @@ reshapeOpenGLState(int w, int h)
    the glutReshapeWindow on the child.  NOTE:  You want a separate
    resize callback for the double buffered window to set the viewport
    since the window's size won't really be changed until the double buffered
-   gets its dbReshape callback.  Otherwise, you could trick OpenGL intop
+   gets its dbReshape callback.  Otherwise, you could trick Graphics intop
    clipping based on the old window size. */
 void
 sbReshape(int w, int h)
@@ -273,8 +273,8 @@ main(int argc, char **argv)
   glutVisibilityFunc(visibility);
 
   /* Call myinit for both the single buffered window and the
-     double buffered window.  We must mirror the same OpenGL
-     state in both window's OpenGL contexts.  If you make this
+     double buffered window.  We must mirror the same Graphics
+     state in both window's Graphics contexts.  If you make this
      program more complicated, remember to keep the window's
      context state in sync. */
   myinit();
