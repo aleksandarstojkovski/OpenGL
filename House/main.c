@@ -39,17 +39,17 @@ int IS_SPINNING = 0;
 int MAIN_WINDOW;
 // show axis true/false
 int SHOW_AXIS=1;
-// X position of the house
+// EYE_X_POS position of the house
 float X_POS=0;
-// max X position of the house
+// max EYE_X_POS position of the house
 float MAX_X_POS=6;
-// Y position of the house
+// EYE_Y_POS position of the house
 float Y_POS=0.1f;
-// max Y position of the house
+// max EYE_Y_POS position of the house
 float MAX_Y_POS=3;
-// Z position of the house
+// EYE_Z_POS position of the house
 float Z_POS=0;
-// max Z position of the house
+// max EYE_Z_POS position of the house
 float MAX_Z_POS=3;
 // angle of the door
 int DOOR_ANGLE=180;
@@ -67,6 +67,18 @@ int WIND_ANGLE=0;
 int WIND_TARGET_RANDOM_ANGLE=0;
 // wind needs to change every 5s, track the time passed
 int TIME_PASSED=0;
+int PROJ_ORTHOGRAPHIC=1;
+int ORTHO_LEFT=-12;
+int ORTHO_RIGHT=12;
+int ORTHO_BOTTOM=-12;
+int ORTHO_TOP=12;
+int ORTHO_NERAR=-12;
+int ORTHO_FAR=12;
+int fovy=10;
+int EYE_X_POS=0;
+int EYE_Y_POS=0;
+int EYE_Z_POS=6;
+
 
 /* all the changeable colors */
 Color BACKGROUND_COLOR={0.7f, 0.7f, 0.7f};
@@ -82,7 +94,7 @@ Color CHIMMEY_LOWER_COLOR={0.25f, 0.25f, 0.20f};
 void printTime(){
     char buff[100];
     time_t now = time(0);
-    strftime(buff, 100, "%Y-%m-%d %H:%M:%S.000", localtime(&now));
+    strftime(buff, 100, "%EYE_Y_POS-%m-%d %H:%M:%S.000", localtime(&now));
     printf("%s\n", buff);
 }
 
@@ -215,12 +227,12 @@ void createMenu() {
 
     // translation menu
     int translationMenu = glutCreateMenu(transMenuCB);
-    glutAddMenuEntry("Translate +X",1);
-    glutAddMenuEntry("Translate -X",2);
-    glutAddMenuEntry("Translate +Y",3);
-    glutAddMenuEntry("Translate -Y",4);
-    glutAddMenuEntry("Translate +Z",5);
-    glutAddMenuEntry("Translate -Z",6);
+    glutAddMenuEntry("Translate +EYE_X_POS",1);
+    glutAddMenuEntry("Translate -EYE_X_POS",2);
+    glutAddMenuEntry("Translate +EYE_Y_POS",3);
+    glutAddMenuEntry("Translate -EYE_Y_POS",4);
+    glutAddMenuEntry("Translate +EYE_Z_POS",5);
+    glutAddMenuEntry("Translate -EYE_Z_POS",6);
 
     // color menu
     int colorMenu = glutCreateMenu(colorMenuCB);
@@ -424,6 +436,12 @@ void draw() {
     // delete scene and apply defined Color
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // NOLINT(hicpp-signed-bitwise)
 
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    // change perspective
+    gluLookAt(EYE_X_POS, EYE_Y_POS, EYE_Z_POS, 0, 0, 0, 0, 1, 0);
+
     // 3d vertexes of all the pieces of the house
     Point rect_front_right[4]={{0.5f, 0, 0}, {4, 0, 0}, {4, 2, 0}, {0.5f, 2, 0}};
     Point rect_front_left[4]={{-4, 0, 0}, {-0.5f, 0, 0}, {-0.5f, 2, 0}, {-4, 2, 0}};
@@ -517,10 +535,6 @@ void init(){
     // definisce l'area visualizzabile
     //glOrtho(-12, 12, -12, 12, -12, 12);
     // modalita' standard di trasformazione, non va piu cambiata
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    // change perspective
-    gluLookAt(0, 0, 3, 0, 0, 0, 0, 1, 0);
     // create menu (right click)
     createMenu();
     // init random
@@ -531,19 +545,23 @@ void init(){
 void keyboard_arrows_cb(int key, int x, int y) {
     switch (key) {
         case GLUT_KEY_LEFT:
-            glRotatef(1.0,0.0,1.0,0.0);
+            //glRotatef(1.0,0.0,1.0,0.0);
+            EYE_X_POS--;
             glutPostRedisplay();
             break;
         case GLUT_KEY_RIGHT:
-            glRotatef(-1.0,0.0,1.0,0.0);
+            //glRotatef(-1.0,0.0,1.0,0.0);
+            EYE_X_POS++;
             glutPostRedisplay();
             break;
         case GLUT_KEY_UP:
-            glRotatef(1.0,1.0,0.0,0.0);
+            //glRotatef(1.0,1.0,0.0,0.0);
+            EYE_Y_POS++;
             glutPostRedisplay();
             break;
         case GLUT_KEY_DOWN:
-            glRotatef(1.0,-1.0,0.0,0.0);
+            //glRotatef(1.0,-1.0,0.0,0.0);
+            EYE_Y_POS--;
             glutPostRedisplay();
             break;
         default:
@@ -604,6 +622,27 @@ void timer_function(int id){
     glutTimerFunc(TIMER_SPEED_IN_MS, timer_function, 1);
 }
 
+void reshape(int w, int h) {
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    if(PROJ_ORTHOGRAPHIC) {
+        if (w <= h)
+            glOrtho (-12, 12, -12*(GLfloat)h/(GLfloat)w,12*(GLfloat)h/(GLfloat)w, -12.0, 12.0);
+        else
+            glOrtho (-12*(GLfloat)w/(GLfloat)h,12*(GLfloat)w/(GLfloat)h, -12, 12, -12.0, 12.0);
+    } else {
+        double proportion = (double) w / (double) h;
+        gluPerspective(130, proportion, 0.1, 100);
+    }
+    glMatrixMode(GL_MODELVIEW);
+}
+
+/* reshape callback, triggered when window gets resized */
+void reshapeCB(int w, int h) {
+    glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+    reshape(w, h);
+}
+
 /* keyboard callback, traps keyboard keys */
 void keyboardCB(unsigned char key, int x, int y) {
     switch (key) {
@@ -621,21 +660,20 @@ void keyboardCB(unsigned char key, int x, int y) {
             // esc key
             glutDestroyWindow(MAIN_WINDOW);
             exit(0);
+        case 97:
+            // a key
+            PROJ_ORTHOGRAPHIC=1;
+            reshapeCB(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+            break;
+        case 112:
+            // p key
+            PROJ_ORTHOGRAPHIC=0;
+            reshapeCB(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+            break;
         default:
+            printf("%d", key);
             break;
     }
-}
-
-/* reshape callback, triggered when window gets resized */
-void reshapeCB(int w, int h) {
-    glViewport(0, 0, (GLint) w, (GLint) h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    if (w <= h)
-        glOrtho (-12, 12, -12*(GLfloat)h/(GLfloat)w,12*(GLfloat)h/(GLfloat)w, -12.0, 12.0);
-    else
-        glOrtho (-12*(GLfloat)w/(GLfloat)h,12*(GLfloat)w/(GLfloat)h, -12, 12, -12.0, 12.0);
-    glMatrixMode(GL_MODELVIEW);
 }
 
 /* main function */
