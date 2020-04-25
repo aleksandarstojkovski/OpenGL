@@ -30,55 +30,86 @@ typedef struct {
     float b;
 } Color;
 
-// show lines of primitive triangles used to draw
-int SHOW_TRIANGLES=0;
 // timer speed in ms
 int TIMER_SPEED_IN_MS=50;
-int IS_SPINNING = 0;
 // contains main window address
 int MAIN_WINDOW;
 // show axis true/false
 int SHOW_AXIS=1;
-// EYE_X_POS position of the house
+// X position of the house
 float X_POS=0;
-// max EYE_X_POS position of the house
+// max X position of the house
 float MAX_X_POS=6;
-// EYE_Y_POS position of the house
+// Y position of the house
 float Y_POS=0.1f;
-// max EYE_Y_POS position of the house
+// max Y position of the house
 float MAX_Y_POS=3;
-// EYE_Z_POS position of the house
+// Z position of the house
 float Z_POS=0;
-// max EYE_Z_POS position of the house
+// max Z position of the house
 float MAX_Z_POS=3;
 // angle of the door
 int DOOR_ANGLE=180;
 // house rotation angle
 int HOUSE_ANGLE=0;
-// door open true/false
-int DOOR_OPEN=0;
-// is the door opening or closing
-int DOOR_MOVING=0;
-// wind on true/false
-int WIND_ON=1;
 // wind current angle
 int WIND_ANGLE=0;
 // wind target angle to reach
 int WIND_TARGET_RANDOM_ANGLE=0;
 // wind needs to change every 5s, track the time passed
 int TIME_PASSED=0;
-int PROJ_ORTHOGRAPHIC=1;
-int ORTHO_LEFT=-12;
-int ORTHO_RIGHT=12;
-int ORTHO_BOTTOM=-12;
-int ORTHO_TOP=12;
-int ORTHO_NERAR=-12;
-int ORTHO_FAR=12;
-int fovy=10;
-int EYE_X_POS=0;
-int EYE_Y_POS=0;
-int EYE_Z_POS=6;
 
+
+/* FLAGS */
+
+// door open true/false
+int DOOR_OPEN=0;
+// is the door opening or closing
+int DOOR_MOVING=0;
+// wind on true/false
+int WIND_ON=1;
+// 1 = ortographic projection, 0 = perspective projection
+int PROJ_ORTHOGRAPHIC=1;
+// show lines of primitive triangles used to draw
+int SHOW_TRIANGLES=0;
+// 1 = house is rotating, 0 = house is not rotating
+int IS_SPINNING = 0;
+// debug flag
+int DEBUG=1;
+
+
+// left orthographic
+int ORTHO_LEFT=-12;
+// right orthographic
+int ORTHO_RIGHT=12;
+// bottom orthographic
+int ORTHO_BOTTOM=-12;
+// top orthographic
+int ORTHO_TOP=12;
+// near orthographic
+int ORTHO_ZNERAR=-12;
+// far orthographic
+int ORTHO_ZFAR=9999;
+
+// near orthographic
+float PERSPECTIVE_ZNERAR=0.1;
+// far orthographic
+int PERSPECTIVE_ZFAR=9999;
+// view angle of the eye in perspective mode
+int PERSPECTIVE_FOVY=130;
+
+// eye X position
+int EYE_X_POS=0;
+int MAX_EYE_X_POS=150;
+int MIN_EYE_X_POS=-150;
+// eye Y position
+int EYE_Y_POS=0;
+int MAX_EYE_Y_POS=150;
+int MIN_EYE_Y_POS=-150;
+// eye Z position
+int EYE_Z_POS=6;
+int MAX_EYE_Z_POS=150;
+int MIN_EYE_Z_POS=-150;
 
 /* all the changeable colors */
 Color BACKGROUND_COLOR={0.7f, 0.7f, 0.7f};
@@ -90,17 +121,40 @@ Color FLAG_COLOR={0, 0, 1};
 Color CHIMMEY_UPPER_COLOR={0.5f, 0.25f, 0.25f};
 Color CHIMMEY_LOWER_COLOR={0.25f, 0.25f, 0.20f};
 
+
+/* prints the time */
+void displayUsage(){
+    FILE *fptr;
+
+    char filename[100], c;
+
+    // Open file
+    fptr = fopen(" ../../../../README.txt", "r");
+    if (fptr == NULL) {
+        printf("Cannot open README.txt file\n");
+    }
+
+    // Read contents from file
+    c = fgetc(fptr);
+    while (c != EOF) {
+        printf ("%c", c);
+        c = fgetc(fptr);
+    }
+
+    fclose(fptr);
+}
+
 /* prints the time */
 void printTime(){
     char buff[100];
     time_t now = time(0);
-    strftime(buff, 100, "%EYE_Y_POS-%m-%d %H:%M:%S.000", localtime(&now));
-    printf("%s\n", buff);
+    strftime(buff, 100, "%d-%m-%Y %H:%M:%S.000", localtime(&now));
+    printf("%s  -  ", buff);
 }
 
 /* returns random number in the specified range */
 int getRandoms(int lower, int upper){
-        return (rand() %(upper - lower + 1)) + lower;
+    return (rand() %(upper - lower + 1)) + lower;
 }
 
 /* calculates the normal vector of the surface given three points */
@@ -126,6 +180,9 @@ void normal_calculator(Point a, Point b, Point c, Point * destination_normal){
 
 /* translation menu callback */
 void transMenuCB(int value){
+
+    if (DEBUG) { printTime(); printf("Command received: translation\n"); }
+
     // translation menu callback
     switch (value) {
         case 1:
@@ -153,7 +210,7 @@ void transMenuCB(int value){
             Z_POS--;
             break;
         default:
-            printf("not implemented!\n");
+            if (DEBUG) printf("not implemented!\n");
             break;
     }
     glutPostRedisplay();
@@ -161,6 +218,9 @@ void transMenuCB(int value){
 
 /* color menu callback */
 void colorMenuCB(int value) {
+
+    if (DEBUG) { printTime(); printf("Command received: color change\n"); }
+
     // color menu callback
     switch (value) {
         case 1:
@@ -194,7 +254,7 @@ void colorMenuCB(int value) {
             WALL_COLOR_EXTERIOR.b=1;
             break;
         default:
-            printf("not implemented!\n");
+            if (DEBUG) printf("not implemented!\n");
             break;
     }
     glutPostRedisplay();
@@ -202,19 +262,26 @@ void colorMenuCB(int value) {
 
 /* main menu callback */
 void mainMenuCB(int value) {
+
     // main menu callback
     switch (value) {
         case 1:
+            if (DEBUG) { printTime(); printf("Command received: show/hide axis\n"); }
             SHOW_AXIS = !SHOW_AXIS;
             break;
         case 2:
+            if (DEBUG) { printTime(); printf("Command received: open/close door\n"); }
             DOOR_MOVING=1;
             DOOR_OPEN = !DOOR_OPEN;
             break;
         case 3:
+            if (DEBUG) { printTime(); printf("Command received: static/changing wind\n"); }
             WIND_TARGET_RANDOM_ANGLE=getRandoms(0,360);
             WIND_ON=!WIND_ON;
             break;
+        case 4:
+            if (DEBUG) { printTime(); printf("Command received: debug ON/OFF\n"); }
+            DEBUG = !DEBUG;
         default:
             break;
     }
@@ -227,12 +294,12 @@ void createMenu() {
 
     // translation menu
     int translationMenu = glutCreateMenu(transMenuCB);
-    glutAddMenuEntry("Translate +EYE_X_POS",1);
-    glutAddMenuEntry("Translate -EYE_X_POS",2);
-    glutAddMenuEntry("Translate +EYE_Y_POS",3);
-    glutAddMenuEntry("Translate -EYE_Y_POS",4);
-    glutAddMenuEntry("Translate +EYE_Z_POS",5);
-    glutAddMenuEntry("Translate -EYE_Z_POS",6);
+    glutAddMenuEntry("Translate +X",1);
+    glutAddMenuEntry("Translate -X",2);
+    glutAddMenuEntry("Translate +Y",3);
+    glutAddMenuEntry("Translate -Y",4);
+    glutAddMenuEntry("Translate +Z",5);
+    glutAddMenuEntry("Translate -Z",6);
 
     // color menu
     int colorMenu = glutCreateMenu(colorMenuCB);
@@ -252,6 +319,7 @@ void createMenu() {
     glutAddMenuEntry("Show/Hide Axis", 1);
     glutAddMenuEntry("Open/Close Door", 2);
     glutAddMenuEntry("Static Wind/Changing Wind", 3);
+    glutAddMenuEntry("Debug ON/OFF", 4);
     glutAddSubMenu("Translation", translationMenu);
     glutAddSubMenu("Color", colorMenu);
 
@@ -408,20 +476,21 @@ void draw_axis() {
     glLineWidth(1.0f);
     glEnable(GL_LINE_STIPPLE);
     glLineStipple(1, 0xf0f0);
+
     // axes are ten units long.
     glBegin(GL_LINES);
     // sraw a red x-axis
     glColor3ub(255, 0, 0);
-    glVertex3f(-10, 0, 0);
-    glVertex3f(10, 0, 0);
+    glVertex3f(-100, 0, 0);
+    glVertex3f(100, 0, 0);
     // sraw a green y-axis
     glColor3ub(0, 255, 0);
-    glVertex3f(0, -10, 0);
-    glVertex3f(0, 10, 0);
+    glVertex3f(0, -100, 0);
+    glVertex3f(0, 100, 0);
     // sraw a blue z-axis
     glColor3ub(0, 0, 255);
-    glVertex3f(0, 0, -10);
-    glVertex3f(0, 0, 10);
+    glVertex3f(0, 0, -100);
+    glVertex3f(0, 0, 100);
     glEnd();
     glDisable(GL_LINE_STIPPLE);
 
@@ -436,7 +505,10 @@ void draw() {
     // delete scene and apply defined Color
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // NOLINT(hicpp-signed-bitwise)
 
+    // set the modelview for drawing purposes
     glMatrixMode(GL_MODELVIEW);
+
+    // clear all with identity matrix
     glLoadIdentity();
 
     // change perspective
@@ -461,7 +533,6 @@ void draw() {
     Point flag_triangle_back[3]={flag_triangle_front[0],flag_triangle_front[2],flag_triangle_front[1]};
 
     // START DRAWING
-
 
     draw_axis();
 
@@ -539,35 +610,39 @@ void init(){
     createMenu();
     // init random
     srand(time(0));
+    // display application usage
+    displayUsage();
+    if (DEBUG) printf("**** APPLICATION IN DEBUG MODE ****\n");
 }
 
 /* keyboardCB arrow callback */
 void keyboard_arrows_cb(int key, int x, int y) {
     switch (key) {
         case GLUT_KEY_LEFT:
-            //glRotatef(1.0,0.0,1.0,0.0);
-            EYE_X_POS--;
-            glutPostRedisplay();
+            // glRotatef(1.0,0.0,1.0,0.0);
+            if (EYE_X_POS > MIN_EYE_X_POS)
+                EYE_X_POS--;
             break;
         case GLUT_KEY_RIGHT:
-            //glRotatef(-1.0,0.0,1.0,0.0);
-            EYE_X_POS++;
-            glutPostRedisplay();
+            // glRotatef(-1.0,0.0,1.0,0.0);
+            if (EYE_X_POS < MAX_EYE_X_POS)
+                EYE_X_POS++;
             break;
         case GLUT_KEY_UP:
-            //glRotatef(1.0,1.0,0.0,0.0);
-            EYE_Y_POS++;
-            glutPostRedisplay();
+            // glRotatef(1.0,1.0,0.0,0.0);
+            if (EYE_Y_POS < MAX_EYE_Y_POS)
+                EYE_Y_POS++;
             break;
         case GLUT_KEY_DOWN:
-            //glRotatef(1.0,-1.0,0.0,0.0);
-            EYE_Y_POS--;
-            glutPostRedisplay();
+            // glRotatef(1.0,-1.0,0.0,0.0);
+            if (EYE_Y_POS > MIN_EYE_Y_POS)
+                EYE_Y_POS--;
             break;
         default:
             break;
     }
-
+    if (DEBUG) { printTime() ; printf("Eye position changed: (%d, %d, %d)\n", EYE_X_POS, EYE_Y_POS, EYE_Z_POS); }
+    glutPostRedisplay();
 }
 
 /* timer function, it runs every TIMER_SPEED_IN_MS ms*/
@@ -611,9 +686,8 @@ void timer_function(int id){
     }
 
     if (TIME_PASSED == 100) {
-        printTime();
         if (WIND_ON){
-            printf("5 seconds passed -> new wind angle: %d\n",WIND_TARGET_RANDOM_ANGLE);
+            if (DEBUG) { printTime(); printf("5 seconds passed -> new wind angle: %d\n",WIND_TARGET_RANDOM_ANGLE); }
             WIND_TARGET_RANDOM_ANGLE=getRandoms(0,360);
         }
     }
@@ -627,12 +701,12 @@ void reshape(int w, int h) {
     glLoadIdentity();
     if(PROJ_ORTHOGRAPHIC) {
         if (w <= h)
-            glOrtho (-12, 12, -12*(GLfloat)h/(GLfloat)w,12*(GLfloat)h/(GLfloat)w, -12.0, 12.0);
+            glOrtho (ORTHO_LEFT, ORTHO_RIGHT, ORTHO_BOTTOM*(GLfloat)h/(GLfloat)w,ORTHO_TOP*(GLfloat)h/(GLfloat)w, ORTHO_ZNERAR, ORTHO_ZFAR);
         else
-            glOrtho (-12*(GLfloat)w/(GLfloat)h,12*(GLfloat)w/(GLfloat)h, -12, 12, -12.0, 12.0);
+            glOrtho (ORTHO_LEFT*(GLfloat)w/(GLfloat)h,ORTHO_RIGHT*(GLfloat)w/(GLfloat)h, ORTHO_BOTTOM, ORTHO_TOP, ORTHO_ZNERAR, ORTHO_ZFAR);
     } else {
         double proportion = (double) w / (double) h;
-        gluPerspective(130, proportion, 0.1, 100);
+        gluPerspective(PERSPECTIVE_FOVY, proportion, PERSPECTIVE_ZNERAR, PERSPECTIVE_ZFAR);
     }
     glMatrixMode(GL_MODELVIEW);
 }
@@ -649,11 +723,13 @@ void keyboardCB(unsigned char key, int x, int y) {
         case 114:
             // r key
             if (!IS_SPINNING) {
+                if (DEBUG) { printTime(); printf("Command received: start rotation\n"); }
                 IS_SPINNING = 1;
             }
             break;
         case 115:
             // s key
+            if (DEBUG) { printTime(); printf("Command received: stop rotation\n"); }
             IS_SPINNING = 0;
             break;
         case 27:
@@ -662,16 +738,32 @@ void keyboardCB(unsigned char key, int x, int y) {
             exit(0);
         case 97:
             // a key
+            if (DEBUG) { printTime(); printf("Projection mode changed: orthographic\n"); }
             PROJ_ORTHOGRAPHIC=1;
             reshapeCB(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
             break;
         case 112:
             // p key
+            if (DEBUG) { printTime(); printf("Projection mode changed: perspective\n"); }
             PROJ_ORTHOGRAPHIC=0;
             reshapeCB(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
             break;
+        case 56:
+            // 8 key
+            if (EYE_Z_POS > MIN_EYE_Z_POS)
+                EYE_Z_POS--;
+            if (DEBUG) { printTime() ; printf("Eye position changed: (%d, %d, %d)\n", EYE_X_POS, EYE_Y_POS, EYE_Z_POS); }
+            glutPostRedisplay();
+            break;
+        case 50:
+            // 2 key
+            if (EYE_Z_POS < MAX_EYE_Z_POS)
+                EYE_Z_POS++;
+            if (DEBUG) { printTime() ; printf("Eye position changed: (%d, %d, %d)\n", EYE_X_POS, EYE_Y_POS, EYE_Z_POS); }
+            glutPostRedisplay();
+            break;
         default:
-            printf("%d", key);
+            if (DEBUG) { printTime() ; printf("Unrecognized key: %d\n", key); }
             break;
     }
 }
