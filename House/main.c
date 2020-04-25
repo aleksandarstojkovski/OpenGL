@@ -30,12 +30,34 @@ typedef struct {
     float b;
 } Color;
 
+/* GLOBAL SETTINGS AND POINTERS */
+
 // timer speed in ms
 int TIMER_SPEED_IN_MS=50;
 // contains main window address
 int MAIN_WINDOW;
+
+/* FLAGS */
+
+// door open true/false
+int DOOR_OPEN=0;
+// is the door opening or closing
+int DOOR_MOVING=0;
+// wind on true/false
+int WIND_ON=1;
+// 1 = ortographic projection, 0 = perspective projection
+int PROJ_ORTHOGRAPHIC=1;
+// show lines of primitive triangles used to draw
+int SHOW_TRIANGLES=0;
+// 1 = house is rotating, 0 = house is not rotating
+int IS_SPINNING = 0;
 // show axis true/false
 int SHOW_AXIS=1;
+// debug flag
+int DEBUG=1;
+
+/* HOUSE POSITION */
+
 // X position of the house
 float X_POS=0;
 // max X position of the house
@@ -52,31 +74,8 @@ float MAX_Z_POS=3;
 int DOOR_ANGLE=180;
 // house rotation angle
 int HOUSE_ANGLE=0;
-// wind current angle
-int WIND_ANGLE=0;
-// wind target angle to reach
-int WIND_TARGET_RANDOM_ANGLE=0;
-// wind needs to change every 5s, track the time passed
-int TIME_PASSED=0;
 
-
-/* FLAGS */
-
-// door open true/false
-int DOOR_OPEN=0;
-// is the door opening or closing
-int DOOR_MOVING=0;
-// wind on true/false
-int WIND_ON=1;
-// 1 = ortographic projection, 0 = perspective projection
-int PROJ_ORTHOGRAPHIC=1;
-// show lines of primitive triangles used to draw
-int SHOW_TRIANGLES=0;
-// 1 = house is rotating, 0 = house is not rotating
-int IS_SPINNING = 0;
-// debug flag
-int DEBUG=1;
-
+/* ORTHOGRAPHIC PROJECTION PARAMETERS */
 
 // left orthographic
 int ORTHO_LEFT=-12;
@@ -91,12 +90,16 @@ int ORTHO_ZNERAR=-12;
 // far orthographic
 int ORTHO_ZFAR=9999;
 
-// near orthographic
+/* PERSPECTIVE PROJECTION PARAMETERS */
+
+// near perspective
 float PERSPECTIVE_ZNERAR=0.1;
-// far orthographic
+// far perspective
 int PERSPECTIVE_ZFAR=9999;
 // view angle of the eye in perspective mode
 int PERSPECTIVE_FOVY=130;
+
+/* EYE (CAMERA) PARAMETERS */
 
 // eye X position
 int EYE_X_POS=0;
@@ -111,6 +114,15 @@ int EYE_Z_POS=6;
 int MAX_EYE_Z_POS=150;
 int MIN_EYE_Z_POS=-150;
 
+/* WIND PARAMETERS */
+
+// wind current angle
+int WIND_ANGLE=0;
+// wind target angle to reach
+int WIND_TARGET_RANDOM_ANGLE=0;
+// wind needs to change every 5s, track the time passed
+int TIME_PASSED=0;
+
 /* all the changeable colors */
 Color BACKGROUND_COLOR={0.7f, 0.7f, 0.7f};
 Color ROOF_COLOR={1, 0, 0};
@@ -122,25 +134,25 @@ Color CHIMMEY_UPPER_COLOR={0.5f, 0.25f, 0.25f};
 Color CHIMMEY_LOWER_COLOR={0.25f, 0.25f, 0.20f};
 
 
-/* prints the time */
+/* displays the usage of the app */
 void displayUsage(){
+
     FILE *fptr;
 
-    char filename[100], c;
-
-    // Open file
+    // close the file
     fptr = fopen(" ../../../../README.txt", "r");
     if (fptr == NULL) {
         printf("Cannot open README.txt file\n");
     }
 
-    // Read contents from file
-    c = fgetc(fptr);
+    // read the content
+    char c = fgetc(fptr);
     while (c != EOF) {
         printf ("%c", c);
         c = fgetc(fptr);
     }
 
+    // close the file
     fclose(fptr);
 }
 
@@ -601,18 +613,13 @@ void init(){
     // senza glEnable(GL_CULL_FACE) non si puo' utilizzare glPolygonMode(GL_FRONT,GL_LINE)
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
-    // quando si setta zoom, ertho ecc bisogna mettere GL_PROJECTION
-    //glMatrixMode(GL_PROJECTION);
-    // definisce l'area visualizzabile
-    //glOrtho(-12, 12, -12, 12, -12, 12);
-    // modalita' standard di trasformazione, non va piu cambiata
     // create menu (right click)
     createMenu();
     // init random
     srand(time(0));
     // display application usage
     displayUsage();
-    if (DEBUG) printf("**** APPLICATION IN DEBUG MODE ****\n");
+    if (DEBUG) printf("**** APPLICATION IS IN DEBUG MODE ****\n");
 }
 
 /* keyboardCB arrow callback */
