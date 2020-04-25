@@ -78,17 +78,17 @@ int HOUSE_ANGLE=0;
 /* ORTHOGRAPHIC PROJECTION PARAMETERS */
 
 // left orthographic
-int ORTHO_LEFT=-12;
+float ORTHO_LEFT=-12;
 // right orthographic
-int ORTHO_RIGHT=12;
+float ORTHO_RIGHT=12;
 // bottom orthographic
-int ORTHO_BOTTOM=-12;
+float ORTHO_BOTTOM=-12;
 // top orthographic
-int ORTHO_TOP=12;
+float ORTHO_TOP=12;
 // near orthographic
-int ORTHO_ZNERAR=-12;
+float ORTHO_ZNERAR=-12;
 // far orthographic
-int ORTHO_ZFAR=9999;
+float ORTHO_ZFAR=9999;
 
 /* PERSPECTIVE PROJECTION PARAMETERS */
 
