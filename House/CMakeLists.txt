@@ -2,7 +2,14 @@ cmake_minimum_required(VERSION 3.15)
 project(s4_es1 C)
 
 set(CMAKE_C_STANDARD 99)
+set(PROJECT_NAME House)
+set(SOURCE_FILES main.c)
 
-add_executable(House main.c)
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
-target_link_libraries(House -lfreeGLUT -lglew32 -lopengl32 -lglu32)
+find_package(OpenGL REQUIRED)
+find_package(GLUT REQUIRED)
+
+include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS})
+
+target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
