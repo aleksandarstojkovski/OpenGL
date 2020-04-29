@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
-project(s4_es1 C)
+
+project(House C)
 
 set(CMAKE_C_STANDARD 99)
 set(PROJECT_NAME House)
