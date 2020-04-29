@@ -12,9 +12,11 @@
     // Windows and linux
     #include <GL\glew.h>
     #include <GL\freeglut.h>
-#include <time.h>
-
 #endif
+
+// common libraries
+#include <time.h>
+#include <unistd.h>
 
 /* defines a point */
 typedef struct {
@@ -139,8 +141,17 @@ void displayUsage(){
 
     FILE *fptr;
 
+    // in windows and mac README.txt path is different
+    char files[][100] = {"../../README.txt", "../../../../README.txt"};
+
+    for (int i=0;i<2;i++){
+        if( access( files[i], F_OK ) != -1 ) {
+            fptr = fopen(files[i], "r");
+            break;
+        }
+    }
+
     // close the file
-    fptr = fopen(" ../../../../README.txt", "r");
     if (fptr == NULL) {
         printf("Cannot open README.txt file\n");
     }
