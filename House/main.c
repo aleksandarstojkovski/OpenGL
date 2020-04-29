@@ -153,7 +153,7 @@ void displayUsage(){
 
     // close the file
     if (fptr == NULL) {
-        printf("Cannot open README.txt file\n");
+        printf("Cannot open README.txt file. Comment the function displayUsage() into init().\n");
     }
 
     // read the content
