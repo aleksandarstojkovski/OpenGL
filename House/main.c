@@ -57,6 +57,8 @@ int IS_SPINNING = 0;
 int SHOW_AXIS=1;
 // debug flag
 int DEBUG=1;
+// loght on/off
+int LIGHT_ON=0;
 
 /* HOUSE POSITION */
 
@@ -303,6 +305,14 @@ void mainMenuCB(int value) {
             WIND_ON=!WIND_ON;
             break;
         case 4:
+            if (DEBUG) { printTime(); printf("Command received: light ON/OFF\n"); }
+            LIGHT_ON = !LIGHT_ON;
+            if (LIGHT_ON)
+                glEnable(GL_LIGHTING);
+            else
+                glDisable(GL_LIGHTING);
+            break;
+        case 5:
             if (DEBUG) { printTime(); printf("Command received: debug ON/OFF\n"); }
             DEBUG = !DEBUG;
         default:
@@ -342,7 +352,8 @@ void createMenu() {
     glutAddMenuEntry("Show/Hide Axis", 1);
     glutAddMenuEntry("Open/Close Door", 2);
     glutAddMenuEntry("Static Wind/Changing Wind", 3);
-    glutAddMenuEntry("Debug ON/OFF", 4);
+    glutAddMenuEntry("Light ON/OFF", 4);
+    glutAddMenuEntry("Debug ON/OFF", 5);
     glutAddSubMenu("Translation", translationMenu);
     glutAddSubMenu("Color", colorMenu);
 
@@ -630,6 +641,8 @@ void init(){
     srand(time(0));
     // display application usage
     displayUsage();
+    // TODO: abilita normalizzazione automatica
+    glEnable(GL_NORMALIZE);
     if (DEBUG) printf("**** APPLICATION IS IN DEBUG MODE ****\n");
 }
 
