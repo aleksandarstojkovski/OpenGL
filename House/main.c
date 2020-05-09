@@ -58,7 +58,11 @@ int SHOW_AXIS=1;
 // debug flag
 int DEBUG=1;
 // loght on/off
-int LIGHT_ON=0;
+int LIGHT_LEFT_ON=1;
+int LIGHT_RIGHT_ON=1;
+int LIGHT_LEFT_STATIC=1;
+int LIGHT_RIGHT_STATIC=1;
+int SHOW_LIGHT_BULBS=1;
 
 /* HOUSE POSITION */
 
@@ -137,6 +141,18 @@ Color FLAG_COLOR={0, 0, 1};
 Color CHIMMEY_UPPER_COLOR={0.5f, 0.25f, 0.25f};
 Color CHIMMEY_LOWER_COLOR={0.25f, 0.25f, 0.20f};
 
+float LIGHT_LEFT_POS_X = -6;
+float LIGHT_LEFT_POS_Y = 4;
+float LIGHT_LEFT_POS_Z = 8;
+
+float LIGHT_RIGHT_POS_X = 6;
+float LIGHT_RIGHT_POS_Y = 4;
+float LIGHT_RIGHT_POS_Z = 8;
+
+GLfloat light_ambient[] = {0.0, 0.0, 0.0, 1.0 };
+GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0 };
+GLfloat light_specular[] = {1.0, 1.0, 1.0, 1.0 };
+GLfloat spot_direction[] = { 0.1, 0.1, -1.0 };
 
 /* displays the usage of the app */
 void displayUsage(){
@@ -241,6 +257,37 @@ void transMenuCB(int value){
     glutPostRedisplay();
 }
 
+/* light menu callback */
+void lightMenuCB(int value){
+
+    if (DEBUG) { printTime(); printf("Command received: light\n"); }
+
+    // translation menu callback
+    switch (value) {
+        case 1:
+            LIGHT_LEFT_ON = !LIGHT_LEFT_ON;
+            break;
+        case 2:
+            LIGHT_RIGHT_ON = !LIGHT_RIGHT_ON;
+            break;
+        case 3:
+            LIGHT_LEFT_STATIC = !LIGHT_LEFT_STATIC;
+            break;
+        case 4:
+            LIGHT_RIGHT_STATIC = !LIGHT_RIGHT_STATIC;
+            break;
+        case 5:
+            SHOW_LIGHT_BULBS = !SHOW_LIGHT_BULBS;
+            break;
+        default:
+            if (DEBUG) printf("not implemented!\n");
+            break;
+    }
+
+    glutPostRedisplay();
+
+}
+
 /* color menu callback */
 void colorMenuCB(int value) {
 
@@ -305,16 +352,9 @@ void mainMenuCB(int value) {
             WIND_ON=!WIND_ON;
             break;
         case 4:
-            if (DEBUG) { printTime(); printf("Command received: light ON/OFF\n"); }
-            LIGHT_ON = !LIGHT_ON;
-            if (LIGHT_ON)
-                glEnable(GL_LIGHTING);
-            else
-                glDisable(GL_LIGHTING);
-            break;
-        case 5:
             if (DEBUG) { printTime(); printf("Command received: debug ON/OFF\n"); }
             DEBUG = !DEBUG;
+            break;
         default:
             break;
     }
@@ -324,6 +364,14 @@ void mainMenuCB(int value) {
 
 /* create menu function */
 void createMenu() {
+
+    // lights menu
+    int lightsMenu = glutCreateMenu(lightMenuCB);
+    glutAddMenuEntry("Left Light ON/OFF",1);
+    glutAddMenuEntry("Right Light ON/OFF",2);
+    glutAddMenuEntry("Light Left Static/Dynamic", 3);
+    glutAddMenuEntry("Light Right Static/Dynamic", 4);
+    glutAddMenuEntry("Show/Hide Light Bulbs", 5);
 
     // translation menu
     int translationMenu = glutCreateMenu(transMenuCB);
@@ -352,8 +400,8 @@ void createMenu() {
     glutAddMenuEntry("Show/Hide Axis", 1);
     glutAddMenuEntry("Open/Close Door", 2);
     glutAddMenuEntry("Static Wind/Changing Wind", 3);
-    glutAddMenuEntry("Light ON/OFF", 4);
-    glutAddMenuEntry("Debug ON/OFF", 5);
+    glutAddMenuEntry("Debug ON/OFF", 4);
+    glutAddSubMenu("Light", lightsMenu);
     glutAddSubMenu("Translation", translationMenu);
     glutAddSubMenu("Color", colorMenu);
 
@@ -364,9 +412,14 @@ void createMenu() {
 
 /* draws a triangle given three points and a color */
 void draw_triangle(Point points[3], Color color){
+
+    Point normal = {0, 0, 0};
+    normal_calculator(points[0], points[1], points[2], &normal);
+
     glPolygonMode(GL_FRONT ,GL_FILL);
     glBegin(GL_TRIANGLES);
         glColor3f(color.r,color.g,color.b);
+        glNormal3f(normal.x, normal.y, normal.z);
         glVertex3f(points[0].x,points[0].y,points[0].z);
         glVertex3f(points[1].x,points[1].y,points[1].z);
         glVertex3f(points[2].x,points[2].y,points[2].z);
@@ -376,6 +429,11 @@ void draw_triangle(Point points[3], Color color){
 /* draws a rectangle by drawing two triangles given four points and a color */
 void draw_rectangle(Point points[4], Color color){
 
+    Point normal1 = {0, 0, 0};
+    Point normal2 = {0, 0, 0};
+    normal_calculator(points[0], points[1], points[2], &normal1);
+    normal_calculator(points[0], points[2], points[3], &normal2);
+
     // GL_FRONT because we only see the front of the triangle
     // GL_FILL to fill the color of the rectangle
     glPolygonMode(GL_FRONT ,GL_FILL);
@@ -383,10 +441,15 @@ void draw_rectangle(Point points[4], Color color){
     // draw triangles
     glBegin(GL_TRIANGLES);
     glColor3f(color.r,color.g,color.b);
+    glNormal3f(normal1.x, normal1.y, normal1.z);
     int i;
     for (i=0;i<3;i++){
         glVertex3f(points[i].x,points[i].y,points[i].z);
     }
+    glEnd();
+    glBegin(GL_TRIANGLES);
+    glColor3f(color.r,color.g,color.b);
+    glNormal3f(normal2.x, normal2.y, normal2.z);
     glVertex3f(points[0].x,points[0].y,points[0].z);
     glVertex3f(points[2].x,points[2].y,points[2].z);
     glVertex3f(points[3].x,points[3].y,points[3].z);
@@ -411,6 +474,11 @@ void draw_rectangle(Point points[4], Color color){
 /* draws a rectangle by drawing two triangles given four points and a color */
 void draw_rectangle_back(Point points[4], Color color){
 
+    Point normal1 = {0, 0, 0};
+    Point normal2 = {0, 0, 0};
+    normal_calculator(points[2], points[1], points[0], &normal1);
+    normal_calculator(points[0], points[3], points[2], &normal2);
+
     // GL_FRONT because we only see the front of the triangle
     // GL_FILL to fill the color of the rectangle
     glPolygonMode(GL_FRONT ,GL_FILL);
@@ -418,14 +486,20 @@ void draw_rectangle_back(Point points[4], Color color){
     // draw triangles
     glBegin(GL_TRIANGLES);
         glColor3f(color.r,color.g,color.b);
+        glNormal3f(normal1.x, normal1.y, normal1.z);
         int i;
         for (i=2;i>=0;i--){
             glVertex3f(points[i].x,points[i].y,points[i].z);
         }
+    glEnd();
+    glBegin(GL_TRIANGLES);
+        glColor3f(color.r,color.g,color.b);
+        glNormal3f(normal2.x, normal2.y, normal2.z);
         glVertex3f(points[0].x,points[0].y,points[0].z);
         glVertex3f(points[3].x,points[3].y,points[3].z);
         glVertex3f(points[2].x,points[2].y,points[2].z);
     glEnd();
+
 
     // draw triangles border
     if (SHOW_TRIANGLES) {
@@ -530,6 +604,146 @@ void draw_axis() {
 
 }
 
+void draw_house(){
+    // 3d vertexes of all the pieces of the house
+    Point rect_front_right[4]={{0.5f, 0, 0}, {4, 0, 0}, {4, 2, 0}, {0.5f, 2, 0}};
+    Point rect_front_left[4]={{-4, 0, 0}, {-0.5f, 0, 0}, {-0.5f, 2, 0}, {-4, 2, 0}};
+    Point rect_front_center[4]={{-4, 2, 0}, {4, 2, 0}, {4, 4, 0}, {-4, 4, 0}};
+    Point rect_back[4]={{-4, 4, -8}, {4, 4, -8}, {4, 0, -8}, {-4, 0, -8}};
+    Point rect_right[4]={{4, 0, 0}, {4, 0, -8}, {4, 4, -8}, {4, 4, 0}};
+    Point rect_left[4]={{-4, 4, 0}, {-4, 4, -8}, {-4, 0, -8}, {-4, 0, 0}};
+    Point rect_bottom[4]={{-4, -0.1f, 0}, {-4, -0.1f, -8}, {4, -0.1f, -8}, {4, -0.1f, 0}};
+    Point front_triangle[3]={{-4, 4, 0}, {4, 4, 0}, {0, 6.5f, 0}};
+    Point back_triangle[3]={{-4, 4, -8}, {0, 6.5f, -8}, {4, 4, -8}};
+    Point roof_left[4]={{-4.8f, 3.8f, 0.5f}, {0, 6.8f, 0.5f}, {0, 6.8f, -8.5f}, {-4.8f, 3.8f, -8.5f}};
+    Point roof_right[4]={{4.8f, 3.8f, 0.5f}, {4.8f, 3.8f, -8.5f}, {0, 6.8f, -8.5f}, {0, 6.8f, 0.5f}};
+    Point comignolo_pz1[4]={{-3, 4, -4}, {-2, 4, -4}, {-2, 7, -4}, {-3, 7, -4}};
+    Point comignolo_pz2[4]={{-3.2f, 7, -3.8f}, {-1.8f, 7, -3.8f}, {-1.8f, 7.5f, -3.8f}, {-3.2f, 7.5f, -3.8f}};
+    Point door[4]={{0.5f, 0, 0.1f}, {0.5f, 2, 0.1f}, {-0.5f, 2, 0.1f}, {-0.5f, 0, 0.1f}};
+    Point flag_triangle_front[3]={{0, -1, 0}, {1.5f, -0.5f, 0}, {0, 0, 0}};
+    Point flag_triangle_back[3]={flag_triangle_front[0],flag_triangle_front[2],flag_triangle_front[1]};
+
+    // draw house
+    draw_parallelepiped(rect_front_right, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
+    draw_parallelepiped(rect_front_left, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
+    draw_parallelepiped(rect_front_center, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
+    draw_parallelepiped(rect_back, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
+    draw_parallelepiped(rect_right, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
+    draw_parallelepiped(rect_left, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
+    draw_parallelepiped(rect_bottom, -0.1f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
+    draw_triangle(front_triangle, WALL_COLOR_EXTERIOR);
+    draw_triangle(back_triangle, WALL_COLOR_EXTERIOR);
+    draw_parallelepiped(roof_left, -0.3f, ROOF_COLOR, ROOF_COLOR);
+    draw_parallelepiped(roof_right, -0.3f, ROOF_COLOR, ROOF_COLOR);
+    draw_parallelepiped(comignolo_pz1, -1, CHIMMEY_LOWER_COLOR, CHIMMEY_LOWER_COLOR);
+    draw_parallelepiped(comignolo_pz2, -1.4f, CHIMMEY_UPPER_COLOR, CHIMMEY_UPPER_COLOR);
+
+    // open/close door based on DOOR_ANGLE
+    glPushMatrix();
+    glTranslatef(0.5,0,0);
+    glRotatef(DOOR_ANGLE,0,1,0);
+    glTranslatef(0.5,0,0);
+    draw_parallelepiped(door, -0.1f, DOOR_COLOR, DOOR_COLOR);
+    glPopMatrix();
+
+    // flag
+    glPushMatrix();
+    glTranslatef(0,8.5f,0);
+    // rotate cilynder
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    glColor3f(0, 0, 0);
+    // draw lower part of flag (cylinder)
+    gluCylinder(gluNewQuadric(), 0.08f, 0.08f, 2, 30, 30);
+    // rotate back in order to draw the triangle
+    glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+    // apply wind rotation
+    glRotatef(WIND_ANGLE, 0.0f, 1.0f, 0.0f);
+    // flag must be independent from the rotation of the house
+    glRotatef(-HOUSE_ANGLE, 0.0, 1.0, 0.0);
+    // draw upper part of flag - front
+    draw_triangle(flag_triangle_front,FLAG_COLOR);
+    // draw upper part of flag - back
+    draw_triangle(flag_triangle_back,FLAG_COLOR);
+    glPopMatrix();
+
+}
+
+void set_ambient_light(){
+
+    GLfloat ambientLight[] = {0.15f, 0.15f, 0.15f, 0.15f};
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
+
+}
+
+void set_light_right(){
+
+    if (SHOW_LIGHT_BULBS) {
+        glPushMatrix();
+        glTranslatef(LIGHT_RIGHT_POS_X, LIGHT_RIGHT_POS_Y, LIGHT_RIGHT_POS_Z);
+        glDisable(GL_LIGHTING);
+        glColor3f(1.0, 1.0, 0.0);
+        glutWireCube(0.5);
+        glEnable(GL_LIGHTING);
+        glPopMatrix();
+    }
+
+    if (LIGHT_RIGHT_ON)
+        glEnable(GL_LIGHT2);
+    else
+        glDisable(GL_LIGHT2);
+
+    GLfloat light2_position[] = {LIGHT_RIGHT_POS_X, LIGHT_RIGHT_POS_Y, LIGHT_RIGHT_POS_Z, 1.0 };
+
+    glLightfv(GL_LIGHT2, GL_AMBIENT, light_ambient);
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, light_diffuse);
+    glLightfv(GL_LIGHT2, GL_SPECULAR, light_specular);
+    glLightfv(GL_LIGHT2, GL_POSITION, light2_position);
+
+    glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1.0);
+    glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0.0);
+    glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 0.0);
+    glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 60.0);
+    glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, spot_direction);
+    glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 2.0);
+
+
+}
+
+void set_light_left(){
+
+    if (SHOW_LIGHT_BULBS) {
+        glPushMatrix();
+        glTranslatef(LIGHT_LEFT_POS_X, LIGHT_LEFT_POS_Y, LIGHT_LEFT_POS_Z);
+        glDisable(GL_LIGHTING);
+        glColor3f(1.0, 1.0, 0.0);
+        glutWireCube(0.5);
+        glEnable(GL_LIGHTING);
+        glPopMatrix();
+    }
+
+    if (LIGHT_LEFT_ON)
+        glEnable(GL_LIGHT1);
+    else
+        glDisable(GL_LIGHT1);
+
+
+    // Seconda sorgente luminosa (spot)
+    GLfloat light1_position[] = {LIGHT_LEFT_POS_X, LIGHT_LEFT_POS_Y, LIGHT_LEFT_POS_Z, 1.0 };
+
+    glLightfv(GL_LIGHT1, GL_AMBIENT, light_ambient);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, light_specular);
+    glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
+
+    glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 1.0);
+    glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.0);
+    glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.0);
+    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 60.0);
+    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction);
+    glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 2.0);
+
+}
+
 /* main draw function */
 void draw() {
 
@@ -548,23 +762,12 @@ void draw() {
     // change perspective
     gluLookAt(EYE_X_POS, EYE_Y_POS, EYE_Z_POS, 0, 0, 0, 0, 1, 0);
 
-    // 3d vertexes of all the pieces of the house
-    Point rect_front_right[4]={{0.5f, 0, 0}, {4, 0, 0}, {4, 2, 0}, {0.5f, 2, 0}};
-    Point rect_front_left[4]={{-4, 0, 0}, {-0.5f, 0, 0}, {-0.5f, 2, 0}, {-4, 2, 0}};
-    Point rect_front_center[4]={{-4, 2, 0}, {4, 2, 0}, {4, 4, 0}, {-4, 4, 0}};
-    Point rect_back[4]={{-4, 4, -8}, {4, 4, -8}, {4, 0, -8}, {-4, 0, -8}};
-    Point rect_right[4]={{4, 0, 0}, {4, 0, -8}, {4, 4, -8}, {4, 4, 0}};
-    Point rect_left[4]={{-4, 4, 0}, {-4, 4, -8}, {-4, 0, -8}, {-4, 0, 0}};
-    Point rect_bottom[4]={{-4, -0.1f, 0}, {-4, -0.1f, -8}, {4, -0.1f, -8}, {4, -0.1f, 0}};
-    Point front_triangle[3]={{-4, 4, 0}, {4, 4, 0}, {0, 6.5f, 0}};
-    Point back_triangle[3]={{-4, 4, -8}, {0, 6.5f, -8}, {4, 4, -8}};
-    Point roof_left[4]={{-4.8f, 3.8f, 0.5f}, {0, 6.8f, 0.5f}, {0, 6.8f, -8.5f}, {-4.8f, 3.8f, -8.5f}};
-    Point roof_right[4]={{4.8f, 3.8f, 0.5f}, {4.8f, 3.8f, -8.5f}, {0, 6.8f, -8.5f}, {0, 6.8f, 0.5f}};
-    Point comignolo_pz1[4]={{-3, 4, -4}, {-2, 4, -4}, {-2, 7, -4}, {-3, 7, -4}};
-    Point comignolo_pz2[4]={{-3.2f, 7, -3.8f}, {-1.8f, 7, -3.8f}, {-1.8f, 7.5f, -3.8f}, {-3.2f, 7.5f, -3.8f}};
-    Point porta[4]={{0.5f, 0, 0.1f}, {0.5f, 2, 0.1f}, {-0.5f, 2, 0.1f}, {-0.5f, 0, 0.1f}};
-    Point flag_triangle_front[3]={{0, -1, 0}, {1.5f, -0.5f, 0}, {0, 0, 0}};
-    Point flag_triangle_back[3]={flag_triangle_front[0],flag_triangle_front[2],flag_triangle_front[1]};
+    set_ambient_light();
+
+    if (LIGHT_LEFT_STATIC)
+        set_light_left();
+    if (LIGHT_RIGHT_STATIC)
+        set_light_right();
 
     // START DRAWING
 
@@ -580,48 +783,12 @@ void draw() {
         glRotatef(HOUSE_ANGLE, 0.0, 1.0, 0.0);
 
         // draw house
-        draw_parallelepiped(rect_front_right, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
-        draw_parallelepiped(rect_front_left, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
-        draw_parallelepiped(rect_front_center, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
-        draw_parallelepiped(rect_back, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
-        draw_parallelepiped(rect_right, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
-        draw_parallelepiped(rect_left, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
-        draw_parallelepiped(rect_bottom, -0.1f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
-        draw_triangle(front_triangle, WALL_COLOR_EXTERIOR);
-        draw_triangle(back_triangle, WALL_COLOR_EXTERIOR);
-        draw_parallelepiped(roof_left, -0.3f, ROOF_COLOR, ROOF_COLOR);
-        draw_parallelepiped(roof_right, -0.3f, ROOF_COLOR, ROOF_COLOR);
-        draw_parallelepiped(comignolo_pz1, -1, CHIMMEY_LOWER_COLOR, CHIMMEY_LOWER_COLOR);
-        draw_parallelepiped(comignolo_pz2, -1.4f, CHIMMEY_UPPER_COLOR, CHIMMEY_UPPER_COLOR);
+        draw_house();
 
-        // open/close door based on DOOR_ANGLE
-        glPushMatrix();
-            glTranslatef(0.5,0,0);
-            glRotatef(DOOR_ANGLE,0,1,0);
-            glTranslatef(0.5,0,0);
-            draw_parallelepiped(porta, -0.1f, DOOR_COLOR, DOOR_COLOR);
-        glPopMatrix();
-
-
-    // flag
-    glPushMatrix();
-        glTranslatef(0,8.5f,0);
-        // rotate cilynder
-        glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-        glColor3f(0, 0, 0);
-        // draw lower part of flag (cylinder)
-        gluCylinder(gluNewQuadric(), 0.08f, 0.08f, 2, 30, 30);
-        // rotate back in order to draw the triangle
-        glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
-        // apply wind rotation
-        glRotatef(WIND_ANGLE, 0.0f, 1.0f, 0.0f);
-        // flag must be independent from the rotation of the house
-        glRotatef(-HOUSE_ANGLE, 0.0, 1.0, 0.0);
-        // draw upper part of flag - front
-        draw_triangle(flag_triangle_front,FLAG_COLOR);
-        // draw upper part of flag - back
-        draw_triangle(flag_triangle_back,FLAG_COLOR);
-    glPopMatrix();
+        if (!LIGHT_LEFT_STATIC)
+            set_light_left();
+        if (!LIGHT_RIGHT_STATIC)
+            set_light_right();
 
     glPopMatrix();
 
@@ -635,14 +802,16 @@ void init(){
     // senza glEnable(GL_CULL_FACE) non si puo' utilizzare glPolygonMode(GL_FRONT,GL_LINE)
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHTING);
+    // TODO: abilita normalizzazione automatica
+    glEnable(GL_NORMALIZE);
     // create menu (right click)
     createMenu();
     // init random
     srand(time(0));
     // display application usage
     displayUsage();
-    // TODO: abilita normalizzazione automatica
-    glEnable(GL_NORMALIZE);
     if (DEBUG) printf("**** APPLICATION IS IN DEBUG MODE ****\n");
 }
 
