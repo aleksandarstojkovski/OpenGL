@@ -63,6 +63,7 @@ int LIGHT_RIGHT_ON=1;
 int LIGHT_LEFT_STATIC=1;
 int LIGHT_RIGHT_STATIC=1;
 int SHOW_LIGHT_BULBS=1;
+int CLIPPING_ON=0;
 
 /* HOUSE POSITION */
 
@@ -134,11 +135,11 @@ int TIME_PASSED=0;
 /* LIGHTS PARAMETERS */
 // left light position
 float LIGHT_LEFT_POS_X = -6;
-float LIGHT_LEFT_POS_Y = 4;
+float LIGHT_LEFT_POS_Y = 3;
 float LIGHT_LEFT_POS_Z = 8;
 // right light position
 float LIGHT_RIGHT_POS_X = 6;
-float LIGHT_RIGHT_POS_Y = 4;
+float LIGHT_RIGHT_POS_Y = 3;
 float LIGHT_RIGHT_POS_Z = 8;
 float light_ambient[] = {0.0f, 0.0f, 0.0f, 1.0f };
 float light_diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f };
@@ -154,6 +155,9 @@ Color WALL_COLOR_EXTERIOR={1, 1, 1};
 Color FLAG_COLOR={0, 0, 1};
 Color CHIMMEY_UPPER_COLOR={0.5f, 0.25f, 0.25f};
 Color CHIMMEY_LOWER_COLOR={0.25f, 0.25f, 0.20f};
+
+/* clip pane */
+double clip_plane_0[4]={0.0,0.0,-4.0,0};
 
 /* displays the usage of the app */
 void displayUsage(){
@@ -353,6 +357,16 @@ void mainMenuCB(int value) {
             WIND_ON=!WIND_ON;
             break;
         case 4:
+            if (DEBUG) { printTime(); printf("Command received: clipping ON/OFF\n"); }
+            CLIPPING_ON=!CLIPPING_ON;
+            if(CLIPPING_ON) {
+                glEnable(GL_CLIP_PLANE0);
+            }
+            else {
+                glDisable(GL_CLIP_PLANE0);
+            }
+            break;
+        case 5:
             if (DEBUG) { printTime(); printf("Command received: debug ON/OFF\n"); }
             DEBUG = !DEBUG;
             break;
@@ -401,7 +415,8 @@ void createMenu() {
     glutAddMenuEntry("Show/Hide Axis", 1);
     glutAddMenuEntry("Open/Close Door", 2);
     glutAddMenuEntry("Static Wind/Changing Wind", 3);
-    glutAddMenuEntry("Debug ON/OFF", 4);
+    glutAddMenuEntry("Clipping ON/OFF", 4);
+    glutAddMenuEntry("Debug ON/OFF", 5);
     glutAddSubMenu("Light", lightsMenu);
     glutAddSubMenu("Translation", translationMenu);
     glutAddSubMenu("Color", colorMenu);
@@ -660,7 +675,7 @@ void draw_house(){
         glTranslatef(0.5,0,0);
         glRotatef(DOOR_ANGLE,0,1,0);
         glTranslatef(0.5,0,0);
-        draw_parallelepiped(door, -0.1f, DOOR_COLOR, DOOR_COLOR);
+        draw_parallelepiped(door, -0.15f, DOOR_COLOR, DOOR_COLOR);
     glPopMatrix();
 
     // draw the flag
@@ -1013,6 +1028,8 @@ int main(int argc, char** argv) {
     glutKeyboardFunc(keyboardCB);
     // start timer
     glutTimerFunc(TIMER_SPEED_IN_MS, timer_function, 1);
+    // clip pane
+    glClipPlane(GL_CLIP_PLANE0,clip_plane_0);
     // start main infinite loop
     glutMainLoop();
 }
