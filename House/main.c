@@ -384,8 +384,8 @@ void createMenu() {
     int lightsMenu = glutCreateMenu(lightMenuCB);
     glutAddMenuEntry("Left Light ON/OFF",1);
     glutAddMenuEntry("Right Light ON/OFF",2);
-    glutAddMenuEntry("Light Left Static/Dynamic", 3);
-    glutAddMenuEntry("Light Right Static/Dynamic", 4);
+    glutAddMenuEntry("Left Light Static/Dynamic", 3);
+    glutAddMenuEntry("Right Light Static/Dynamic", 4);
     glutAddMenuEntry("Show/Hide Light Bulbs", 5);
 
     // translation menu
