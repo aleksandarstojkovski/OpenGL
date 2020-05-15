@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.10)
+project(OpenGL)
 
-project(House C)
-
-set(CMAKE_C_STANDARD 99)
-set(PROJECT_NAME House)
-set(SOURCE_FILES main.c)
+set(CMAKE_CXX_STANDARD 14)
+set(PROJECT_NAME untitled)
+set(SOURCE_FILES main.cpp lib/RgbImage.cpp)
+set(CMAKE_CXX_FLAGS "-fpermissive -Wwrite-strings -std=c++0x")
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 

@@ -1,0 +1,5 @@
+C:/Users/aleks/CLionProjects/OpenGL/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/aleks/CLionProjects/OpenGL/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/aleks/CLionProjects/OpenGL/cmake-build-debug/House/CMakeFiles/edit_cache.dir
+C:/Users/aleks/CLionProjects/OpenGL/cmake-build-debug/House/CMakeFiles/untitled.dir
+C:/Users/aleks/CLionProjects/OpenGL/cmake-build-debug/House/CMakeFiles/rebuild_cache.dir
