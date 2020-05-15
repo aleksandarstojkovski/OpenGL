@@ -13,9 +13,17 @@
     #include <GL\freeglut.h>
 #endif
 
+const char file_separator =
+#ifdef _WIN32
+        '\\';
+#else
+'/';
+#endif
+
 // common libraries
 #include <time.h>
 #include <unistd.h>
+#include <limits.h>
 
 #include "lib/RgbImage.h"
 
@@ -165,9 +173,17 @@ char image_filename[]="image.bmp";
 
 /* save image of current window */
 void saveImage(char* fileName){
+
     RgbImage theTexMap;
+    char cwd[PATH_MAX];
+
     theTexMap.LoadFromOpenglBuffer();
     theTexMap.WriteBmpFile(image_filename);
+
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        printf("Image saved: %s%c%s\n", cwd,file_separator,fileName);
+    }
+
 }
 
 /* displays the usage of the app */
@@ -177,7 +193,7 @@ void displayUsage(){
     int file_found=0;
 
     // in windows and mac README.txt path is different
-    char files[][100] = {"../../README.txt", "../../../../README.txt", "../README.txt"};
+    char files[][PATH_MAX] = {"../../README.txt", "../../../../README.txt", "../README.txt"};
 
     for (int i=0;i<2;i++){
         if( access( files[i], F_OK ) != -1 ) {
