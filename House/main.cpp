@@ -171,21 +171,6 @@ double clip_plane_0[4]={0.0,0.0,-4.0,0};
 /* image file name */
 char image_filename[]="image.bmp";
 
-/* save image of current window */
-void saveImage(char* fileName){
-
-    RgbImage theTexMap;
-    char cwd[PATH_MAX];
-
-    theTexMap.LoadFromOpenglBuffer();
-    theTexMap.WriteBmpFile(image_filename);
-
-    if (getcwd(cwd, sizeof(cwd)) != NULL) {
-        printf("Image saved: %s%c%s\n", cwd,file_separator,fileName);
-    }
-
-}
-
 /* displays the usage of the app */
 void displayUsage(){
 
@@ -226,6 +211,22 @@ void printTime(){
     time_t now = time(0);
     strftime(buff, 100, "%d-%m-%Y %H:%M:%S.000", localtime(&now));
     printf("%s  -  ", buff);
+}
+
+/* save image of current window */
+void saveImage(char* fileName){
+
+    RgbImage theTexMap;
+    char cwd[PATH_MAX];
+
+    theTexMap.LoadFromOpenglBuffer();
+    theTexMap.WriteBmpFile(image_filename);
+
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        printTime();
+        printf("Image saved: %s%c%s\n", cwd,file_separator,fileName);
+    }
+
 }
 
 /* returns random number in the specified range */
