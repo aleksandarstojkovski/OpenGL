@@ -886,7 +886,7 @@ void init(){
     srand(time(0));
     // display application usage
     displayUsage();
-    if (DEBUG) printf("**** APPLICATION IS IN DEBUG MODE ****\n");
+    if (DEBUG) printf("\n**** APPLICATION IS IN DEBUG MODE ****\n");
 }
 
 /* keyboardCB arrow callback */
