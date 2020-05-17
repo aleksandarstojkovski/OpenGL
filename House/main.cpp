@@ -176,11 +176,12 @@ void displayUsage(){
 
     FILE *fptr;
     int file_found=0;
+    int array_size=4;
 
     // in windows and mac README.txt path is different
     char files[][PATH_MAX] = {"../../README.txt", "../../../../README.txt", "../README.txt", "./README.txt"};
 
-    for (int i=0;i<2;i++){
+    for (int i=0;i<array_size;i++){
         if( access( files[i], F_OK ) != -1 ) {
             fptr = fopen(files[i], "r");
             file_found=1;
@@ -190,7 +191,7 @@ void displayUsage(){
 
     // close the file
     if (fptr == NULL || ! file_found) {
-        printf("ERROR: cannot open README.txt file. Comment the function displayUsage() into init().\n");
+        printf("Cannot open README.txt file. Skipping.\n");
         return;
     }
 
@@ -203,6 +204,7 @@ void displayUsage(){
 
     // close the file
     fclose(fptr);
+
 }
 
 /* prints the time */
@@ -217,14 +219,14 @@ void printTime(){
 void saveImage(char* fileName){
 
     RgbImage theTexMap;
-    char cwd[PATH_MAX];
+    char current_dir[PATH_MAX];
 
     theTexMap.LoadFromOpenglBuffer();
     theTexMap.WriteBmpFile(image_filename);
 
-    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+    if (getcwd(current_dir, sizeof(current_dir)) != NULL) {
         printTime();
-        printf("Image saved: %s%c%s\n", cwd,file_separator,fileName);
+        printf("Image saved: %s%c%s\n", current_dir, file_separator, fileName);
     }
 
 }
