@@ -110,19 +110,19 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-House/CMakeFiles/untitled.dir/rule:
-	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f CMakeFiles\Makefile2 House/CMakeFiles/untitled.dir/rule
-.PHONY : House/CMakeFiles/untitled.dir/rule
+House/CMakeFiles/House.dir/rule:
+	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f CMakeFiles\Makefile2 House/CMakeFiles/House.dir/rule
+.PHONY : House/CMakeFiles/House.dir/rule
 
 # Convenience name for target.
-untitled: House/CMakeFiles/untitled.dir/rule
+House: House/CMakeFiles/House.dir/rule
 
-.PHONY : untitled
+.PHONY : House
 
 # fast build rule for target.
-untitled/fast:
-	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f House\CMakeFiles\untitled.dir\build.make House/CMakeFiles/untitled.dir/build
-.PHONY : untitled/fast
+House/fast:
+	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f House\CMakeFiles\House.dir\build.make House/CMakeFiles/House.dir/build
+.PHONY : House/fast
 
 lib/RgbImage.obj: lib/RgbImage.cpp.obj
 
@@ -130,7 +130,7 @@ lib/RgbImage.obj: lib/RgbImage.cpp.obj
 
 # target to build an object file
 lib/RgbImage.cpp.obj:
-	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f House\CMakeFiles\untitled.dir\build.make House/CMakeFiles/untitled.dir/lib/RgbImage.cpp.obj
+	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f House\CMakeFiles\House.dir\build.make House/CMakeFiles/House.dir/lib/RgbImage.cpp.obj
 .PHONY : lib/RgbImage.cpp.obj
 
 lib/RgbImage.i: lib/RgbImage.cpp.i
@@ -139,7 +139,7 @@ lib/RgbImage.i: lib/RgbImage.cpp.i
 
 # target to preprocess a source file
 lib/RgbImage.cpp.i:
-	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f House\CMakeFiles\untitled.dir\build.make House/CMakeFiles/untitled.dir/lib/RgbImage.cpp.i
+	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f House\CMakeFiles\House.dir\build.make House/CMakeFiles/House.dir/lib/RgbImage.cpp.i
 .PHONY : lib/RgbImage.cpp.i
 
 lib/RgbImage.s: lib/RgbImage.cpp.s
@@ -148,7 +148,7 @@ lib/RgbImage.s: lib/RgbImage.cpp.s
 
 # target to generate assembly for a file
 lib/RgbImage.cpp.s:
-	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f House\CMakeFiles\untitled.dir\build.make House/CMakeFiles/untitled.dir/lib/RgbImage.cpp.s
+	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f House\CMakeFiles\House.dir\build.make House/CMakeFiles/House.dir/lib/RgbImage.cpp.s
 .PHONY : lib/RgbImage.cpp.s
 
 main.obj: main.cpp.obj
@@ -157,7 +157,7 @@ main.obj: main.cpp.obj
 
 # target to build an object file
 main.cpp.obj:
-	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f House\CMakeFiles\untitled.dir\build.make House/CMakeFiles/untitled.dir/main.cpp.obj
+	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f House\CMakeFiles\House.dir\build.make House/CMakeFiles/House.dir/main.cpp.obj
 .PHONY : main.cpp.obj
 
 main.i: main.cpp.i
@@ -166,7 +166,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f House\CMakeFiles\untitled.dir\build.make House/CMakeFiles/untitled.dir/main.cpp.i
+	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f House\CMakeFiles\House.dir\build.make House/CMakeFiles/House.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -175,7 +175,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f House\CMakeFiles\untitled.dir\build.make House/CMakeFiles/untitled.dir/main.cpp.s
+	cd /d C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug && $(MAKE) -f House\CMakeFiles\House.dir\build.make House/CMakeFiles/House.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -184,8 +184,8 @@ help:
 	@echo ... all (the default if no target is provided)
 	@echo ... clean
 	@echo ... depend
+	@echo ... House
 	@echo ... edit_cache
-	@echo ... untitled
 	@echo ... rebuild_cache
 	@echo ... lib/RgbImage.obj
 	@echo ... lib/RgbImage.i

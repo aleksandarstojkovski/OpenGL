@@ -110,17 +110,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named untitled
+# Target rules for targets named House
 
 # Build rule for target.
-untitled: cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 untitled
-.PHONY : untitled
+House: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 House
+.PHONY : House
 
 # fast build rule for target.
-untitled/fast:
-	$(MAKE) -f House\CMakeFiles\untitled.dir\build.make House/CMakeFiles/untitled.dir/build
-.PHONY : untitled/fast
+House/fast:
+	$(MAKE) -f House\CMakeFiles\House.dir\build.make House/CMakeFiles/House.dir/build
+.PHONY : House/fast
 
 # Help Target
 help:
@@ -130,7 +130,7 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... untitled
+	@echo ... House
 .PHONY : help
 
 

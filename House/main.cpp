@@ -399,7 +399,7 @@ void mainMenuCB(int value) {
             break;
         case 5:
             if (DEBUG) { printTime(); printf("Command received: Save Image\n"); }
-            saveImage("image.bmp");
+            saveImage(image_filename);
             break;
         case 6:
             if (DEBUG) { printTime(); printf("Command received: debug ON/OFF\n"); }

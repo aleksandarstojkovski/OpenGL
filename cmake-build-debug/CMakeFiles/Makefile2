@@ -70,7 +70,7 @@ clean: House/clean
 # Directory level rules for directory House
 
 # Recursive "all" directory target.
-House/all: House/CMakeFiles/untitled.dir/all
+House/all: House/CMakeFiles/House.dir/all
 
 .PHONY : House/all
 
@@ -80,36 +80,36 @@ House/preinstall:
 .PHONY : House/preinstall
 
 # Recursive "clean" directory target.
-House/clean: House/CMakeFiles/untitled.dir/clean
+House/clean: House/CMakeFiles/House.dir/clean
 
 .PHONY : House/clean
 
 #=============================================================================
-# Target rules for target House/CMakeFiles/untitled.dir
+# Target rules for target House/CMakeFiles/House.dir
 
 # All Build rule for target.
-House/CMakeFiles/untitled.dir/all:
-	$(MAKE) -f House\CMakeFiles\untitled.dir\build.make House/CMakeFiles/untitled.dir/depend
-	$(MAKE) -f House\CMakeFiles\untitled.dir\build.make House/CMakeFiles/untitled.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug\CMakeFiles --progress-num=1,2,3 "Built target untitled"
-.PHONY : House/CMakeFiles/untitled.dir/all
+House/CMakeFiles/House.dir/all:
+	$(MAKE) -f House\CMakeFiles\House.dir\build.make House/CMakeFiles/House.dir/depend
+	$(MAKE) -f House\CMakeFiles\House.dir\build.make House/CMakeFiles/House.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug\CMakeFiles --progress-num=1,2,3 "Built target House"
+.PHONY : House/CMakeFiles/House.dir/all
 
 # Build rule for subdir invocation for target.
-House/CMakeFiles/untitled.dir/rule: cmake_check_build_system
+House/CMakeFiles/House.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug\CMakeFiles 3
-	$(MAKE) -f CMakeFiles\Makefile2 House/CMakeFiles/untitled.dir/all
+	$(MAKE) -f CMakeFiles\Makefile2 House/CMakeFiles/House.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\aleks\CLionProjects\OpenGL\cmake-build-debug\CMakeFiles 0
-.PHONY : House/CMakeFiles/untitled.dir/rule
+.PHONY : House/CMakeFiles/House.dir/rule
 
 # Convenience name for target.
-untitled: House/CMakeFiles/untitled.dir/rule
+House: House/CMakeFiles/House.dir/rule
 
-.PHONY : untitled
+.PHONY : House
 
 # clean rule for target.
-House/CMakeFiles/untitled.dir/clean:
-	$(MAKE) -f House\CMakeFiles\untitled.dir\build.make House/CMakeFiles/untitled.dir/clean
-.PHONY : House/CMakeFiles/untitled.dir/clean
+House/CMakeFiles/House.dir/clean:
+	$(MAKE) -f House\CMakeFiles\House.dir\build.make House/CMakeFiles/House.dir/clean
+.PHONY : House/CMakeFiles/House.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

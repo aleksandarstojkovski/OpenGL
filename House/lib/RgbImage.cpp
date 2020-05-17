@@ -22,8 +22,14 @@
 #include "RgbImage.h"
 
 #ifndef RGBIMAGE_DONT_USE_OPENGL
-#include <windows.h>
-#include "GL/gl.h"
+#ifdef __APPLE__
+// MacOS
+    #include <GLUT/glut.h>
+#else
+// Windows and linux
+#include <GL\glew.h>
+#include <GL\freeglut.h>
+#endif
 #endif
 #ifndef BI_RGB
 #define BI_RGB 0

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(OpenGL)
 
 set(CMAKE_CXX_STANDARD 14)
-set(PROJECT_NAME untitled)
+set(PROJECT_NAME House)
 set(SOURCE_FILES main.cpp lib/RgbImage.cpp)
 set(CMAKE_CXX_FLAGS "-fpermissive -Wwrite-strings -std=c++0x")
 
