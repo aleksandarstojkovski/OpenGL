@@ -178,7 +178,7 @@ void displayUsage(){
     int file_found=0;
 
     // in windows and mac README.txt path is different
-    char files[][PATH_MAX] = {"../../README.txt", "../../../../README.txt", "../README.txt"};
+    char files[][PATH_MAX] = {"../../README.txt", "../../../../README.txt", "../README.txt", "./README.txt"};
 
     for (int i=0;i<2;i++){
         if( access( files[i], F_OK ) != -1 ) {
