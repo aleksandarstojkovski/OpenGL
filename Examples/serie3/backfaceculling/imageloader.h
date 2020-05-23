@@ -35,7 +35,7 @@ class Image {
 		 * color of each pixel in image.  Color components range from 0 to 255.
 		 * The array starts the bottom-left pixel, then moves right to the end
 		 * of the row, then moves up to the next column, and so on.  This is the
-		 * format in which OpenGL likes images.
+		 * format in which OpenGL likes image.
 		 */
 		char* pixels;
 		int width;

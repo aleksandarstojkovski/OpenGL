@@ -32,7 +32,12 @@ typedef struct {
     float x;
     float y;
     float z;
-} Point;
+} Point3d;
+
+typedef struct {
+    float x;
+    float y;
+} Point2d;
 
 /* defines an RGB color */
 typedef struct {
@@ -165,11 +170,33 @@ Color FLAG_COLOR={0, 0, 1};
 Color CHIMMEY_UPPER_COLOR={0.5f, 0.25f, 0.25f};
 Color CHIMMEY_LOWER_COLOR={0.25f, 0.25f, 0.20f};
 
+int TEXTURE_ENABLED=1;
+Point2d deafult_first_triang_texture_coord[3] = {{0, 0}, {1, 0}, {1, 1}};
+Point2d deafult_second_triang_texture_coord[3] = {{0, 0}, {1, 1}, {0, 1}};
 /* clip pane used for clipping */
 double clip_plane_0[4]={0.0,0.0,-4.0,0};
 
 /* image file name */
 char image_filename[]="image.bmp";
+
+void init_test(){
+
+    RgbImage theTexMap("../../House/image/image.bmp");
+
+    // Pixel alignment: each row is word aligned (aligned to a 4 byte boundary)
+    // Therefore, no need to call glPixelStore( GL_UNPACK_ALIGNMENT, ... );
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+    //gluBuild2DMipmaps(GL_TEXTURE_2D, 3,theTexMap.GetNumCols(), theTexMap.GetNumRows(),
+    //				 GL_RGB, GL_UNSIGNED_BYTE, theTexMap.ImageData() );
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, theTexMap.GetNumCols(), theTexMap.GetNumRows(),
+                 0, GL_RGB, GL_UNSIGNED_BYTE, theTexMap.ImageData());
+}
 
 /* displays the usage of the app */
 void displayUsage(){
@@ -237,11 +264,11 @@ int getRandoms(int lower, int upper){
 }
 
 /* calculates the normal vector of the surface given three points */
-void normal_calculator(Point a, Point b, Point c, Point * destination_normal){
+void normal_vector_calculator(Point3d a, Point3d b, Point3d c, Point3d * destination_normal){
 
-    Point ab = {b.x - a.x, b.y - a.y, b.z - a.z};
-    Point ac = {c.x - a.x, c.y - a.y, c.z - a.z};
-    Point cross = {ab.y * ac.z - ab.z * ac.y,
+    Point3d ab = {b.x - a.x, b.y - a.y, b.z - a.z};
+    Point3d ac = {c.x - a.x, c.y - a.y, c.z - a.z};
+    Point3d cross = {ab.y * ac.z - ab.z * ac.y,
                    ab.z*ac.x-ab.x*ac.z,
                    ab.x*ac.y-ab.y*ac.x};
 
@@ -392,18 +419,24 @@ void mainMenuCB(int value) {
         case 4:
             if (DEBUG) { printTime(); printf("Command received: clipping ON/OFF\n"); }
             CLIPPING_ON=!CLIPPING_ON;
-            if(CLIPPING_ON) {
+            if(CLIPPING_ON)
                 glEnable(GL_CLIP_PLANE0);
-            }
-            else {
+            else
                 glDisable(GL_CLIP_PLANE0);
-            }
             break;
         case 5:
-            if (DEBUG) { printTime(); printf("Command received: Save Image\n"); }
+            if (DEBUG) { printTime(); printf("Command received: save image\n"); }
             saveImage(image_filename);
             break;
         case 6:
+            if (DEBUG) { printTime(); printf("Command received: texture ON/OFF\n"); }
+            TEXTURE_ENABLED = !TEXTURE_ENABLED;
+            if (TEXTURE_ENABLED)
+                glEnable(GL_TEXTURE_2D);
+            else
+                glDisable(GL_TEXTURE_2D);
+            break;
+        case 7:
             if (DEBUG) { printTime(); printf("Command received: debug ON/OFF\n"); }
             DEBUG = !DEBUG;
             break;
@@ -442,10 +475,6 @@ void createMenu() {
     glutAddMenuEntry("Wall Red",4);
     glutAddMenuEntry("Wall Blue",5);
     glutAddMenuEntry("Wall White",6);
-    // TODO
-    //glutAddMenuEntry("Chimmey Red",7);
-    //glutAddMenuEntry("Chimmey Blue",8);
-    //glutAddMenuEntry("Chimmey White",9);
 
     // main menu
     int mainMenu = glutCreateMenu(mainMenuCB);
@@ -454,7 +483,8 @@ void createMenu() {
     glutAddMenuEntry("Static Wind/Changing Wind", 3);
     glutAddMenuEntry("Clipping ON/OFF", 4);
     glutAddMenuEntry("Save Image", 5);
-    glutAddMenuEntry("Debug ON/OFF", 6);
+    glutAddMenuEntry("Enable/Disable Textures", 6);
+    glutAddMenuEntry("Debug ON/OFF", 7);
     glutAddSubMenu("Light", lightsMenu);
     glutAddSubMenu("Translation", translationMenu);
     glutAddSubMenu("Color", colorMenu);
@@ -465,35 +495,43 @@ void createMenu() {
 }
 
 /* draws a triangle given three points and a color */
-void draw_triangle(Point points[3], Color color){
+void draw_triangle(Point3d points[3], Color color, Point2d first_triang_texture_coord[3]){
 
     // normal vector of the triangle
-    Point normal = {0, 0, 0};
+    Point3d normal = {0, 0, 0};
+
     // calculate normal
-    normal_calculator(points[0], points[1], points[2], &normal);
+    normal_vector_calculator(points[0], points[1], points[2], &normal);
 
     glPolygonMode(GL_FRONT ,GL_FILL);
 
     glBegin(GL_TRIANGLES);
         glColor3f(color.r,color.g,color.b);
         glNormal3f(normal.x, normal.y, normal.z);
+        // first vertex
+        glTexCoord2f(first_triang_texture_coord[0].x, first_triang_texture_coord[0].y);
         glVertex3f(points[0].x,points[0].y,points[0].z);
+        // second vertex
+        glTexCoord2f(first_triang_texture_coord[1].x, first_triang_texture_coord[1].y);
         glVertex3f(points[1].x,points[1].y,points[1].z);
+        // third vertex
+        glTexCoord2f(first_triang_texture_coord[2].x, first_triang_texture_coord[2].y);
         glVertex3f(points[2].x,points[2].y,points[2].z);
     glEnd();
 
 }
 
 /* draws a rectangle by drawing two triangles given four points and a color */
-void draw_rectangle(Point points[4], Color color){
+void draw_rectangle(Point3d points[4], Color color, Point2d first_triang_texture_coord[3], Point2d second_triang_texture_coord[3]){
 
     // normal vector of first triangle of the rectangle
-    Point normal1 = {0, 0, 0};
+    Point3d normal1 = {0, 0, 0};
     // normal vector of second triangle of the rectangle
-    Point normal2 = {0, 0, 0};
+    Point3d normal2 = {0, 0, 0};
+
     // calculate normals
-    normal_calculator(points[0], points[1], points[2], &normal1);
-    normal_calculator(points[0], points[2], points[3], &normal2);
+    normal_vector_calculator(points[0], points[1], points[2], &normal1);
+    normal_vector_calculator(points[0], points[2], points[3], &normal2);
 
     // GL_FRONT because we only see the front of the triangle
     // GL_FILL to fill the color of the rectangle
@@ -503,18 +541,29 @@ void draw_rectangle(Point points[4], Color color){
     glBegin(GL_TRIANGLES);
         glColor3f(color.r,color.g,color.b);
         glNormal3f(normal1.x, normal1.y, normal1.z);
-        int i;
-        for (i=0;i<3;i++){
-            glVertex3f(points[i].x,points[i].y,points[i].z);
-        }
+        // first vertex
+        glTexCoord2f(first_triang_texture_coord[0].x, first_triang_texture_coord[0].y);
+        glVertex3f(points[0].x,points[0].y,points[0].z);
+        // second vertex
+        glTexCoord2f(first_triang_texture_coord[1].x, first_triang_texture_coord[1].y);
+        glVertex3f(points[1].x,points[1].y,points[1].z);
+        // third vertex
+        glTexCoord2f(first_triang_texture_coord[2].x, first_triang_texture_coord[2].y);
+        glVertex3f(points[2].x,points[2].y,points[2].z);
     glEnd();
 
     // draw second triangle
     glBegin(GL_TRIANGLES);
         glColor3f(color.r,color.g,color.b);
         glNormal3f(normal2.x, normal2.y, normal2.z);
+        // first vertex
+        glTexCoord2f(second_triang_texture_coord[0].x, second_triang_texture_coord[0].y);
         glVertex3f(points[0].x,points[0].y,points[0].z);
+        // second vertex
+        glTexCoord2f(second_triang_texture_coord[1].x, second_triang_texture_coord[1].y);
         glVertex3f(points[2].x,points[2].y,points[2].z);
+        // third vertex
+        glTexCoord2f(second_triang_texture_coord[2].x, second_triang_texture_coord[2].y);
         glVertex3f(points[3].x,points[3].y,points[3].z);
     glEnd();
 
@@ -522,28 +571,31 @@ void draw_rectangle(Point points[4], Color color){
     if (SHOW_TRIANGLES){
         glPolygonMode(GL_FRONT ,GL_LINE);
         glBegin(GL_TRIANGLES);
-        glColor3f(0,0,0);
-        for (i=0;i<3;i++){
-            glVertex3f(points[i].x,points[i].y,points[i].z);
-        }
-        glVertex3f(points[0].x,points[0].y,points[0].z);
-        glVertex3f(points[2].x,points[2].y,points[2].z);
-        glVertex3f(points[3].x,points[3].y,points[3].z);
+            glColor3f(0,0,0);
+            // first triangle
+            glVertex3f(points[0].x,points[0].y,points[0].z);
+            glVertex3f(points[1].x,points[1].y,points[1].z);
+            glVertex3f(points[2].x,points[2].y,points[2].z);
+            // second triangle
+            glVertex3f(points[0].x,points[0].y,points[0].z);
+            glVertex3f(points[2].x,points[2].y,points[2].z);
+            glVertex3f(points[3].x,points[3].y,points[3].z);
         glEnd();
     }
 
 }
 
 /* draws a rectangle by drawing two triangles given four points and a color */
-void draw_rectangle_back(Point points[4], Color color){
+void draw_rectangle_back(Point3d points[4], Color color, Point2d front_texture_coord[3]){
 
     // normal vector of first triangle of the rectangle
-    Point normal1 = {0, 0, 0};
+    Point3d normal1 = {0, 0, 0};
     // normal vector of second triangle of the rectangle
-    Point normal2 = {0, 0, 0};
+    Point3d normal2 = {0, 0, 0};
+
     // calculate normals
-    normal_calculator(points[2], points[1], points[0], &normal1);
-    normal_calculator(points[0], points[3], points[2], &normal2);
+    normal_vector_calculator(points[2], points[1], points[0], &normal1);
+    normal_vector_calculator(points[0], points[3], points[2], &normal2);
 
     // GL_FRONT because we only see the front of the triangle
     // GL_FILL to fill the color of the rectangle
@@ -553,18 +605,23 @@ void draw_rectangle_back(Point points[4], Color color){
     glBegin(GL_TRIANGLES);
         glColor3f(color.r,color.g,color.b);
         glNormal3f(normal1.x, normal1.y, normal1.z);
-        int i;
-        for (i=2;i>=0;i--){
-            glVertex3f(points[i].x,points[i].y,points[i].z);
-        }
+        glTexCoord2f(front_texture_coord[0].x,front_texture_coord[0].y);
+        glVertex3f(points[2].x,points[2].y,points[2].z);
+        glTexCoord2f(front_texture_coord[1].x,front_texture_coord[1].y);
+        glVertex3f(points[1].x,points[1].y,points[1].z);
+        glTexCoord2f(front_texture_coord[2].x,front_texture_coord[2].y);
+        glVertex3f(points[0].x,points[0].y,points[0].z);
     glEnd();
 
     // draw second triangle
     glBegin(GL_TRIANGLES);
         glColor3f(color.r,color.g,color.b);
         glNormal3f(normal2.x, normal2.y, normal2.z);
+        glTexCoord2f(front_texture_coord[0].x,front_texture_coord[0].y);
         glVertex3f(points[0].x,points[0].y,points[0].z);
+        glTexCoord2f(front_texture_coord[1].x,front_texture_coord[1].y);
         glVertex3f(points[3].x,points[3].y,points[3].z);
+        glTexCoord2f(front_texture_coord[2].x,front_texture_coord[2].y);
         glVertex3f(points[2].x,points[2].y,points[2].z);
     glEnd();
 
@@ -574,9 +631,11 @@ void draw_rectangle_back(Point points[4], Color color){
         glPolygonMode(GL_FRONT, GL_LINE);
         glBegin(GL_TRIANGLES);
             glColor3f(0, 0, 0);
-            for (i = 2; i >= 0; i--) {
-                glVertex3f(points[i].x, points[i].y, points[i].z);
-            }
+            // first triangle
+            glVertex3f(points[2].x, points[2].y, points[2].z);
+            glVertex3f(points[1].x, points[1].y, points[1].z);
+            glVertex3f(points[0].x, points[0].y, points[0].z);
+            // second triangle
             glVertex3f(points[0].x, points[0].y, points[0].z);
             glVertex3f(points[3].x, points[3].y, points[3].z);
             glVertex3f(points[2].x, points[2].y, points[2].z);
@@ -586,19 +645,19 @@ void draw_rectangle_back(Point points[4], Color color){
 }
 
 /* draws a parallelepiped given four points and internal/external colours */
-void draw_parallelepiped(Point points[4], float depth, Color external_color, Color internal_color){
+void draw_parallelepiped(Point3d points[4], float depth, Color external_color, Color internal_color, Point2d first_triang_texture_coord[3], Point2d seoncd_triang_texture_coord[3]){
 
     // points translated trough normal
-    Point translated_trough_normal[4];
+    Point3d translated_trough_normal[4];
     // faces of the
-    Point right_face[4];
-    Point left_face[4];
-    Point front_face[4];
-    Point back_face[4];
+    Point3d right_face[4];
+    Point3d left_face[4];
+    Point3d front_face[4];
+    Point3d back_face[4];
 
     // calculate normal vector
-    Point normal = {0, 0, 0};
-    normal_calculator(points[0], points[1], points[2], &normal);
+    Point3d normal = {0, 0, 0};
+    normal_vector_calculator(points[0], points[1], points[2], &normal);
 
     // calculate points translated trough normal
     int i;
@@ -634,12 +693,12 @@ void draw_parallelepiped(Point points[4], float depth, Color external_color, Col
     back_face[3]=points[1];
 
     // draw all the pieces of the parallelepiped
-    draw_rectangle(points, external_color);
-    draw_rectangle_back(translated_trough_normal, internal_color);
-    draw_rectangle(right_face, external_color);
-    draw_rectangle(left_face, external_color);
-    draw_rectangle(front_face, external_color);
-    draw_rectangle(back_face, external_color);
+    draw_rectangle(points, external_color, first_triang_texture_coord, seoncd_triang_texture_coord);
+    draw_rectangle_back(translated_trough_normal, internal_color, first_triang_texture_coord);
+    draw_rectangle(right_face, external_color, first_triang_texture_coord, seoncd_triang_texture_coord);
+    draw_rectangle(left_face, external_color, first_triang_texture_coord, seoncd_triang_texture_coord);
+    draw_rectangle(front_face, external_color, first_triang_texture_coord, seoncd_triang_texture_coord);
+    draw_rectangle(back_face, external_color, first_triang_texture_coord, seoncd_triang_texture_coord);
 
 }
 
@@ -676,44 +735,51 @@ void draw_axis() {
 void draw_house(){
 
     // 3d vertexes of all the pieces of the house
-    Point rect_front_right[4]={{0.5f, 0, 0}, {4, 0, 0}, {4, 2, 0}, {0.5f, 2, 0}};
-    Point rect_front_left[4]={{-4, 0, 0}, {-0.5f, 0, 0}, {-0.5f, 2, 0}, {-4, 2, 0}};
-    Point rect_front_center[4]={{-4, 2, 0}, {4, 2, 0}, {4, 4, 0}, {-4, 4, 0}};
-    Point rect_back[4]={{-4, 4, -8}, {4, 4, -8}, {4, 0, -8}, {-4, 0, -8}};
-    Point rect_right[4]={{4, 0, 0}, {4, 0, -8}, {4, 4, -8}, {4, 4, 0}};
-    Point rect_left[4]={{-4, 4, 0}, {-4, 4, -8}, {-4, 0, -8}, {-4, 0, 0}};
-    Point rect_bottom[4]={{-4, -0.1f, 0}, {-4, -0.1f, -8}, {4, -0.1f, -8}, {4, -0.1f, 0}};
-    Point front_triangle[3]={{-4, 4, 0}, {4, 4, 0}, {0, 6.5f, 0}};
-    Point back_triangle[3]={{-4, 4, -8}, {0, 6.5f, -8}, {4, 4, -8}};
-    Point roof_left[4]={{-4.8f, 3.8f, 0.5f}, {0, 6.8f, 0.5f}, {0, 6.8f, -8.5f}, {-4.8f, 3.8f, -8.5f}};
-    Point roof_right[4]={{4.8f, 3.8f, 0.5f}, {4.8f, 3.8f, -8.5f}, {0, 6.8f, -8.5f}, {0, 6.8f, 0.5f}};
-    Point comignolo_pz1[4]={{-3, 4, -4}, {-2, 4, -4}, {-2, 7, -4}, {-3, 7, -4}};
-    Point comignolo_pz2[4]={{-3.2f, 7, -3.8f}, {-1.8f, 7, -3.8f}, {-1.8f, 7.5f, -3.8f}, {-3.2f, 7.5f, -3.8f}};
-    Point door[4]={{0.5f, 0, 0.1f}, {0.5f, 2, 0.1f}, {-0.5f, 2, 0.1f}, {-0.5f, 0, 0.1f}};
-    Point flag_triangle_front[3]={{0, -1, 0}, {1.5f, -0.5f, 0}, {0, 0, 0}};
-    Point flag_triangle_back[3]={flag_triangle_front[0],flag_triangle_front[2],flag_triangle_front[1]};
+    Point3d rect_front_right[4]={{0.5f, 0, 0}, {4, 0, 0}, {4, 2, 0}, {0.5f, 2, 0}};
+    Point3d rect_front_left[4]={{-4, 0, 0}, {-0.5f, 0, 0}, {-0.5f, 2, 0}, {-4, 2, 0}};
+    Point3d rect_front_center[4]={{-4, 2, 0}, {4, 2, 0}, {4, 4, 0}, {-4, 4, 0}};
+    Point3d rect_back[4]={{-4, 4, -8}, {4, 4, -8}, {4, 0, -8}, {-4, 0, -8}};
+    Point3d rect_right[4]={{4, 0, 0}, {4, 0, -8}, {4, 4, -8}, {4, 4, 0}};
+    Point3d rect_left[4]={{-4, 4, 0}, {-4, 4, -8}, {-4, 0, -8}, {-4, 0, 0}};
+    Point3d rect_bottom[4]={{-4, -0.1f, 0}, {-4, -0.1f, -8}, {4, -0.1f, -8}, {4, -0.1f, 0}};
+    Point3d front_triangle[3]={{-4, 4, 0}, {4, 4, 0}, {0, 6.5f, 0}};
+    Point3d back_triangle[3]={{-4, 4, -8}, {0, 6.5f, -8}, {4, 4, -8}};
+    Point3d roof_left[4]={{-4.8f, 3.8f, 0.5f}, {0, 6.8f, 0.5f}, {0, 6.8f, -8.5f}, {-4.8f, 3.8f, -8.5f}};
+    Point3d roof_right[4]={{4.8f, 3.8f, 0.5f}, {4.8f, 3.8f, -8.5f}, {0, 6.8f, -8.5f}, {0, 6.8f, 0.5f}};
+    Point3d comignolo_pz1[4]={{-3, 4, -4}, {-2, 4, -4}, {-2, 7, -4}, {-3, 7, -4}};
+    Point3d comignolo_pz2[4]={{-3.2f, 7, -3.8f}, {-1.8f, 7, -3.8f}, {-1.8f, 7.5f, -3.8f}, {-3.2f, 7.5f, -3.8f}};
+    Point3d door[4]={{0.5f, 0, 0.1f}, {0.5f, 2, 0.1f}, {-0.5f, 2, 0.1f}, {-0.5f, 0, 0.1f}};
+    Point3d flag_triangle_front[3]={{0, -1, 0}, {1.5f, -0.5f, 0}, {0, 0, 0}};
+    Point3d flag_triangle_back[3]={flag_triangle_front[0], flag_triangle_front[2], flag_triangle_front[1]};
 
     // draw house
-    draw_parallelepiped(rect_front_right, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
-    draw_parallelepiped(rect_front_left, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
-    draw_parallelepiped(rect_front_center, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
-    draw_parallelepiped(rect_back, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
-    draw_parallelepiped(rect_right, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
-    draw_parallelepiped(rect_left, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
-    draw_parallelepiped(rect_bottom, -0.1f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR);
-    draw_triangle(front_triangle, WALL_COLOR_EXTERIOR);
-    draw_triangle(back_triangle, WALL_COLOR_EXTERIOR);
-    draw_parallelepiped(roof_left, -0.3f, ROOF_COLOR, ROOF_COLOR);
-    draw_parallelepiped(roof_right, -0.3f, ROOF_COLOR, ROOF_COLOR);
-    draw_parallelepiped(comignolo_pz1, -1, CHIMMEY_LOWER_COLOR, CHIMMEY_LOWER_COLOR);
-    draw_parallelepiped(comignolo_pz2, -1.4f, CHIMMEY_UPPER_COLOR, CHIMMEY_UPPER_COLOR);
+    Point2d roof_front_right_texture[] = {{0.0,0.0},{0.0,1.0},{1.0,1.0}};
+    Point2d roof_back_right_texture[] = {{0.0,0.0},{1.0,1.0},{1.0,0.0}};
+    Point2d back_triangle_texture[] = {{0.0,0.0},{1.0,1.0},{1.0,0.0}};
+    Point2d roof_texture[] = {{0.0,0.0},{0.0,0.0},{0.0,0.0}};
+    Point2d door_texture[] = {{0.0,0.0},{0.0,0.0},{0.0,0.0}};
+    Point2d flag_texture[] = {{0.0,0.0},{0.0,0.0},{0.0,0.0}};
+
+    draw_parallelepiped(rect_front_right, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR, deafult_first_triang_texture_coord, deafult_second_triang_texture_coord);
+    draw_parallelepiped(rect_front_left, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR, deafult_first_triang_texture_coord, deafult_second_triang_texture_coord);
+    draw_parallelepiped(rect_front_center, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR, deafult_first_triang_texture_coord, deafult_second_triang_texture_coord);
+    draw_parallelepiped(rect_back, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR, deafult_first_triang_texture_coord, deafult_second_triang_texture_coord);
+    draw_parallelepiped(rect_right, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR, deafult_first_triang_texture_coord, deafult_second_triang_texture_coord);
+    draw_parallelepiped(rect_left, -0.3f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR, deafult_first_triang_texture_coord, deafult_second_triang_texture_coord);
+    draw_parallelepiped(rect_bottom, -0.1f, WALL_COLOR_EXTERIOR, WALL_COLOR_INTERIOR, deafult_first_triang_texture_coord, deafult_second_triang_texture_coord);
+    draw_triangle(front_triangle, WALL_COLOR_EXTERIOR, deafult_first_triang_texture_coord);
+    draw_triangle(back_triangle, WALL_COLOR_EXTERIOR,back_triangle_texture);
+    draw_parallelepiped(roof_left, -0.3f, ROOF_COLOR, ROOF_COLOR,roof_texture,roof_texture);
+    draw_parallelepiped(roof_right, -0.3f, ROOF_COLOR, ROOF_COLOR, roof_texture,roof_texture);
+    draw_parallelepiped(comignolo_pz1, -1, CHIMMEY_LOWER_COLOR, CHIMMEY_LOWER_COLOR, deafult_first_triang_texture_coord, deafult_second_triang_texture_coord);
+    draw_parallelepiped(comignolo_pz2, -1.4f, CHIMMEY_UPPER_COLOR, CHIMMEY_UPPER_COLOR, deafult_first_triang_texture_coord, deafult_second_triang_texture_coord);
 
     // open/close door based on DOOR_ANGLE
     glPushMatrix();
         glTranslatef(0.5,0,0);
         glRotatef(DOOR_ANGLE,0,1,0);
         glTranslatef(0.5,0,0);
-        draw_parallelepiped(door, -0.15f, DOOR_COLOR, DOOR_COLOR);
+        draw_parallelepiped(door, -0.15f, DOOR_COLOR, DOOR_COLOR,door_texture,door_texture);
     glPopMatrix();
 
     // draw the flag
@@ -731,9 +797,9 @@ void draw_house(){
         // flag must be independent from the rotation of the house
         glRotatef(-HOUSE_ANGLE, 0.0, 1.0, 0.0);
         // draw upper part of flag - front
-        draw_triangle(flag_triangle_front,FLAG_COLOR);
+        draw_triangle(flag_triangle_front,FLAG_COLOR,flag_texture);
         // draw upper part of flag - back
-        draw_triangle(flag_triangle_back,FLAG_COLOR);
+        draw_triangle(flag_triangle_back,FLAG_COLOR,flag_texture);
     glPopMatrix();
 
 }
@@ -823,6 +889,9 @@ void draw() {
     // delete scene and apply defined Color
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // NOLINT(hicpp-signed-bitwise)
 
+    // textures
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
     // set the modelview for drawing purposes
     glMatrixMode(GL_MODELVIEW);
 
@@ -882,6 +951,8 @@ void init(){
     glEnable(GL_LIGHTING);
     // enbale automatic vector normalization
     glEnable(GL_NORMALIZE);
+    // enable textures
+    glEnable(GL_TEXTURE_2D);
     // create menu (right click)
     createMenu();
     // init random
@@ -1069,5 +1140,6 @@ int main(int argc, char** argv) {
     // clip pane
     glClipPlane(GL_CLIP_PLANE0,clip_plane_0);
     // start main infinite loop
+    init_test();
     glutMainLoop();
 }
