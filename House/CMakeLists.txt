@@ -9,6 +9,7 @@ set(CMAKE_CXX_FLAGS "-fpermissive -Wwrite-strings -std=c++0x")
 configure_file(images/door.bmp images/door.bmp COPYONLY)
 configure_file(images/roof.bmp images/roof.bmp COPYONLY)
 configure_file(images/wall.bmp images/wall.bmp COPYONLY)
+configure_file(images/flag.bmp images/flag.bmp COPYONLY)
 configure_file(../README.txt README.txt COPYONLY)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})

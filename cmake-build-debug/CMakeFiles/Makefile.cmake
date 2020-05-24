@@ -42,6 +42,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "../House/CMakeLists.txt"
   "../House/images/door.bmp"
   "../House/images/roof.bmp"
+  "../House/images/swiss.bmp"
   "../House/images/wall.bmp"
   "../README.txt"
   "CMakeFiles/3.16.5/CMakeCCompiler.cmake"

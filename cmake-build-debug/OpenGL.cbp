@@ -104,6 +104,9 @@
 		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/House/images/roof.bmp">
 			<Option virtualFolder="CMake Files\House\images\"/>
 		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/House/images/swiss.bmp">
+			<Option virtualFolder="CMake Files\House\images\"/>
+		</Unit>
 		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/House/images/wall.bmp">
 			<Option virtualFolder="CMake Files\House\images\"/>
 		</Unit>

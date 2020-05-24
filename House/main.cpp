@@ -168,7 +168,7 @@ Color ROOF_COLOR={255.0f, 255.0f, 255.0f};
 Color DOOR_COLOR={255.0f, 255.0f, 255.0f};
 Color WALL_COLOR_INTERIOR={127.5f, 127.5f, 127.5f};
 Color WALL_COLOR_EXTERIOR={255, 255, 255};
-Color FLAG_COLOR={0, 0, 255};
+Color FLAG_COLOR={255, 255, 255};
 Color CHIMMEY_UPPER_COLOR={127.5f, 63.75f, 63.75f};
 Color CHIMMEY_LOWER_COLOR={63.75f, 63.75f, 51.0f};
 
@@ -188,17 +188,18 @@ Point2d deafult_second_triang_texture_coord[3] = {{0, 0}, {1, 1}, {0, 1}};
 Point2d deafult_no_texture_coord[3] = {{0, 0}, {0, 0}, {0, 0}};
 
 // defines array of textures
-GLuint textures_ids[3];
+GLuint textures_ids[4];
 // number of textures
 int n_textures = sizeof(textures_ids)/sizeof(GLuint);
 // texture files
-char texture_files[][PATH_MAX]={{"images/wall.bmp"},{"images/roof.bmp"},{"images/door.bmp"}};
+char texture_files[][PATH_MAX]={{"images/wall.bmp"},{"images/roof.bmp"},{"images/door.bmp"},{"images/flag.bmp"}};
 // wall texture id
 int WALL_TEXTURE=1;
 // roof texture id
 int ROOF_TEXTURE=2;
 // door texture id
 int DOOR_TEXTURE=3;
+int FLAG_TEXTURE=4;
 
 void loadTextureFromFile(){
 
@@ -819,7 +820,7 @@ void draw_house(){
     glPopMatrix();
 
     // use wall texture for next drawings
-    glBindTexture(GL_TEXTURE_2D, WALL_TEXTURE);
+    glBindTexture(GL_TEXTURE_2D, FLAG_TEXTURE);
 
     // draw the flag
     glPushMatrix();
@@ -836,9 +837,9 @@ void draw_house(){
         // flag must be independent from the rotation of the house
         glRotatef(-HOUSE_ANGLE, 0.0, 1.0, 0.0);
         // draw upper part of flag - front
-        draw_triangle(flag_triangle_front,FLAG_COLOR,deafult_no_texture_coord);
+        draw_triangle(flag_triangle_front,FLAG_COLOR,back_triangle_texture);
         // draw upper part of flag - back
-        draw_triangle(flag_triangle_back,FLAG_COLOR,deafult_no_texture_coord);
+        draw_triangle(flag_triangle_back,FLAG_COLOR,deafult_first_triang_texture_coord);
     glPopMatrix();
 
 }
