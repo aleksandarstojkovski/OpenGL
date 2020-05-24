@@ -46,7 +46,7 @@ RgbImage::RgbImage( int numRows, int numCols )
 		Reset();
 		ErrorCode = MemoryError;
 	}
-	// Zero out the image
+	// Zero out the images
 	unsigned char* c = ImagePtr;
 	int rowLen = GetNumBytesPerRow();
 	for ( int i=0; i<NumRows; i++ ) {
@@ -58,7 +58,7 @@ RgbImage::RgbImage( int numRows, int numCols )
 
 /* ********************************************************************
  *  LoadBmpFile
- *  Read into memory an RGB image from an uncompressed BMP file.
+ *  Read into memory an RGB images from an uncompressed BMP file.
  *  Return true for success, false for failure.  Error code is available
  *     with a separate call.
  *  Author: Sam Buss December 2001.
@@ -186,7 +186,7 @@ void RgbImage::skipChars( FILE* infile, int numChars )
 
 /* ********************************************************************
  *  WriteBmpFile
- *  Write an RGB image to an uncompressed BMP file.
+ *  Write an RGB images to an uncompressed BMP file.
  *  Return true for success, false for failure.  Error code is available
  *     with a separate call.
  *  Author: Sam Buss, January 2003.
@@ -317,7 +317,7 @@ unsigned char RgbImage::doubleToUnsignedChar( double x )
 //   2 bytes: short int, number of planes (=1)
 //   2 bytes: short int, bits per pixel
 //   4 bytes: long int, type of compression (not applicable to 24 bits/pixel)
-//   4 bytes: long int, image size (not used unless compression is used)
+//   4 bytes: long int, images size (not used unless compression is used)
 //   4 bytes: long int, x pixels per meter
 //   4 bytes: long int, y pixels per meter
 //   4 bytes: colors used (not applicable to 24 bit color)

@@ -62,18 +62,18 @@ public:
 		NoError = 0,
 		OpenError = 1,			// Unable to open file for reading
 		FileFormatError = 2,	// Not recognized as a 24 bit BMP file
-		MemoryError = 3,		// Unable to allocate memory for image data
+		MemoryError = 3,		// Unable to allocate memory for images data
 		ReadError = 4,			// End of file reached prematurely
 		WriteError = 5			// Unable to write out data (or no date to write out)
 	};
-	bool ImageLoaded() const { return (ImagePtr!=0); }  // Is an image loaded?
+	bool ImageLoaded() const { return (ImagePtr!=0); }  // Is an images loaded?
 
-	void Reset();			// Frees image data memory
+	void Reset();			// Frees images data memory
 
 private:
 	unsigned char* ImagePtr;	// array of pixel values (integers range 0 to 255)
-	long NumRows;				// number of rows in image
-	long NumCols;				// number of columns in image
+	long NumRows;				// number of rows in images
+	long NumCols;				// number of columns in images
 	int ErrorCode;				// error code
 
 	static short readShort( FILE* infile );

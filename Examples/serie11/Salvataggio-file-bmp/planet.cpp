@@ -113,7 +113,7 @@ void keyboard (unsigned char key, int x, int y)
          glutPostRedisplay();
          break;        
       case 's':
-         saveFile ("image.bmp");
+         saveFile ("wall.bmp");
            printf("Immagine Salvata\n");
          break;
       case 27:

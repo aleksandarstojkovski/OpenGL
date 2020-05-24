@@ -50,7 +50,7 @@ void handleKeypress(unsigned char key, int x, int y) {
 	}
 }
 
-//Makes the image into a texture, and returns the id of the texture
+//Makes the images into a texture, and returns the id of the texture
 GLuint loadTexture(Image* image) {
 	GLuint textureId;
 	glGenTextures(1, &textureId);
