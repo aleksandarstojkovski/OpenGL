@@ -5,7 +5,7 @@
 		<Option title="OpenGL"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\House\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\House\;CMake Files\House\images\;"/>
 		<Build>
 			<Target title="all">
 				<Option working_dir="C:/Users/aleks/CLionProjects/OpenGL/cmake-build-debug"/>
@@ -92,8 +92,23 @@
 		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/README.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
 		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/House/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\House\"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/House/images/door.bmp">
+			<Option virtualFolder="CMake Files\House\images\"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/House/images/roof.bmp">
+			<Option virtualFolder="CMake Files\House\images\"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/House/images/swiss.bmp">
+			<Option virtualFolder="CMake Files\House\images\"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/House/images/wall.bmp">
+			<Option virtualFolder="CMake Files\House\images\"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>

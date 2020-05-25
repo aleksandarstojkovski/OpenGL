@@ -4,7 +4,7 @@
  * Loosely based on the example checker.c 
  * (Example 9-1, OpenGL Programming Guide, 3rd edition) 
  * 
- * Read an image from a bitmap (.bmp) file, and draw it as a texture 
+ * Read an images from a bitmap (.bmp) file, and draw it as a texture
  * map on a quad.  A cpp class RgbImage is used to read a texture
  * map from a bitmap (.bmp) file.
  *

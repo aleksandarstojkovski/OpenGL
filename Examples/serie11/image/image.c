@@ -40,14 +40,14 @@
  * OpenGL(R) is a registered trademark of Silicon Graphics, Inc.
  */
 
-/*  image.c
+/*  images.c
  *  This program demonstrates drawing pixels and shows the effect
  *  of glDrawPixels(), glCopyPixels(), and glPixelZoom().
  *  Interaction: moving the mouse while pressing the mouse button
- *  will copy the image in the lower-left corner of the window
+ *  will copy the images in the lower-left corner of the window
  *  to the mouse position, using the current pixel zoom factors.
  *  There is no attempt to prevent you from drawing over the original
- *  image.  If you press the 'r' key, the original image and zoom
+ *  images.  If you press the 'r' key, the original images and zoom
  *  factors are reset.  If you press the 'z' or 'Z' keys, you change
  *  the zoom factors.
  */
@@ -55,7 +55,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-/*	Create checkerboard image	*/
+/*	Create checkerboard images	*/
 #define	checkImageWidth 64
 #define	checkImageHeight 64
 GLubyte checkImage[checkImageHeight][checkImageWidth][3];

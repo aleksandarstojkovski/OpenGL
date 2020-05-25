@@ -13,11 +13,11 @@ assert.h
 -
 
 C:/Users/aleks/CLionProjects/OpenGL/House/main.cpp
-stdio.h
+cstdio
 -
-stdlib.h
+cstdlib
 -
-math.h
+cmath
 -
 GLUT/glut.h
 -
@@ -25,11 +25,11 @@ GL/glew.h
 -
 GL/freeglut.h
 -
-time.h
+ctime
 -
 unistd.h
 -
-limits.h
+climits
 -
 lib/RgbImage.h
 C:/Users/aleks/CLionProjects/OpenGL/House/lib/RgbImage.h
