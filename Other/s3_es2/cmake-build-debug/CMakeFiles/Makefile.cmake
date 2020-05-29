@@ -8,7 +8,6 @@ set(CMAKE_DEPENDS_GENERATOR "MinGW Makefiles")
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/CMakeCInformation.cmake"
-  "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/CMakeCXXInformation.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/CMakeCommonLanguageInclude.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/CMakeExtraGeneratorDetermineCompilerMacrosAndIncludeDirs.cmake"
@@ -21,13 +20,10 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/CMakeSystemSpecificInitialize.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Compiler/GNU-C.cmake"
-  "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Compiler/GNU-CXX.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Compiler/GNU.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Internal/CMakeCheckCompilerFlag.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Platform/Windows-GNU-C-ABI.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Platform/Windows-GNU-C.cmake"
-  "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Platform/Windows-GNU-CXX-ABI.cmake"
-  "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Platform/Windows-GNU-CXX.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Platform/Windows-GNU.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Platform/Windows-windres.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Platform/Windows.cmake"
@@ -35,16 +31,8 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/ProcessorCount.cmake"
   "../CMakeLists.txt"
   "CMakeFiles/3.16.5/CMakeCCompiler.cmake"
-  "CMakeFiles/3.16.5/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.16.5/CMakeRCCompiler.cmake"
   "CMakeFiles/3.16.5/CMakeSystem.cmake"
-  "../opengl3/opengl3_triangolo/CMakeLists.txt"
-  "../opengl3/opengl3_triangolo_lookat/CMakeLists.txt"
-  "../opengl3/opengl3_triangolo_lookat/shaders/shader.frag"
-  "../opengl3/opengl3_triangolo_lookat/shaders/shader.vert"
-  "../opengl3/opengl3_triangolo_trasformazioni/CMakeLists.txt"
-  "../opengl3/opengl3_triangolo_trasformazioni/shaders/shader.frag"
-  "../opengl3/opengl3_triangolo_trasformazioni/shaders/shader.vert"
   )
 
 # The corresponding makefile is:
@@ -56,14 +44,9 @@ set(CMAKE_MAKEFILE_OUTPUTS
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
-  "opengl3/opengl3_triangolo/CMakeFiles/CMakeDirectoryInformation.cmake"
-  "opengl3/opengl3_triangolo_lookat/CMakeFiles/CMakeDirectoryInformation.cmake"
-  "opengl3/opengl3_triangolo_trasformazioni/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "opengl3/opengl3_triangolo/CMakeFiles/opengl3_triangolo.dir/DependInfo.cmake"
-  "opengl3/opengl3_triangolo_lookat/CMakeFiles/opengl3_triangolo_lookat.dir/DependInfo.cmake"
-  "opengl3/opengl3_triangolo_trasformazioni/CMakeFiles/opengl3_triangolo_trasformazioni.dir/DependInfo.cmake"
+  "CMakeFiles/s3_es2.dir/DependInfo.cmake"
   )

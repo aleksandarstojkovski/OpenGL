@@ -9,8 +9,8 @@
     #include <GLUT/glut.h>
 #else
     // Windows and linux
-    #include <GL\glew.h>
-    #include <GL\freeglut.h>
+    #include <GL/glew.h>
+    #include <GL/glut.h>
 #endif
 
 const char file_separator =

@@ -6,16 +6,6 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/aleks/CLionProjects/OpenGL/House_OpenGL3/lib/RgbImage.cpp
-RgbImage.h
-C:/Users/aleks/CLionProjects/OpenGL/House_OpenGL3/lib/RgbImage.h
-GLUT/glut.h
--
-GL/glew.h
--
-GL/freeglut.h
--
-
 C:/Users/aleks/CLionProjects/OpenGL/House_OpenGL3/lib/RgbImage.h
 stdio.h
 -
@@ -33,7 +23,7 @@ GLUT/glut.h
 -
 GL/glew.h
 -
-GL/freeglut.h
+GL/glut.h
 -
 ctime
 -

@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/aleks/CLionProjects/OpenGL/Other/s3_es2/main.c
+stdio.h
+-
+assert.h
+-
+stdlib.h
+-
+GL/glew.h
+-
+GLUT/glut.h
+-
+iostream
+-
+windows.h
+-
+GL/glew.h
+-
+GL/freeglut.h
+-
+
