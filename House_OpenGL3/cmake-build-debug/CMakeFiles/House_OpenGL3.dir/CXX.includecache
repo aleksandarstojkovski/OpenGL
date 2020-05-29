@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/aleks/CLionProjects/OpenGL/House_OpenGL3/lib/RgbImage.cpp
+RgbImage.h
+C:/Users/aleks/CLionProjects/OpenGL/House_OpenGL3/lib/RgbImage.h
+GLUT/glut.h
+-
+GL/glew.h
+-
+GL/freeglut.h
+-
+
+C:/Users/aleks/CLionProjects/OpenGL/House_OpenGL3/lib/RgbImage.h
+stdio.h
+-
+assert.h
+-
+
+C:/Users/aleks/CLionProjects/OpenGL/House_OpenGL3/main.cpp
+cstdio
+-
+cstdlib
+-
+cmath
+-
+GLUT/glut.h
+-
+GL/glew.h
+-
+GL/freeglut.h
+-
+ctime
+-
+unistd.h
+-
+climits
+-
+lib/RgbImage.h
+C:/Users/aleks/CLionProjects/OpenGL/House_OpenGL3/lib/RgbImage.h
+

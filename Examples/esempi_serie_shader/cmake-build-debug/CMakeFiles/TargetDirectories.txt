@@ -1,0 +1,11 @@
+C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo/CMakeFiles/rebuild_cache.dir
+C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo/CMakeFiles/opengl3_triangolo.dir
+C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo/CMakeFiles/edit_cache.dir
+C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_lookat/CMakeFiles/edit_cache.dir
+C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_lookat/CMakeFiles/opengl3_triangolo_lookat.dir
+C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_lookat/CMakeFiles/rebuild_cache.dir
+C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_trasformazioni/CMakeFiles/edit_cache.dir
+C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_trasformazioni/CMakeFiles/opengl3_triangolo_trasformazioni.dir
+C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_trasformazioni/CMakeFiles/rebuild_cache.dir

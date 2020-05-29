@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="GL_Esempi"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\opengl3\;CMake Files\opengl3\opengl3_triangolo\;CMake Files\opengl3\opengl3_triangolo_lookat\;CMake Files\opengl3\opengl3_triangolo_lookat\shaders\;CMake Files\opengl3\opengl3_triangolo_trasformazioni\;CMake Files\opengl3\opengl3_triangolo_trasformazioni\shaders\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="opengl3_triangolo">
+				<Option output="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo/opengl3_triangolo.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/SUPSI/opengl/freeglut/include"/>
+					<Add directory="C:/SUPSI/opengl/glew-2.1.0/include"/>
+					<Add directory="C:/SUPSI/opengl/glm-0.9.9.8/glm"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo/Makefile&quot;  VERBOSE=1 opengl3_triangolo"/>
+					<CompileFile command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="opengl3_triangolo/fast">
+				<Option output="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo/opengl3_triangolo.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/SUPSI/opengl/freeglut/include"/>
+					<Add directory="C:/SUPSI/opengl/glew-2.1.0/include"/>
+					<Add directory="C:/SUPSI/opengl/glm-0.9.9.8/glm"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo/Makefile&quot;  VERBOSE=1 opengl3_triangolo/fast"/>
+					<CompileFile command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="opengl3_triangolo_lookat">
+				<Option output="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_lookat/opengl3_triangolo_lookat.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_lookat"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/SUPSI/opengl/freeglut/include"/>
+					<Add directory="C:/SUPSI/opengl/glew-2.1.0/include"/>
+					<Add directory="C:/SUPSI/opengl/glm-0.9.9.8/glm"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_lookat/Makefile&quot;  VERBOSE=1 opengl3_triangolo_lookat"/>
+					<CompileFile command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_lookat/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_lookat/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_lookat/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="opengl3_triangolo_lookat/fast">
+				<Option output="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_lookat/opengl3_triangolo_lookat.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_lookat"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/SUPSI/opengl/freeglut/include"/>
+					<Add directory="C:/SUPSI/opengl/glew-2.1.0/include"/>
+					<Add directory="C:/SUPSI/opengl/glm-0.9.9.8/glm"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_lookat/Makefile&quot;  VERBOSE=1 opengl3_triangolo_lookat/fast"/>
+					<CompileFile command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_lookat/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_lookat/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_lookat/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="opengl3_triangolo_trasformazioni">
+				<Option output="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_trasformazioni/opengl3_triangolo_trasformazioni.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_trasformazioni"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/SUPSI/opengl/freeglut/include"/>
+					<Add directory="C:/SUPSI/opengl/glew-2.1.0/include"/>
+					<Add directory="C:/SUPSI/opengl/glm-0.9.9.8/glm"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_trasformazioni/Makefile&quot;  VERBOSE=1 opengl3_triangolo_trasformazioni"/>
+					<CompileFile command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_trasformazioni/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_trasformazioni/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_trasformazioni/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="opengl3_triangolo_trasformazioni/fast">
+				<Option output="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_trasformazioni/opengl3_triangolo_trasformazioni.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_trasformazioni"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/SUPSI/opengl/freeglut/include"/>
+					<Add directory="C:/SUPSI/opengl/glew-2.1.0/include"/>
+					<Add directory="C:/SUPSI/opengl/glm-0.9.9.8/glm"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/MinGW/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_trasformazioni/Makefile&quot;  VERBOSE=1 opengl3_triangolo_trasformazioni/fast"/>
+					<CompileFile command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_trasformazioni/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_trasformazioni/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/cmake-build-debug/opengl3/opengl3_triangolo_trasformazioni/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/opengl3/opengl3_triangolo/opengl3_triangolo.cpp">
+			<Option target="opengl3_triangolo"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/opengl3/opengl3_triangolo_lookat/opengl3_triangolo_lookat.cpp">
+			<Option target="opengl3_triangolo_lookat"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/opengl3/opengl3_triangolo_trasformazioni/opengl3_triangolo_trasformazioni.cpp">
+			<Option target="opengl3_triangolo_trasformazioni"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/opengl3/shaders_loader.cpp">
+			<Option target="opengl3_triangolo_lookat"/>
+			<Option target="opengl3_triangolo_trasformazioni"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/opengl3/shaders_loader.h">
+			<Option target="opengl3_triangolo_lookat"/>
+			<Option target="opengl3_triangolo_trasformazioni"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/opengl3/opengl3_triangolo/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\opengl3\opengl3_triangolo\"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/opengl3/opengl3_triangolo_lookat/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\opengl3\opengl3_triangolo_lookat\"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/opengl3/opengl3_triangolo_lookat/shaders/shader.frag">
+			<Option virtualFolder="CMake Files\opengl3\opengl3_triangolo_lookat\shaders\"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/opengl3/opengl3_triangolo_lookat/shaders/shader.vert">
+			<Option virtualFolder="CMake Files\opengl3\opengl3_triangolo_lookat\shaders\"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/opengl3/opengl3_triangolo_trasformazioni/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\opengl3\opengl3_triangolo_trasformazioni\"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/opengl3/opengl3_triangolo_trasformazioni/shaders/shader.frag">
+			<Option virtualFolder="CMake Files\opengl3\opengl3_triangolo_trasformazioni\shaders\"/>
+		</Unit>
+		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/opengl3/opengl3_triangolo_trasformazioni/shaders/shader.vert">
+			<Option virtualFolder="CMake Files\opengl3\opengl3_triangolo_trasformazioni\shaders\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
