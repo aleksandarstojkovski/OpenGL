@@ -1,0 +1,3 @@
+C:/Users/aleks/CLionProjects/OpenGL/Examples/serie8/light/cmake-build-debug/CMakeFiles/light.dir
+C:/Users/aleks/CLionProjects/OpenGL/Examples/serie8/light/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/aleks/CLionProjects/OpenGL/Examples/serie8/light/cmake-build-debug/CMakeFiles/rebuild_cache.dir

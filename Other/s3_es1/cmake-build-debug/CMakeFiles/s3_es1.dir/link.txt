@@ -1,0 +1,3 @@
+"C:\Program Files\JetBrains\CLion 2020.1.1\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\s3_es1.dir/objects.a
+C:\MinGW\MinGW\bin\ar.exe cr CMakeFiles\s3_es1.dir/objects.a @CMakeFiles\s3_es1.dir\objects1.rsp
+C:\MinGW\MinGW\bin\gcc.exe -g   -Wl,--whole-archive CMakeFiles\s3_es1.dir/objects.a -Wl,--no-whole-archive  -o s3_es1.exe -Wl,--out-implib,libs3_es1.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\s3_es1.dir\linklibs.rsp

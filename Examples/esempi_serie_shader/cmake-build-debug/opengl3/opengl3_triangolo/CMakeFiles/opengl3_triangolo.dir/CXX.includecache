@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/aleks/CLionProjects/OpenGL/Examples/esempi_serie_shader/opengl3/opengl3_triangolo/opengl3_triangolo.cpp
+stdio.h
+-
+assert.h
+-
+stdlib.h
+-
+GL/glew.h
+-
+GLUT/glut.h
+-
+GL/glew.h
+-
+GL/glut.h
+-
+iostream
+-
+
