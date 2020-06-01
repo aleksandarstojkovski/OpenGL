@@ -92,9 +92,6 @@
 		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/House/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/House/images/door.bmp">
-			<Option virtualFolder="CMake Files\images\"/>
-		</Unit>
 		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/House/images/flag.bmp">
 			<Option virtualFolder="CMake Files\images\"/>
 		</Unit>

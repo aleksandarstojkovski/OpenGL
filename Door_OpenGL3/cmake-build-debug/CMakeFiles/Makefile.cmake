@@ -23,10 +23,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Compiler/GNU-C.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Compiler/GNU-CXX.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Compiler/GNU.cmake"
-  "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/FindGLUT.cmake"
-  "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/FindOpenGL.cmake"
-  "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/FindPackageHandleStandardArgs.cmake"
-  "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/FindPackageMessage.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Internal/CMakeCheckCompilerFlag.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Platform/Windows-GNU-C-ABI.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Platform/Windows-GNU-C.cmake"
@@ -37,15 +33,17 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Platform/Windows.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/Platform/WindowsPaths.cmake"
   "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/ProcessorCount.cmake"
-  "C:/Program Files/JetBrains/CLion 2020.1.1/bin/cmake/win/share/cmake-3.16/Modules/SelectLibraryConfigurations.cmake"
   "../CMakeLists.txt"
   "CMakeFiles/3.16.5/CMakeCCompiler.cmake"
   "CMakeFiles/3.16.5/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.16.5/CMakeRCCompiler.cmake"
   "CMakeFiles/3.16.5/CMakeSystem.cmake"
+  "../images/door.bmp"
   "../images/flag.bmp"
   "../images/roof.bmp"
   "../images/wall.bmp"
+  "../shaders/shader.frag"
+  "../shaders/shader.vert"
   "C:/Users/aleks/CLionProjects/OpenGL/README.txt"
   )
 
@@ -57,14 +55,19 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
+  "images/door.bmp"
   "images/roof.bmp"
   "images/wall.bmp"
   "images/flag.bmp"
+  "README.txt"
+  "shaders/shader.frag"
+  "shaders/shader.vert"
+  "images/door.bmp"
   "README.txt"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/House.dir/DependInfo.cmake"
+  "CMakeFiles/Door_OpenGL3.dir/DependInfo.cmake"
   )
