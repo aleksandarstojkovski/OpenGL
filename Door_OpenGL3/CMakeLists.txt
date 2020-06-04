@@ -15,6 +15,9 @@ configure_file(../README.txt README.txt COPYONLY)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 if(APPLE)
+    message(INFO ": PLATFORM APPLE")
+    include_directories("/usr/local/include")
+
     # FIND OPENGL
     #########################################################
     find_package(OpenGL REQUIRED)
@@ -36,10 +39,16 @@ if(APPLE)
         message(ERROR " GLUT not found!")
     endif(NOT GLUT_FOUND)
 
+
+
     # GLEW
     #########################################################
-    find_package(GLEW REQUIRED)
+    find_package(GLEW)
     include_directories(${GLEW_INCLUDE_DIR})
+    link_libraries(${GLEW_LIBRARIES})
+    include_directories("/usr/local/include")
+    link_libraries("/usr/local/lib/libGLEW.a")
+
 
 
     # GLFW.
@@ -47,10 +56,17 @@ if(APPLE)
     find_package(GLFW3 REQUIRED)
     include_directories(${GLFW3_INCLUDE_DIR})
 
+    # Set necessary libs.
+    set(REQUIRED_LIBS
+            ${GLUT_LIBRARY}
+            ${GLFW3_LIBRARIES}
+            ${GLEW_LIBRARIES}
+            ${OPENGL_LIBRARY}
+            )
 else()
+
     message(INFO ": PLATFORM WINDOWS")
 
-    #3.0.0-1
     set(CMAKE_PREFIX_PATH "C:/SUPSI/opengl/freeglut")
 
     include_directories("C:/SUPSI/opengl/freeglut/include")
@@ -59,15 +75,11 @@ else()
     include_directories("C:/SUPSI/opengl/glew-2.1.0/include")
     link_directories("C:/SUPSI/opengl/glew-2.1.0/lib/release/x64")
 
-    #include_directories("C:/SUPSI/opengl/glfw-3.3.2.bin.WIN64/include")
-    #link_directories("C:/SUPSI/opengl/glfw-3.3.2.bin.WIN64/lib-mingw-w64")
-
     include_directories("C:/SUPSI/opengl/glm-0.9.9.8/glm")
 
     set(OPENGL_LIBRARY -lopengl32)
     set(GLUT_LIBRARY -lfreeGLUT -lglu32)
     set(GLEW_LIBRARIES -lglew32)
-    #set(GLFW3_LIBRARIES -lglfw3)
 
 endif()
 
