@@ -39,9 +39,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.16.5/CMakeRCCompiler.cmake"
   "CMakeFiles/3.16.5/CMakeSystem.cmake"
   "../images/door.bmp"
-  "../images/flag.bmp"
-  "../images/roof.bmp"
-  "../images/wall.bmp"
   "../shaders/shader.frag"
   "../shaders/shader.vert"
   "C:/Users/aleks/CLionProjects/OpenGL/README.txt"
@@ -56,14 +53,9 @@ set(CMAKE_MAKEFILE_OUTPUTS
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
   "images/door.bmp"
-  "images/roof.bmp"
-  "images/wall.bmp"
-  "images/flag.bmp"
   "README.txt"
   "shaders/shader.frag"
   "shaders/shader.vert"
-  "images/door.bmp"
-  "README.txt"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 

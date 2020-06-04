@@ -5,14 +5,16 @@ set(CMAKE_CXX_STANDARD 14)
 set(PROJECT_NAME Door_OpenGL3)
 set(SOURCE_FILES main.cpp lib/RgbImage.cpp shaders_loader.cpp shaders_loader.h)
 set(CMAKE_CXX_FLAGS "-fpermissive -Wwrite-strings -std=c++0x")
+set(REQUIRED_LIBS ${GLUT_LIBRARY} ${GLEW_LIBRARIES} ${OPENGL_LIBRARY})
 
 configure_file(images/door.bmp images/door.bmp COPYONLY)
-configure_file(images/roof.bmp images/roof.bmp COPYONLY)
-configure_file(images/wall.bmp images/wall.bmp COPYONLY)
-configure_file(images/flag.bmp images/flag.bmp COPYONLY)
 configure_file(../README.txt README.txt COPYONLY)
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+configure_file(shaders/shader.frag shaders/shader.frag COPYONLY)
+configure_file(shaders/shader.vert shaders/shader.vert COPYONLY)
+
+cmake_minimum_required(VERSION 3.10)
+set(CMAKE_CXX_STANDARD 14)
 
 if(APPLE)
     message(INFO ": PLATFORM APPLE")
@@ -63,19 +65,23 @@ if(APPLE)
             ${GLEW_LIBRARIES}
             ${OPENGL_LIBRARY}
             )
-else()
 
+    #endif(APPLE)
+    #if(UNIX)
+    #    message(INFO ": PLATFORM LINUX")
+    #
+    #    set(OPENGL_LIBRARY -lGL)
+    #    set(GLUT_LIBRARY -lglut -lGLU)
+else()
     message(INFO ": PLATFORM WINDOWS")
 
-    set(CMAKE_PREFIX_PATH "C:/SUPSI/opengl/freeglut")
-
+    set(CMAKE_PREFIX_PATH "C:/SUPSI/freeglut/opengl")
     include_directories("C:/SUPSI/opengl/freeglut/include")
-    link_directories("C:/SUPSI/opengl/freeglut/lib/x64")
-
     include_directories("C:/SUPSI/opengl/glew-2.1.0/include")
-    link_directories("C:/SUPSI/opengl/glew-2.1.0/lib/release/x64")
-
     include_directories("C:/SUPSI/opengl/glm-0.9.9.8/glm")
+
+    link_directories("C:/SUPSI/opengl/freeglut/lib/x64")
+    link_directories("C:/SUPSI/opengl/glew-2.1.0/lib/release/x64")
 
     set(OPENGL_LIBRARY -lopengl32)
     set(GLUT_LIBRARY -lfreeGLUT -lglu32)
@@ -83,19 +89,7 @@ else()
 
 endif()
 
-# Set necessary libs.
-set(REQUIRED_LIBS
-        ${GLUT_LIBRARY}
-        ${GLFW3_LIBRARIES}
-        ${GLEW_LIBRARIES}
-        ${OPENGL_LIBRARY}
-        )
-
-configure_file(shaders/shader.frag shaders/shader.frag COPYONLY)
-configure_file(shaders/shader.vert shaders/shader.vert COPYONLY)
-
-configure_file(images/door.bmp images/door.bmp COPYONLY)
-configure_file(../README.txt README.txt COPYONLY)
-
+set(REQUIRED_LIBS ${GLUT_LIBRARY} ${GLEW_LIBRARIES} ${OPENGL_LIBRARY})
+add_executable(${PROJECT_NAME}  ${SOURCE_FILES})
 
 target_link_libraries(${PROJECT_NAME} ${REQUIRED_LIBS})

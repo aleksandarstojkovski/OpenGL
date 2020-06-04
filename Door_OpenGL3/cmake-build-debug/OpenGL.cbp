@@ -107,15 +107,6 @@
 		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Door_OpenGL3/images/door.bmp">
 			<Option virtualFolder="CMake Files\images\"/>
 		</Unit>
-		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Door_OpenGL3/images/flag.bmp">
-			<Option virtualFolder="CMake Files\images\"/>
-		</Unit>
-		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Door_OpenGL3/images/roof.bmp">
-			<Option virtualFolder="CMake Files\images\"/>
-		</Unit>
-		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Door_OpenGL3/images/wall.bmp">
-			<Option virtualFolder="CMake Files\images\"/>
-		</Unit>
 		<Unit filename="C:/Users/aleks/CLionProjects/OpenGL/Door_OpenGL3/../README.txt">
 			<Option virtualFolder="CMake Files\..\"/>
 		</Unit>
