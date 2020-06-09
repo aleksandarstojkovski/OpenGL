@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/untitled")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/OpenGL")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -32,3 +32,13 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 
+if(CMAKE_INSTALL_COMPONENT)
+  set(CMAKE_INSTALL_MANIFEST "install_manifest_${CMAKE_INSTALL_COMPONENT}.txt")
+else()
+  set(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
+endif()
+
+string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
+       "${CMAKE_INSTALL_MANIFEST_FILES}")
+file(WRITE "C:/Users/aleks/CLionProjects/OpenGL/Door_OpenGL3/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+     "${CMAKE_INSTALL_MANIFEST_CONTENT}")
