@@ -1,4 +1,4 @@
-![alt text](https://github.com/aleksandarstojkovski/OpenGL/blob/master/img/window.png)
+![alt text](https://github.com/aleksandarstojkovski/OpenGL/blob/master/img/window.PNG)
 
 +-------------------------------------+
 | INFO
