@@ -13,7 +13,7 @@
 /\__/ / | | \ \_/ /\__/ / |\  \ \_/ /\ \_/ /\__/ / |\  \_| |_
 \____/  \_/  \___/\____/\_| \_/\___/  \___/\____/\_| \_/\___/
 
-![alt text](https://github.com/aleksandarstojkovski/OpenGL/blob/master/img/window.PNG)
+![alt text](https://github.com/aleksandarstojkovski/OpenGL/blob/master/img/window.png)
 
 +-------------------------------------+
 | INFO
