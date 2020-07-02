@@ -1,5 +1,6 @@
 ![alt text](https://github.com/aleksandarstojkovski/OpenGL/blob/master/img/window.PNG)
 
+```
 +-------------------------------------+
 | INFO
 +-------------------------------------+
@@ -19,3 +20,4 @@ l/r arrows     ->     move the eye (camera) in X.
 8,2            ->     move the eye (camera) in Z.
 ESC            ->     close program.
 right click    ->     general menu
+```
